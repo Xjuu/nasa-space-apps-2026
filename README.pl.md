@@ -16,7 +16,6 @@
 **[🇬🇧 English version → README.md](README.md)**
 
 <p align="center">
-  <a href="docs/FireSpot_Master_Guide.pdf"><b>📘 Master Guide (PDF, 100 stron, po angielsku)</b></a> ·
   <a href="https://firespot.filipklon.online"><b>🌐 Wersja na żywo</b></a> ·
   <a href="docs/MODEL_CARD.md"><b>🧾 Karta modelu</b></a> ·
   <a href="docs/DEMO_SCRIPT.md"><b>🎬 Scenariusz pokazu</b></a>
@@ -399,7 +398,7 @@ Interaktywna dokumentacja: `/docs`. Najważniejsze punkty końcowe:
 | `models/` | **wytrenowane modele** (≈ 150 MB; największy `spread_direct.json` ma 76 MB) |
 | `cache/replay/`, `cache/demo/`, `data/incidents.json` | zapisane odtworzenia i demo działające offline |
 | `reports/` | zmierzone wyniki (JSON/CSV/wykresy), z których pochodzą liczby w tym pliku |
-| `docs/` | **Master Guide (PDF)**, karta modelu, licencje, skrypt demo, diagram architektury, zrzuty ekranu |
+| `docs/` | karta modelu, licencje, skrypt demo, diagram architektury, zrzuty ekranu |
 | `scripts/` | przygotowanie demo, szeregi zharmonizowane, testy pomocnicze |
 | `tests/` | testy jednostkowe |
 | `main.py`, `forecast.py`, `walk_forward.py`, `harmonize.py`, `classify.py`, `bowtie.py`, `alerts1km.py` | trening i ewaluacja |
