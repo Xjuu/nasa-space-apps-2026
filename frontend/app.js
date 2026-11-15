@@ -50,7 +50,7 @@
   const DAY_COLORS = ["#00224e", "#2a3f6c", "#575d6d", "#7d7c78", "#a69d75", "#d3c164", "#fee838"];
   const dayColor = (d) => DAY_COLORS[Math.min(Math.max(d, 1), DAY_COLORS.length) - 1];
   // Detection age: ordinal yellow / orange / dark purple (no red-green)
-  const AGE_COLORS = { fresh: "#f6c445", mid: "#d9711c", old: "#5b2a86" };
+  const AGE_COLORS = { fresh: "#ffd23f", mid: "#ff8c1a", late: "#e5483a", old: "#9b3fd1" };   // detection age: <=3 h, 3-8 h, 8-16 h, >16 h
 
   // DOM Elements
   const $ = (id) => document.getElementById(id);
@@ -294,6 +294,17 @@
       color: "#145c64", weight: 2, fillOpacity: .12, dashArray: "6 5", interactive: false,
     }).addTo(map);
     else { drawTempRect.setBounds(bounds); drawTempRect.setStyle({color: "#145c64"}); }
+    // live size while dragging: the rectangle turns red and the hint shows the area as soon as it is too big
+    const W = bounds.getWest(), S = bounds.getSouth(), E = bounds.getEast(), N = bounds.getNorth();
+    if (drawTargetMode === "history") {
+      const dx = E - W, dy = N - S, big = dx > AOI_MAX_SPAN || dy > AOI_MAX_SPAN;
+      drawTempRect.setStyle({color: big ? "#b42318" : "#145c64"});
+      drawHint.textContent = `${dx.toFixed(1)}° × ${dy.toFixed(1)}° (max ${AOI_MAX_SPAN}° × ${AOI_MAX_SPAN}°)${big ? " · too large" : ""}`;
+    } else {
+      const km2 = computeBboxArea(W, S, E, N), big = km2 > MAX_AREA_KM2 + 1;
+      drawTempRect.setStyle({color: big ? "#b42318" : "#145c64"});
+      drawHint.textContent = `${Math.round(km2).toLocaleString("en-US")} km² / ${MAX_AREA_KM2.toLocaleString("en-US")} km²${big ? " · too large" : ""}`;
+    }
     return bounds;
   }
 
@@ -800,7 +811,7 @@
         <button type="button" class="spot-item" data-idx="${idx}" data-lat="${p.lat}" data-lon="${p.lon}">
           <div class="spot-header">
             <span class="spot-coord">${p.lat.toFixed(3)}, ${p.lon.toFixed(3)}</span>
-            <span class="spot-time">${timeStr || hoursAgo}</span>
+            <span class="spot-time"><i class="age-dot" style="background:${fireAgeColor(typeof p.hours_ago === "number" ? p.hours_ago : null)}"></i>${timeStr || hoursAgo}${timeStr && p.hours_ago != null ? ` · ${hoursAgo}` : ""}</span>
           </div>
           <div class="spot-details">
             <span>${frp.toFixed(1)} MW</span>
@@ -842,10 +853,24 @@
   // ---------------------------------------------------------------- Visuals Sync (Globe + Map)
   function fireAgeColor(h) {
     if (h == null) return AGE_COLORS.mid;
-    return h <= 3 ? AGE_COLORS.fresh : h <= 12 ? AGE_COLORS.mid : AGE_COLORS.old;
+    return h <= 3 ? AGE_COLORS.fresh : h <= 8 ? AGE_COLORS.mid : h <= 16 ? AGE_COLORS.late : AGE_COLORS.old;
   }
 
+  // detection-age filter (slider in the Fire detections card): only detections up to state.ageMaxH hours old
+  state.ageMaxH = 24;
+  state.ageMinH = 0;
+  const ageOk = (f) => { const h = (f.properties || {}).hours_ago; return typeof h !== "number" || (h <= state.ageMaxH && h >= state.ageMinH); };
+  function refilterFires() {
+    const all = state.loadedFires || [], feats = all.filter(ageOk);
+    if (state.mode === "live" && all.length) {
+      const maxFrp = feats.reduce((m, f) => Math.max(m, (f.properties || {}).frp_mw || 0), 0);
+      renderLiveSpots({ type: "FeatureCollection", features: feats.slice(0, 150), summary: { total_spots: feats.length, max_frp_mw: maxFrp } });
+    }
+    renderOnGlobeAndMap(all);
+    return { shown: feats.length, total: all.length };
+  }
   function renderOnGlobeAndMap(features) {
+    features = features.filter(ageOk);
     if (showsGlobalDetections()) {
       const seen = new Set();
       features = [...features, ...monitorDetections].filter(f => {
@@ -876,7 +901,7 @@
       const frp = p.frp_equiv_mw || p.frp_mw || p.frp_viirs_mw || 0;
       const isLive = p.kind === "live_fire";
       const isCell = geom.type === "Polygon";
-      const color = isLive || state.mode === "live" ? "#c43c32" : AGE_COLORS.mid;
+      const color = (isLive || state.mode === "live") && typeof p.hours_ago === "number" ? fireAgeColor(p.hours_ago) : (isLive || state.mode === "live" ? "#c43c32" : AGE_COLORS.mid);
       const radius = Math.min(4 + Math.sqrt(frp) / 2.5, 10);
       const satName = SAT_NAMES[p.satellite] || p.satellite || "";
 
@@ -2724,7 +2749,8 @@
     // events from the forecast player: "load"(data, query, runOpts), "frame"(index, frame), "reset", "point"(lat, lon)
     on: (ev, fn) => { const h = window.EquiFire._h = window.EquiFire._h || {}; (h[ev] = h[ev] || []).push(fn); },
     emit: (ev, ...a) => { ((window.EquiFire._h || {})[ev] || []).forEach((fn) => { try { fn(...a); } catch (e) { console.error(e); } }); },
-    sim, options: { calibration: "off" },
+    sim, options: { calibration: "off" }, refilterFires,
+    get globe() { return globe; },
   };
 
   // Initialize

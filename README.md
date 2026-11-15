@@ -15,6 +15,18 @@
 
 **[🇬🇧 English version → README.en.md](README.en.md)**
 
+<p align="center">
+  <a href="docs/FireSpot_Master_Guide.pdf"><b>📘 Master Guide (PDF, 100 stron, po angielsku)</b></a> ·
+  <a href="https://firespot.filipklon.online"><b>🌐 Wersja na żywo</b></a> ·
+  <a href="docs/MODEL_CARD.md"><b>🧾 Karta modelu</b></a> ·
+  <a href="docs/DEMO_SCRIPT.md"><b>🎬 Scenariusz pokazu</b></a>
+</p>
+
+| 🛰️ Harmonizacja | 🚨 Alerty na żywo | 🔮 Prognoza i weryfikacja |
+|---|---|---|
+| MODIS → ekwiwalent VIIRS, skok wykryć w 2012 r. ×5,24 → ×1,16 | porównanie z tym samym tygodniem 2008–2025, rutyna vs anomalia, eksport CAP | ML + fizyka na 1–3 dni, odtworzenia bez wycieku, uczciwe wyniki (także negatywne) |
+
+
 ![Widok Monitoring](docs/img/monitor.png)
 
 </div>
@@ -30,15 +42,17 @@
 3. [Co zbudowaliśmy — 8 celów wyzwania](#-co-zbudowaliśmy--8-celów-wyzwania)
 4. [Jak to działa (architektura)](#-jak-to-działa-architektura)
 5. [Aplikacja webowa — przegląd](#-aplikacja-webowa--przegląd)
-6. [Metody krok po kroku](#-metody-krok-po-kroku)
-7. [Wyniki — uczciwie](#-wyniki--uczciwie)
-8. [Szybki start](#-szybki-start)
-9. [Dane i licencje](#-dane-i-licencje)
-10. [API](#-api)
-11. [Struktura repozytorium](#-struktura-repozytorium)
-12. [Testy i demo](#-testy-i-demo)
-13. [Ograniczenia](#-ograniczenia)
-14. [Zespół, licencja, podziękowania](#-zespół-licencja-podziękowania)
+6. [Moduły dodatkowe (zakładka Prognoza)](#-moduły-dodatkowe-zakładka-prognoza)
+7. [Metody krok po kroku](#-metody-krok-po-kroku)
+8. [Wyniki — uczciwie](#-wyniki--uczciwie)
+9. [Eksperymenty z wynikiem negatywnym lub słabym](#-eksperymenty-z-wynikiem-negatywnym-lub-słabym)
+10. [Szybki start](#-szybki-start)
+11. [Dane i licencje](#-dane-i-licencje)
+12. [API](#-api)
+13. [Struktura repozytorium](#-struktura-repozytorium)
+14. [Testy i demo](#-testy-i-demo)
+15. [Ograniczenia](#-ograniczenia)
+16. [Zespół, licencja, podziękowania](#-zespół-licencja-podziękowania)
 
 ---
 
@@ -68,7 +82,7 @@ MODIS (satelity Terra od 2000 r. i Aqua od 2002 r.) ma piksel ≈ **1 km²**. VI
 | Moc promieniowania (FRP) | uśredniana z tłem | inna skala |
 | Krawędź pasa skanowania | piksel do 2,0 × 4,8 km (efekt „muszki”) | podobne zniekształcenie |
 
-Skutek: po sklejeniu zapisów liczba wykryć **skacze w 2012 roku ×5,2**, a „trend” pożarów rośnie o **+7,7% rocznie** — głównie przez zmianę instrumentu, nie przez zmianę pożarów. Nasza harmonizacja sprowadza skok do **×1,16**, a trend do **+0,6%/rok (nieistotny statystycznie)**.
+Skutek: po sklejeniu zapisów liczba wykryć **skacze w 2012 roku ×5,2**, a „trend” pożarów rośnie o **+13,8% rocznie** (liczba wykryć, 5 krajów) — głównie przez zmianę instrumentu, nie przez zmianę pożarów. Nasza harmonizacja sprowadza skok do **×1,16**, a trend do **−0,8%/rok (nieistotny statystycznie)**.
 
 ![Zapis 2000–2025: surowy vs zharmonizowany](docs/img/harmonization.png)
 
@@ -149,12 +163,12 @@ flowchart LR
 
 ## 🖥️ Aplikacja webowa — przegląd
 
-Aplikacja nie wymaga budowania (czysty HTML/CSS/JS: Leaflet + globe.gl). Domyślnie po polsku, przełącznik **PL | EN**, ciemny motyw w stylu VS Code (jasny dostępny), pełny układ mobilny z dolnym panelem.
+Aplikacja nie wymaga budowania (czysty HTML/CSS/JS: Leaflet + globe.gl). Domyślnie po angielsku, przełącznik **EN | PL**, ciemny motyw w stylu VS Code (jasny dostępny), pełny układ mobilny z dolnym panelem.
 
 | Monitoring | Przewodnik „? Zapoznaj się” |
 |---|---|
 | ![Monitoring](docs/img/monitor.png) | ![Przewodnik](docs/img/guide.png) |
-| Obszar do 25 000 km², detekcje z 24 h, wiek obserwacji, orbity satelitów, radar opadów i wiatr | 13-krokowa wycieczka po wszystkich ekranach z podświetleniem elementów |
+| Obszar do 25 000 km², detekcje z 24 h, wiek obserwacji, orbity satelitów, radar opadów i wiatr | 30-krokowa wycieczka po wszystkich ekranach i funkcjach z podświetleniem elementów |
 
 | Odtworzenie (uczciwa weryfikacja) | Historia i zapis 25-letni |
 |---|---|
@@ -175,6 +189,30 @@ Aplikacja nie wymaga budowania (czysty HTML/CSS/JS: Leaflet + globe.gl). Domyśl
 **Dodatki w zakładce Prognoza:** do następnego przelotu (kiedy satelita znów zobaczy pożar i czy chmury go zasłonią), martwe strefy, scenariusze pogodowe („co jeśli wiatr będzie silniejszy / spadnie deszcz” — oznaczone jako hipotetyczne), szacowana ekspozycja obiektów (osady, drogi, linie energetyczne, szpitale, szkoły — **bez wartości pieniężnych**) i karta zdarzenia do wydruku.
 
 ---
+
+## 🧰 Moduły dodatkowe (zakładka Prognoza)
+
+| Moduł | Co robi | Czego **nie** robi |
+|---|---|---|
+| 🛸 **Trasa drona rozpoznawczego** (`backend/drone.py`) | z gotowej prognozy buduje trasę wokół przewidywanego obrysu pożaru (domyślnie za 2 h): większy odstęp po stronie zawietrznej, start od nawietrznej, zawis z kamerą na punktach zapłonu, limit czasu lotu. Eksport GPX, KML, CSV (Litchi), GeoJSON. | nie modeluje prądów wstępujących ani turbulencji, nie zna przestrzeni powietrznej; **to pomoc w planowaniu, nie plan lotu**. Brak natywnego pliku DJI. |
+| 💶 **Licznik CO₂ i wartości** (`backend/carbon.py`) | FRP → biomasa (Wooster 2005: 0,368 kg/MJ) → CO₂ (współczynniki wg biomu) → wartość po **założonej** cenie (domyślnie 70 €/t). Tryb „na żywo” (FIRMS, ostatnie 24 h) i „dla prognozy” (podąża za suwakiem). | cena nie jest pobierana na żywo (brak darmowego źródła bez klucza); to **nie** szkoda ani wartość ubezpieczeniowa; dokładność rzędu współczynnika 2–3. |
+| 📡 **Direct Broadcast** (`backend/dbnet.py`) | z orbit (SGP4) liczy, czy stacja odbiorcza (Fairbanks, Svalbard, White Sands, McMurdo, Greenbelt) ma satelitę nad horyzontem w chwili obserwacji pożaru, kiedy satelita następnie spotka stację, odliczanie do następnej obserwacji; stacje i łącza na globusie 3D. | nie mamy odbiornika X-band i nie przetwarzamy L0/L1/L2; **nie twierdzimy**, że alert jest szybszy niż w FIRMS (podajemy tylko opublikowane „ok. 3 h”). Lista stacji jest przybliżona. |
+| ☀️ **Geometria Słońce–satelita** (`backend/dbnet.py`, `/illumination`) | kąty Słońca i satelity w chwili przelotu: zenit, azymut względny, kąt rozpraszania, kąt odblasku (sun glint) i ryzyko fałszywych alarmów. | **nie stosujemy** korekty BRDF (MCD43) ani stałej poprawki procentowej; detekcja pożarów opiera się na pasmach termicznych. |
+| 🎲 **Monte Carlo** (`backend/monte_carlo.py`) | zespół przebiegów fizyki z zaburzonym wiatrem, wilgotnością i tempem; izolinie **częstości w zespole** (20/50/80/95 %) | częstość w zespole to **nie** szansa realnego pożaru: brak niezależnej kalibracji; zakresy zaburzeń są założone, nie z operacyjnego zespołu pogodowego |
+| 🛰️ **Nowcasting następnej obserwacji** (`backend/nowcast.py`, #8) | ekstrapoluje czoło ognia do okna przelotu z `nextobs` i szacuje, co satelita zobaczy | nie jest prognozą trafności; opiera się na prognozie fizycznej i modelowanym zachmurzeniu |
+| 🧯 **Firebreak sandbox** (`backend/firebreak.py`) | „co jeśli” dla pasa przeciwpożarowego, zrzutu lub wypalania; **heurystyczny wskaźnik utrzymania linii** | wskaźnik **nie** jest prawdopodobieństwem: nieskalibrowany i niezwalidowany na akcjach gaśniczych; nie plan operacyjny |
+| 🚨 **Ranking priorytetów** (`backend/fire_priority.py`, #20) | lista pożarów wg wag (ekspozycja, tempo, FRP, suchość paliwa), poziomy P1–P4 | wagi są założone; to pomoc w triage, nie decyzja |
+| 🌿 **Analiza błędów wg biomu** (`backend/biome_errors.py`, #27) | tabela błędów odtworzeń (FP/FN/IoU) wg biomu | 6 zdarzeń; bez nauki na teście; liczby zależą od dostępnych zapisanych replayów |
+| 📄 **PDF dla każdego widoku** (`backend/analysis_reports.py`, `POST /reports/pdf`) | raport istniejącego wyniku z widoku, bez nowej symulacji | nie liczy niczego od nowa |
+| 🔗 **Tymczasowy link do analizy** (`backend/shared_analysis.py`, #24) | krótki kod z ograniczonym czasem życia, po wygaśnięciu „link wygasł” | nie przechowuje danych w adresie |
+| 📲 **Telegram** (`backend/telegram_alerts.py`, #23) | powiadomienia; token i czat z `.env` | nic nie wysyła bez zgłoszonego obszaru i kliknięcia; bez tokenu pokazuje instrukcję; sekretów nie loguje |
+| 💬 **Wyjaśnienia „dlaczego tak”** (`frontend/ui-explanations.js`, #22) | regułowe podsumowanie wejść, modelu i selekcji komórek, deterministyczne | bez atrybucji przyczynowej; nie zmienia wyniku |
+| ➕ **Extra data** (`frontend/ui-extra-data.js`) | zwijana sekcja danych pomocniczych: **#9** mapa niezgodności rekonstrukcji z MODIS vs prawdziwy VIIRS (kafelki 1°, 2022–2025, 5 krajów); **#10** niezależna spalona powierzchnia EFFIS; **#13** maska stałych źródeł ciepła; **#15** wskaźnik jakości obserwacji | **#10 tylko Europa i Morze Śródziemne**, poza nią „brak danych”; wskaźnik jakości to nie przedział ufności; dane pomocnicze nie wchodzą do wyników prognozy |
+| ⏱️ **Opóźnienie wykrycia w naszym pollerze** (`backend/latency.py`, #17) | czas od obserwacji do pierwszego zobaczenia detekcji w publicznym strumieniu FIRMS, odpytywanie co 5 min | to **nie** wewnętrzny czas FIRMS ani opóźnienie Direct Broadcast; rozdzielczość 5 min; detekcje obecne przy pierwszym odpytaniu pominięte |
+| 📏 **Flaga zakresu modelu** (`equifire/scope_flag.py`, `/scope/check`, #33) | czy przypadek mieści się w zakresie przypadków treningowych (rozmiar, historia 30/365 dni, ilość danych w kafelku 5°) | to flaga zakresu, **nie** pewność; brak dowodu, że przewiduje błąd (patrz niżej) |
+| 🎚️ **Suwak przed / po harmonizacji** (`frontend/ui-harmonize-compare.js`, #11) | w Historii kurtyna: surowe sklejenie vs zapis zharmonizowany, skok 2011→2012 ×5,24 → ×1,16 | to wykres istniejących danych, bez nowych obliczeń |
+| 📐 **Diagnostyka kalibracji** (`backend/risk_diagnostics.py`, `/risk/diagnostics`, #1) | wykres rzetelności i ECE/Brier dziennego ryzyka | kandydat badawczy: poprawa trafności **nie wykazana** (przedziały różnicy Brier obejmują zero) |
+| 🌫️ **Ocena w masce obserwacji** (zakładka Odtworzenie, #2) | po „Reveal what happened” pełna i maskowana ocena obok siebie | maska = modelowane zachmurzenie ERA5, nie maska pikseli satelity; przy pełnej obserwowalności obie miary są równe |
 
 ## 🔬 Metody krok po kroku
 
@@ -216,7 +254,7 @@ Wszystkie liczby: **nieznane wcześniej pożary**, test „walk-forward” (mode
 | Miara | Surowy zapis (sklejony) | Zharmonizowany |
 |---|---|---|
 | Skok liczby wykryć 2012 / 2011 (5 krajów) | ×5,24 | **×1,16** |
-| Pozorny trend 2003–2025 | +7,7 %/rok | **+0,6 %/rok (nieistotny)** |
+| Pozorny trend liczby wykryć 2003–2025 | +13,8 %/rok | **−0,8 %/rok (nieistotny)** |
 | Sumy wykryć vs prawdziwy VIIRS (lata testowe 2021–2025) | MODIS widzi 0,11× | **1,00× (korelacja roczna 0,99)** |
 | Błąd wielkości pożaru po przeliczeniu MODIS → VIIRS | surowy MODIS | **−69 %** (−24 % vs prosta korekta liniowa) |
 | Błąd FRP | surowy MODIS | **−18 %** |
@@ -248,6 +286,25 @@ Wszystkie liczby: **nieznane wcześniej pożary**, test „walk-forward” (mode
 | Efekt „muszki” (brzeg pasa) | klastrów MODIS na jeden pożar VIIRS: 1,339 → **1,007** (kosztem scalania sąsiednich pożarów) |
 | Odtworzenie, 6 zdarzeń | dzień 3 w granicach 5 km: 0,71–0,93; dzień 1 powyżej 0,70 tylko w 2 z 6 |
 | Uczenie z własnych prognoz | zmiana trafności ok. +0,1 pkt — bez znaczenia |
+
+---
+
+## 🧪 Eksperymenty z wynikiem negatywnym lub słabym
+
+Wszystkie wyniki są w `reports/`; nie wpinaliśmy ich do aplikacji jako działających funkcji.
+
+| Pomysł | Wynik | Raport |
+|---|---|---|
+| Geostacjonarne GOES jako dodatkowe obserwacje (15 pożarów 2024, Ameryki) | sam ślad VIIRS z dnia 0 pokrywa 55,3 % nowych komórek dnia 1; GOES dokłada tylko **+2,5 pkt**; z 19 komórek tylko-GOES 7 (37 %) potwierdził VIIRS | `reports/goes_feasibility.json` |
+| Model „eksplozywnego wzrostu” (test 2024, 1000 przypadków) | stopa bazowa 6,1 %; AUC modelu **0,68** (sam rozmiar pożaru 0,44); precyzja **17 %** przy czułości **15 %** | `reports/explosive_growth.json` |
+| Frakcja ognia z kanałów MIR/TIR VIIRS (Australia 2024) | łączna powierzchnia ognia zależy od założonej temperatury ognia **×26** (4,4 do 113 km² dla 1200–600 K): powierzchni bezwzględnej nie da się odzyskać z pól FIRMS | `reports/subpixel_fire_fraction.json` |
+| Flaga zakresu modelu (60 przypadków 2024) | 77 % oznaczonych „poza zakresem”; dzień 1 w 5 km 0,536 vs 0,580 w zakresie, dzień 3 odwrotnie (0,761 vs 0,630): **brak dowodu**, że flaga przewiduje błąd | `reports/scope_flag.json` |
+| Kalibracja prawdopodobieństw dziennego ryzyka | ECE spada, ale wszystkie przedziały różnicy Brier obejmują zero: poprawa trafności nie wykazana | `reports/DAILY_RISK_CALIBRATION.md` |
+| Mieszanka ML + fizyka | brak mierzalnego zysku względem samego ML (patrz wyniki powyżej) | `reports/ensemble_ab_*.json` |
+
+### Czas pełnego wyniku ML + fizyka
+
+Pomiar na jednej maszynie, małą próbą (`reports/ml_physics_timing.json`): pierwsze wywołanie **p50 5,5 s** dla zapisanych zdarzeń i **p50 13,7 s** (maks. 22,7 s) dla świeżych obszarów z 5 przetworzonych krajów; drugie wywołanie przy ciepłych dyskach p50 2,5–3,0 s. Prawdziwy zimny start zupełnie nowego miejsca (pobranie krajobrazu i pogody) nie został zmierzony i może trwać 2–3 min. Dla Kalimantanu (tylko ML) wynik zwraca 503: brak blendera ML + fizyka wytrenowanego przed 2023.
 
 ---
 
@@ -323,7 +380,12 @@ Interaktywna dokumentacja: `/docs`. Najważniejsze punkty końcowe:
 | Prognoza | `/predict`, `/predict/simulate`, `/simulate`, `/simulate/weather`, `/forecast`, `/forecast.cap` |
 | Analiza zdarzenia | `/nextobs`, `/blindspots`, `/scenarios`, `/exposure`, `/brief` (+ `.html` `.json` `.pdf`) |
 | Weryfikacja | `/replay/incidents`, `/replay/run` |
-| Satelity i geometria | `/overpass`, `/geometry`, `/clusters` |
+| Satelity i geometria | `/overpass`, `/geometry`, `/clusters`, `/dbnet/live`, `/dbnet/race`, `/illumination` |
+| Dron i węgiel | `/drone/mission`, `/carbon/live`, `/carbon/forecast` |
+| Prognoza: zespół i scenariusze | `/montecarlo/presets`, `/montecarlo/run`, `/nowcast/pass`, `/firebreak/presets`, `/firebreak/evaluate`, `/priority/presets`, `/priority/rank` |
+| Diagnostyka i zakres | `/risk/diagnostics`, `/risk/calibrate`, `/scope/check`, `/latency/stats`, `/replay/biome-errors`, `/replay/biome-errors/summary` |
+| Extra data | `/extra/disagreement`, `/extra/effis`, `/extra-sq/static-sources`, `/extra-sq/quality-index` |
+| Raporty, udostępnianie, powiadomienia | `/reports/pdf`, `/share`, `/share/{share_id}`, `/telegram/config`, `/telegram/send` |
 
 ---
 
@@ -337,7 +399,7 @@ Interaktywna dokumentacja: `/docs`. Najważniejsze punkty końcowe:
 | `models/` | **wytrenowane modele** (≈ 150 MB; największy `spread_direct.json` ma 76 MB) |
 | `cache/replay/`, `cache/demo/`, `data/incidents.json` | zapisane odtworzenia i demo działające offline |
 | `reports/` | zmierzone wyniki (JSON/CSV/wykresy), z których pochodzą liczby w tym pliku |
-| `docs/` | karta modelu, licencje, skrypt demo, diagram architektury, zrzuty ekranu |
+| `docs/` | **Master Guide (PDF)**, karta modelu, licencje, skrypt demo, diagram architektury, zrzuty ekranu |
 | `scripts/` | przygotowanie demo, szeregi zharmonizowane, testy pomocnicze |
 | `tests/` | testy jednostkowe |
 | `main.py`, `forecast.py`, `walk_forward.py`, `harmonize.py`, `classify.py`, `bowtie.py`, `alerts1km.py` | trening i ewaluacja |

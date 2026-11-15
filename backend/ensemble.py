@@ -22,6 +22,7 @@ from equifire import direct
 from equifire.common import EPOCH, GRID, MODELS, cell_center
 from equifire.ensemble_core import FEATS, case_rows, blend_predict
 from equifire.physcells import physics_cells
+from .risk_diagnostics import model_fingerprints
 from . import geo
 
 
@@ -207,6 +208,7 @@ def predict(lat, lon, date, days=3, objective='iou', *, model_dir=MODELS,
                                       'days': days, 'objective': objective},
         centre={'lat': clat, 'lon': clon},
         per_day=per_day, model={'blender': name, 'fit_year': blend_meta['fit_year'],
+            'fingerprints': model_fingerprints(model_dir, name, blend_meta.get('apply_ml_model', '')),
             'ml_model': blend_meta.get('apply_ml_model'), 'ml_training_before_year': ml_meta['test_from'],
             'inputs': 'VIIRS history plus MODIS activity features', 'physics_version': 2},
         physics=pc['meta'], hourly_simulation_url=simulate_url, estimate=True,

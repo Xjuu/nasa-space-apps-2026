@@ -717,12 +717,64 @@ from .brief import router as _brief_router  # noqa: E402
 
 app.include_router(_exposure_router)
 app.include_router(_brief_router)
+from .analysis_reports import router as _analysis_reports_router  # noqa: E402
+
+app.include_router(_analysis_reports_router)  # PDF of displayed results; no new analysis or OSM calls
+from .risk_diagnostics import router as _risk_diagnostics_router  # noqa: E402
+
+app.include_router(_risk_diagnostics_router)  # Research diagnostics, separate from issued forecast
+from .drone import router as _drone_router  # noqa: E402
+
+app.include_router(_drone_router)   # POST/GET /drone/mission (see backend/drone.py)
+from .carbon import router as _carbon_router  # noqa: E402
+
+app.include_router(_carbon_router)   # GET /carbon/live, POST /carbon/forecast (see backend/carbon.py)
+from .dbnet import router as _dbnet_router  # noqa: E402
+
+app.include_router(_dbnet_router)   # /dbnet/live, /dbnet/race, /illumination (see backend/dbnet.py)
+from .latency import router as _latency_router, start_poller as _start_latency_poller  # noqa: E402
+
+app.include_router(_latency_router)   # GET /latency/stats (see backend/latency.py)
+from .scope_api import router as _scope_router  # noqa: E402
+
+app.include_router(_scope_router)   # GET /scope/check (see backend/scope_api.py)
+from .extradata import router as _extradata_router  # noqa: E402
+
+app.include_router(_extradata_router)   # GET /extra/disagreement (see backend/extradata.py)
+_start_latency_poller()   # background poller (every 5 min), skipped under pytest
+from .firebreak import router as _firebreak_router  # noqa: E402
+
+app.include_router(_firebreak_router)   # /firebreak/presets, /firebreak/evaluate (see backend/firebreak.py)
+from .monte_carlo import router as _monte_carlo_router  # noqa: E402
+
+app.include_router(_monte_carlo_router)   # /montecarlo/presets, /montecarlo/run (see backend/monte_carlo.py)
+from .nowcast import router as _nowcast_router  # noqa: E402
+
+app.include_router(_nowcast_router)   # /nowcast/pass (see backend/nowcast.py)
+from .static_and_quality import router as _static_quality_router  # noqa: E402
+
+app.include_router(_static_quality_router)  # /extra-sq/static-sources, /extra-sq/quality-index
+from .fire_priority import router as _priority_router  # noqa: E402
+
+app.include_router(_priority_router)  # /priority/presets, /priority/rank (see backend/fire_priority.py)
+
+
 
 
 # Honest historical replay (backend/replay.py): GET /replay/incidents, GET /replay/run. Must precede the "/" mount.
 from .replay import router as _replay_router  # noqa: E402
 
 app.include_router(_replay_router)
+
+from .biome_errors import router as _biome_errors_router  # noqa: E402
+
+app.include_router(_biome_errors_router)
+
+from .telegram_alerts import router as _telegram_alerts_router  # noqa: E402
+from .shared_analysis import router as _shared_analysis_router  # noqa: E402
+
+app.include_router(_telegram_alerts_router)  # Explicit one-shot user-submitted Telegram alerts
+app.include_router(_shared_analysis_router)  # Temporary public summaries; payload stays server-side
 
 
 # One origin for the app and API, including temporary public tunnels.

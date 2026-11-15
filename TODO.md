@@ -366,7 +366,7 @@ overlapping-window probability checks passed at both horizons.
   - The `/classify` calendar is now loaded on first use; set `EQUIFIRE_PRELOAD_CALENDAR=1` to preload it.
 - Rebuild the UI: `cd orbital/frontend && npm install && npx vite build` (node_modules was deleted to save 87 MB).
 
-## 15. Claude continuation — ML + physics and hourly forecast weather
+## 15. ML + physics and hourly forecast weather
 
 - [x] Combined daily predictor API and application selector; matching fitted artifacts and cutoff checks.
 - [x] Per-cell fuel/terrain/barrier/dryness integration; archive-coordinate fix; hourly weather timeline and changing wind/rain.
@@ -375,13 +375,13 @@ overlapping-window probability checks passed at both horizons.
 - [x] Existing 2024/2025 ensemble runs completed, 132 checks passed, local backend updated.
 - [ ] Refit/evaluate the blend on richer landscape physics and weather forecasts as issued. Current matched comparison is roughly flat; day-1 tolerant and day-3 exact-cell targets remain unmet.
 
-Detailed current results supersede older status sections where they differ: reports/CLAUDE_CONTINUATION.md.
+Detailed current results supersede older status sections where they differ: reports/ensemble_ab_*.json.
 
 ## 15. New backend features (2026-11-15), all mounted in backend/app.py
 - `/replay/incidents`, `/replay/run` (honest replay, 6 curated incidents, cached): backend/replay.py
 - `/nextobs`, `/blindspots`, `/scenarios`: backend/nextobs.py
 - `/exposure` (GET/POST), `/brief`, `/brief.html`, `/brief.json`, `/brief.pdf`: backend/exposure.py, backend/brief.py
-- `/predict`, `/predict/simulate` (ML + physics; ML+physics blend does not beat ML alone, see reports/ensemble_ab_*.json): backend/ensemble.py (Codex)
+- `/predict`, `/predict/simulate` (ML + physics; ML+physics blend does not beat ML alone, see reports/ensemble_ab_*.json): backend/ensemble.py
 - `/harmonized/series`: harmonization headline (agent still working)
 - Fix: backend/brief.py routes had an unresolvable `-> Response` annotation that made /openapi.json (and /docs) return 500; removed.
-- Frontend UI for these is the open task (Codex owns frontend/): see COORDINATION.md requests.
+- Frontend UI for these is the open task .

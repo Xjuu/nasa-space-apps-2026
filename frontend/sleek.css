@@ -1,0 +1,95 @@
+/* Sleek layer: loaded last. Calmer palette, hairline borders, one radius scale, 8 pt rhythm, quiet interactions.
+   Tokens first (both themes), then a small set of component refinements. No filters or backdrop blur (map performance). */
+:root{
+  --sl-radius:10px;--sl-radius-sm:8px;--sl-radius-pill:999px;
+  --sl-font:Inter,"Inter var",system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,sans-serif;
+  --sl-ease:cubic-bezier(.2,.7,.2,1);
+}
+html[data-theme="dark"]{
+  --bg:#0c0e11;--surface:#111418;--surface-2:#171b21;--surface-3:#13171c;
+  --border:#1f252d;--border-strong:#2c343f;
+  --ink:#e7eaee;--ink-2:#c9cfd6;--muted:#97a1ad;--dim:#8b95a1;
+  --primary:#2563eb;--primary-hover:#1d4fd8;--primary-soft:#12254d;--focus:#6ea8ff;--link:#7db0ff;
+  --shadow-md:0 8px 24px #0009;--shadow-lg:0 16px 40px #000b;
+  --radius-sm:8px;--radius-md:10px;--radius-lg:12px;--radius-pill:999px;
+}
+html[data-theme="light"]{
+  --bg:#f4f6f9;--surface:#ffffff;--surface-2:#f1f4f8;--surface-3:#f8fafc;
+  --border:#e4e9f0;--border-strong:#cfd7e2;
+  --ink:#111827;--ink-2:#334155;--muted:#5b6778;--dim:#64748b;
+  --primary:#2563eb;--primary-hover:#1d4fd8;--primary-soft:#e8f0fe;--focus:#2563eb;
+  --shadow-sm:0 1px 2px #0f172a0d;--shadow-md:0 8px 24px #0f172a14;--shadow-lg:0 16px 40px #0f172a1f;
+  --radius-sm:8px;--radius-md:10px;--radius-lg:12px;--radius-pill:999px;
+}
+html,body{font-family:var(--sl-font);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+html[data-theme="dark"] body{font-size:13.5px;line-height:1.55}
+h1,h2,h3,h4{font-family:var(--sl-font);font-weight:650;letter-spacing:-.012em}
+:focus-visible{outline:2px solid var(--focus)!important;outline-offset:2px;border-radius:6px}
+
+/* header + tabs: thin bar, quiet active indicator */
+html[data-theme] #workspace-header{background:var(--surface);border-bottom:1px solid var(--border);box-shadow:none}
+.brand-name{font-weight:650;letter-spacing:-.01em}
+.workspace-purpose{color:var(--muted);font-size:11.5px}
+html[data-theme] .mode-tab{border-bottom:2px solid transparent;color:var(--muted);font-weight:500;font-size:13px;gap:7px;transition:color .15s var(--sl-ease),border-color .15s var(--sl-ease),background-color .15s var(--sl-ease)}
+html[data-theme] .mode-tab:hover{color:var(--ink);background:transparent}
+html[data-theme] .mode-tab.active,html[data-theme] .mode-tab[aria-current="page"]{color:var(--ink);border-bottom-color:var(--primary);background:transparent;font-weight:600}
+html[data-theme] .mode-tab i,html[data-theme] .mode-tab svg{opacity:.8}
+
+/* side panel: airy sections, hairline separators */
+html[data-theme] #panel{background:var(--surface);border-left:1px solid var(--border)}
+html[data-theme] .card{padding:20px 24px;border-bottom:1px solid var(--border);background:transparent}
+html[data-theme] .panel-header{padding:20px 24px 16px;border-bottom:1px solid var(--border);background:transparent}
+html[data-theme] #workspace-title{font-size:19px;font-weight:650;letter-spacing:-.018em}
+.panel-subtitle,.muted,.small{color:var(--muted)}
+html[data-theme] h2{font-size:14px;font-weight:650;letter-spacing:-.005em}
+
+/* controls: one radius, quiet borders, explicit states */
+html[data-theme] .tool-btn,html[data-theme] .btn-download,html[data-theme] .icon-btn,html[data-theme] select,html[data-theme] input[type=text],html[data-theme] input[type=number],html[data-theme] input[type=date],html[data-theme] input[type=datetime-local]{border-radius:var(--sl-radius-sm);border:1px solid var(--border-strong);background:var(--surface-2);color:var(--ink);transition:border-color .15s var(--sl-ease),background-color .15s var(--sl-ease),box-shadow .15s var(--sl-ease)}
+html[data-theme] .tool-btn:hover,html[data-theme] .btn-download:hover,html[data-theme] .icon-btn:hover{border-color:var(--muted);background:var(--surface-3)}
+html[data-theme] select:hover,html[data-theme] input:hover{border-color:var(--muted)}
+html[data-theme] input:focus,html[data-theme] select:focus{border-color:var(--focus);box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 22%,transparent);outline:none!important}
+html[data-theme] .btn-primary,html[data-theme] .btn-cta{border-radius:var(--sl-radius-sm);background:var(--primary);border-color:var(--primary);color:#fff;font-weight:600;letter-spacing:-.005em;box-shadow:none;transition:background-color .15s var(--sl-ease),transform .1s var(--sl-ease)}
+html[data-theme] .btn-primary:hover,html[data-theme] .btn-cta:hover{background:var(--primary-hover);border-color:var(--primary-hover)}
+html[data-theme] .btn-primary:active{transform:translateY(1px)}
+
+/* floating map cards: solid, hairline, soft shadow, generous radius (no blur) */
+html[data-theme] #map-context,html[data-theme] .map-legend,html[data-theme] .map-toolbar,html[data-theme] .draw-hint,html[data-theme] .leaflet-control-zoom,html[data-theme] .leaflet-control-zoom a,html[data-theme] #sat-clock,html[data-theme] .playback{background:var(--surface);border:1px solid var(--border-strong);border-radius:var(--sl-radius);box-shadow:var(--shadow-md);color:var(--ink)}
+html[data-theme] .leaflet-bar a{border-bottom-color:var(--border)}
+html[data-theme] .leaflet-control-attribution{background:color-mix(in srgb,var(--surface) 80%,transparent);color:var(--muted);border-radius:8px 0 0 0}
+
+/* chips / badges / tables / disclosures */
+html[data-theme] .status-badge,html[data-theme] .fx-badge,html[data-theme] .method-tag{border-radius:var(--sl-radius-pill);font-weight:600;letter-spacing:.01em}
+html[data-theme] .kpi,html[data-theme] .fx-kpis>div,html[data-theme] .hz-verdict{border-radius:var(--sl-radius);border:1px solid var(--border);background:var(--surface-3)}
+html[data-theme] .headline-card{border-radius:var(--sl-radius);border:1px solid var(--border);border-left:3px solid var(--primary);background:var(--surface-3)}
+html[data-theme] table{border-collapse:separate;border-spacing:0}
+html[data-theme] th{color:var(--muted);font-weight:600;font-size:11.5px;letter-spacing:.04em;text-transform:uppercase}
+html[data-theme] td,html[data-theme] th{border-bottom:1px solid var(--border)}
+html[data-theme] details.fx-sec,html[data-theme] .fx-extra-panel,html[data-theme] details.methodology{border-radius:var(--sl-radius);border:1px solid var(--border);background:var(--surface-3)}
+html[data-theme] details.fx-sec>summary{font-weight:600;letter-spacing:-.005em}
+html[data-theme] .fx-note,html[data-theme] .status-msg{color:var(--muted)}
+
+/* header tools: calm pills */
+#workspace-header .gh-link,#workspace-header .tour-launch,#workspace-header .lang-switch,#workspace-header .theme-toggle,#workspace-header .accessibility-toggle{background:transparent;border:1px solid var(--border-strong);box-shadow:none;color:var(--ink-2)}
+#workspace-header .gh-link:hover,#workspace-header .tour-launch:hover,#workspace-header .theme-toggle:hover,#workspace-header .accessibility-toggle:hover{border-color:var(--muted);background:var(--surface-2);color:var(--ink)}
+html[data-theme] .lang-switch button[aria-pressed="true"]{background:var(--primary);color:#fff}
+html[data-theme] .tour-q{background:var(--primary)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* one header height in both themes (desktop) */
+@media(min-width:801px){html[data-theme] #app{grid-template-rows:56px minmax(0,1fr)}html[data-theme] .mode-tab{min-height:56px}html[data-theme] .brand-logo{height:30px;width:auto}}
+
+/* draw hint: centred under the toolbar, large live size readout, never over the context card */
+@media(min-width:801px){#map-draw-hint.map-draw-hint{left:50%;top:70px;transform:translateX(-50%);font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;padding:10px 16px;border-radius:999px;white-space:nowrap;z-index:900}}
+
+/* detection age legend and list dots: age colours also in Monitor and Forecast (fires coloured by how long ago they were detected) */
+.age-late{background:var(--age-late,#e5483a)}
+.age-dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:-1px;box-shadow:0 0 0 1px rgba(255,255,255,.55)}
+.lg-age-title{font-weight:600;color:var(--ink-2)}
+#app:has(#tab-live[aria-current="page"]) .lg-monitor,#app:has(#tab-date[aria-current="page"]) .lg-monitor{display:none}
+#app:has(#tab-live[aria-current="page"]) .lg-fires,#app:has(#tab-date[aria-current="page"]) .lg-fires{display:inline-flex}
+
+/* age filter in the Fire detections card */
+.af-wrap{margin:8px 0 10px}
+.af-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px}
+.af-lbl{font-size:12.5px;color:var(--ink-2)}
+.af-wrap input[type=range]{width:100%;min-height:28px;accent-color:var(--primary)}

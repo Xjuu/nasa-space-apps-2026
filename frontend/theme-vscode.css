@@ -16,7 +16,7 @@ html[data-theme="dark"]{
   --shadow-sm:none;--shadow-md:0 2px 8px #0007;--shadow-lg:0 6px 18px #000a;
   --font-head:system-ui,-apple-system,"Segoe UI","Inter",Ubuntu,sans-serif;
   --font-body:system-ui,-apple-system,"Segoe UI","Inter",Ubuntu,sans-serif;
-  --age-fresh:#f6c445;--age-mid:#d9711c;--age-old:#5b2a86;
+  --age-fresh:#ffd23f;--age-mid:#ff8c1a;--age-late:#e5483a;--age-old:#9b3fd1;
 }
 :root{--link:var(--primary)}
 

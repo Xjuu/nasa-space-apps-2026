@@ -1,0 +1,1741 @@
+{
+  "protocol": {
+    "task": "weather_as_issued",
+    "as_issued_skill_established": false,
+    "purpose": "retrospective input-sensitivity/coverage pilot, not an operational accuracy gain",
+    "case_selection": "fixed dates + first complete baseline tuple; no outcome-based selection",
+    "weather_days": "Same UTC valid day and five daily variable meanings as direct.Weather; no future-day feature substitution",
+    "weather_cutoff": "00UTC of input weather day; init selected >=12h earlier and rounded BACK to midnight for daily API support; not proof of availability",
+    "fire_cutoff": "benchmark uses detections through t0; its next-midnight proxy is later than the conservative weather cutoff",
+    "future_features": "future_feature_harness gives day+1..3; introducing those into ML requires a new feature schema and chronological training",
+    "training": "none; frozen wf_2024/wf_2025 weights and selection rules reused unchanged; existing inspected benchmarks",
+    "counterfactual": "pre-May2026 IFS Cycle49R1 hindcast/unverified, explicitly refused by strict as-issued guard",
+    "baseline": "Actual cached five-element tuple, missing values retained; never replaced by freshly fetched reanalysis",
+    "sources": [
+      "https://open-meteo.com/en/docs/single-runs-api",
+      "https://open-meteo.com/en/docs/historical-forecast-api",
+      "https://open-meteo.com/en/docs/model-updates"
+    ]
+  },
+  "baseline_benchmark_coverage": {
+    "2024": {
+      "complete_baseline_cases": 1,
+      "benchmark_cases": 100
+    },
+    "2025": {
+      "complete_baseline_cases": 0,
+      "benchmark_cases": 100
+    }
+  },
+  "cases": [
+    {
+      "year": 2024,
+      "case": [
+        8857,
+        5185,
+        2263
+      ],
+      "selection": "first complete baseline input tuple; no outcome selection",
+      "valid_date": "2024-04-01",
+      "fire_location": [
+        23.175000000000004,
+        79.275
+      ],
+      "weather_requested_location": [
+        23.0,
+        79.0
+      ],
+      "weather_cutoff_utc": "2024-04-01T00:00:00Z",
+      "run_init_utc": "2024-03-31T00:00:00Z",
+      "benchmark_fire_information_cutoff_proxy": "2024-04-02T00:00:00Z",
+      "baseline_values": [
+        20.6,
+        264.0,
+        38.0,
+        12.0,
+        0.0
+      ],
+      "baseline_complete": true,
+      "strict_rejection": "As-issued input refused: hindcast/unverified archive or missing historical availability evidence.",
+      "status": "research_hindcast_only",
+      "forecast_values": [
+        20.2,
+        269.0,
+        37.8,
+        11.0,
+        0.0
+      ],
+      "metadata": {
+        "model": "ecmwf_ifs",
+        "requested_run_init_utc": "2024-03-31T00:00:00Z",
+        "information_cutoff_utc": "2024-04-01T00:00:00Z",
+        "run_init_returned_by_api": false,
+        "archive_kind": "cycle49r1_hindcast_or_unverified_operational",
+        "model_cycle_note": "49R1 before 2026-05-12T06:00Z; 50R1 afterwards",
+        "available_at_utc": null,
+        "availability_record_id": null,
+        "as_issued_eligible": false,
+        "no_future_run": true,
+        "availability_limit": "An assumed latency or current metadata is not historical availability evidence.",
+        "source": "https://single-runs-api.open-meteo.com/v1/forecast",
+        "documentation": "https://open-meteo.com/en/docs/single-runs-api",
+        "request": {
+          "latitude": 23.0,
+          "longitude": 79.0,
+          "models": "ecmwf_ifs",
+          "run": "2024-03-31T00:00",
+          "hourly": "wind_speed_10m,wind_direction_10m,temperature_2m,relative_humidity_2m,precipitation",
+          "daily": "wind_speed_10m_max,wind_direction_10m_dominant,temperature_2m_max,relative_humidity_2m_min,precipitation_sum",
+          "forecast_days": 5,
+          "timezone": "GMT",
+          "temperature_unit": "celsius",
+          "wind_speed_unit": "kmh",
+          "precipitation_unit": "mm"
+        },
+        "response_sha256": "d6fc10b8774b18eb69604010d20ddea69061ba6701faa06b34a1a67b4a1eac96",
+        "retrieved_at_utc": "2026-11-15T18:17:33Z",
+        "cache_hit": true,
+        "returned_grid": {
+          "latitude": 23.022846,
+          "longitude": 78.996864,
+          "elevation": 349.0
+        },
+        "coverage": {
+          "start_utc": "2024-03-31T00:00:00Z",
+          "end_utc": "2024-04-04T23:00:00Z",
+          "hours": 120,
+          "complete_hours": 119,
+          "complete_days": 4
+        },
+        "units": {
+          "time": "iso8601",
+          "wind_speed_10m": "km/h",
+          "wind_direction_10m": "\u00b0",
+          "temperature_2m": "\u00b0C",
+          "relative_humidity_2m": "%",
+          "precipitation": "mm"
+        },
+        "daily_units": {
+          "time": "iso8601",
+          "wind_speed_10m_max": "km/h",
+          "wind_direction_10m_dominant": "\u00b0",
+          "temperature_2m_max": "\u00b0C",
+          "relative_humidity_2m_min": "%",
+          "precipitation_sum": "mm"
+        }
+      },
+      "future_feature_harness": [
+        {
+          "date": "2024-04-02",
+          "values": [
+            15.9,
+            268,
+            37.8,
+            13,
+            0.0
+          ],
+          "complete": true,
+          "hours_present": 24,
+          "lead_start_hours_from_init": 48.0,
+          "lead_start_hours_from_cutoff": 24.0,
+          "fields": [
+            "wind_speed_10m_max",
+            "wind_direction_10m_dominant",
+            "temperature_2m_max",
+            "relative_humidity_2m_min",
+            "precipitation_sum"
+          ]
+        },
+        {
+          "date": "2024-04-03",
+          "values": [
+            19.5,
+            251,
+            39.2,
+            12,
+            0.0
+          ],
+          "complete": true,
+          "hours_present": 24,
+          "lead_start_hours_from_init": 72.0,
+          "lead_start_hours_from_cutoff": 48.0,
+          "fields": [
+            "wind_speed_10m_max",
+            "wind_direction_10m_dominant",
+            "temperature_2m_max",
+            "relative_humidity_2m_min",
+            "precipitation_sum"
+          ]
+        },
+        {
+          "date": "2024-04-04",
+          "values": [
+            17.4,
+            262,
+            39.0,
+            14,
+            0.0
+          ],
+          "complete": true,
+          "hours_present": 24,
+          "lead_start_hours_from_init": 96.0,
+          "lead_start_hours_from_cutoff": 72.0,
+          "fields": [
+            "wind_speed_10m_max",
+            "wind_direction_10m_dominant",
+            "temperature_2m_max",
+            "relative_humidity_2m_min",
+            "precipitation_sum"
+          ]
+        }
+      ],
+      "forecast_minus_existing_values": [
+        -0.40000000000000213,
+        5.0,
+        -0.20000000000000284,
+        -1.0,
+        0.0
+      ],
+      "frozen_ml_input_sensitivity": {
+        "model_sha256": "17000f1f3ed7c2916a9e95a4e29759162fda2f56845d13b3cf8cf14027ab756e",
+        "meta_sha256": "e8c8d30f1874b7a563cb2cde766be6feef843e70ab77cd0dd33d54b29e9b0236",
+        "weights_and_rules_changed": false,
+        "horizons": [
+          {
+            "horizon_day": 1,
+            "eligible_cells": 643,
+            "baseline_brier": 0.10895876586437225,
+            "research_hindcast_brier": 0.10897032171487808,
+            "baseline_strict_iou": 0.23529411764705882,
+            "research_hindcast_strict_iou": 0.23645320197044334,
+            "mean_abs_probability_change": 0.0010064678499475121,
+            "frozen_rule": [
+              "eiou",
+              0.8
+            ]
+          },
+          {
+            "horizon_day": 2,
+            "eligible_cells": 1093,
+            "baseline_brier": 0.13094159960746765,
+            "research_hindcast_brier": 0.13094455003738403,
+            "baseline_strict_iou": 0.2975206611570248,
+            "research_hindcast_strict_iou": 0.2975206611570248,
+            "mean_abs_probability_change": 0.000959528551902622,
+            "frozen_rule": [
+              "eiou",
+              1.0
+            ]
+          },
+          {
+            "horizon_day": 3,
+            "eligible_cells": 1321,
+            "baseline_brier": 0.15842300653457642,
+            "research_hindcast_brier": 0.15828832983970642,
+            "baseline_strict_iou": 0.3678571428571429,
+            "research_hindcast_strict_iou": 0.36589698046181174,
+            "mean_abs_probability_change": 0.0009600738994777203,
+            "frozen_rule": [
+              "eiou",
+              1.5
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "year": 2024,
+      "case": [
+        8857,
+        6582,
+        1257
+      ],
+      "selection": "first benchmark case on/after 2024-04-01; no outcome selection",
+      "valid_date": "2024-04-01",
+      "fire_location": [
+        -27.125,
+        149.12500000000003
+      ],
+      "weather_requested_location": [
+        -27.0,
+        149.0
+      ],
+      "weather_cutoff_utc": "2024-04-01T00:00:00Z",
+      "run_init_utc": "2024-03-31T00:00:00Z",
+      "benchmark_fire_information_cutoff_proxy": "2024-04-02T00:00:00Z",
+      "baseline_values": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "baseline_complete": false,
+      "strict_rejection": "As-issued input refused: hindcast/unverified archive or missing historical availability evidence.",
+      "status": "research_hindcast_only",
+      "forecast_values": [
+        13.4,
+        40.0,
+        27.7,
+        49.0,
+        0.2
+      ],
+      "metadata": {
+        "model": "ecmwf_ifs",
+        "requested_run_init_utc": "2024-03-31T00:00:00Z",
+        "information_cutoff_utc": "2024-04-01T00:00:00Z",
+        "run_init_returned_by_api": false,
+        "archive_kind": "cycle49r1_hindcast_or_unverified_operational",
+        "model_cycle_note": "49R1 before 2026-05-12T06:00Z; 50R1 afterwards",
+        "available_at_utc": null,
+        "availability_record_id": null,
+        "as_issued_eligible": false,
+        "no_future_run": true,
+        "availability_limit": "An assumed latency or current metadata is not historical availability evidence.",
+        "source": "https://single-runs-api.open-meteo.com/v1/forecast",
+        "documentation": "https://open-meteo.com/en/docs/single-runs-api",
+        "request": {
+          "latitude": -27.0,
+          "longitude": 149.0,
+          "models": "ecmwf_ifs",
+          "run": "2024-03-31T00:00",
+          "hourly": "wind_speed_10m,wind_direction_10m,temperature_2m,relative_humidity_2m,precipitation",
+          "daily": "wind_speed_10m_max,wind_direction_10m_dominant,temperature_2m_max,relative_humidity_2m_min,precipitation_sum",
+          "forecast_days": 5,
+          "timezone": "GMT",
+          "temperature_unit": "celsius",
+          "wind_speed_unit": "kmh",
+          "precipitation_unit": "mm"
+        },
+        "response_sha256": "c93223d6ea54cedeaa022ff57749b314965541166d5b572dc94545d40f07e545",
+        "retrieved_at_utc": "2026-11-15T18:17:35Z",
+        "cache_hit": true,
+        "returned_grid": {
+          "latitude": -27.029877,
+          "longitude": 149.0,
+          "elevation": 282.0
+        },
+        "coverage": {
+          "start_utc": "2024-03-31T00:00:00Z",
+          "end_utc": "2024-04-04T23:00:00Z",
+          "hours": 120,
+          "complete_hours": 119,
+          "complete_days": 4
+        },
+        "units": {
+          "time": "iso8601",
+          "wind_speed_10m": "km/h",
+          "wind_direction_10m": "\u00b0",
+          "temperature_2m": "\u00b0C",
+          "relative_humidity_2m": "%",
+          "precipitation": "mm"
+        },
+        "daily_units": {
+          "time": "iso8601",
+          "wind_speed_10m_max": "km/h",
+          "wind_direction_10m_dominant": "\u00b0",
+          "temperature_2m_max": "\u00b0C",
+          "relative_humidity_2m_min": "%",
+          "precipitation_sum": "mm"
+        }
+      },
+      "future_feature_harness": [
+        {
+          "date": "2024-04-02",
+          "values": [
+            14.8,
+            311,
+            29.2,
+            48,
+            0.8
+          ],
+          "complete": true,
+          "hours_present": 24,
+          "lead_start_hours_from_init": 48.0,
+          "lead_start_hours_from_cutoff": 24.0,
+          "fields": [
+            "wind_speed_10m_max",
+            "wind_direction_10m_dominant",
+            "temperature_2m_max",
+            "relative_humidity_2m_min",
+            "precipitation_sum"
+          ]
+        },
+        {
+          "date": "2024-04-03",
+          "values": [
+            12.6,
+            152,
+            28.8,
+            56,
+            28.73
+          ],
+          "complete": true,
+          "hours_present": 24,
+          "lead_start_hours_from_init": 72.0,
+          "lead_start_hours_from_cutoff": 48.0,
+          "fields": [
+            "wind_speed_10m_max",
+            "wind_direction_10m_dominant",
+            "temperature_2m_max",
+            "relative_humidity_2m_min",
+            "precipitation_sum"
+          ]
+        },
+        {
+          "date": "2024-04-04",
+          "values": [
+            16.5,
+            214,
+            20.5,
+            86,
+            65.97
+          ],
+          "complete": true,
+          "hours_present": 24,
+          "lead_start_hours_from_init": 96.0,
+          "lead_start_hours_from_cutoff": 72.0,
+          "fields": [
+            "wind_speed_10m_max",
+            "wind_direction_10m_dominant",
+            "temperature_2m_max",
+            "relative_humidity_2m_min",
+            "precipitation_sum"
+          ]
+        }
+      ],
+      "frozen_ml_input_sensitivity": {
+        "model_sha256": "17000f1f3ed7c2916a9e95a4e29759162fda2f56845d13b3cf8cf14027ab756e",
+        "meta_sha256": "e8c8d30f1874b7a563cb2cde766be6feef843e70ab77cd0dd33d54b29e9b0236",
+        "weights_and_rules_changed": false,
+        "horizons": [
+          {
+            "horizon_day": 1,
+            "eligible_cells": 52,
+            "baseline_brier": 0.0005231230170466006,
+            "research_hindcast_brier": 0.000698291405569762,
+            "baseline_strict_iou": 1.0,
+            "research_hindcast_strict_iou": 1.0,
+            "mean_abs_probability_change": 0.0029111960902810097,
+            "frozen_rule": [
+              "eiou",
+              0.8
+            ]
+          },
+          {
+            "horizon_day": 2,
+            "eligible_cells": 147,
+            "baseline_brier": 0.0005425416165962815,
+            "research_hindcast_brier": 0.0006432767841033638,
+            "baseline_strict_iou": 1.0,
+            "research_hindcast_strict_iou": 1.0,
+            "mean_abs_probability_change": 0.002046729903668165,
+            "frozen_rule": [
+              "eiou",
+              1.0
+            ]
+          },
+          {
+            "horizon_day": 3,
+            "eligible_cells": 280,
+            "baseline_brier": 0.00042115774704143405,
+            "research_hindcast_brier": 0.0006571472622454166,
+            "baseline_strict_iou": 0.0,
+            "research_hindcast_strict_iou": 0.0,
+            "mean_abs_probability_change": 0.0036429576575756073,
+            "frozen_rule": [
+              "eiou",
+              1.5
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "year": 2024,
+      "case": [
+        8954,
+        4364,
+        1548
+      ],
+      "selection": "first benchmark case on/after 2024-07-01; no outcome selection",
+      "valid_date": "2024-07-07",
+      "fire_location": [
+        -12.574999999999994,
+        38.225000000000016
+      ],
+      "weather_requested_location": [
+        -13.0,
+        39.0
+      ],
+      "weather_cutoff_utc": "2024-07-07T00:00:00Z",
+      "run_init_utc": "2024-07-06T00:00:00Z",
+      "benchmark_fire_information_cutoff_proxy": "2024-07-08T00:00:00Z",
+      "baseline_values": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "baseline_complete": false,
+      "strict_rejection": "As-issued input refused: hindcast/unverified archive or missing historical availability evidence.",
+      "status": "research_hindcast_only",
+      "forecast_values": [
+        18.6,
+        151.0,
+        28.1,
+        28.0,
+        0.0
+      ],
+      "metadata": {
+        "model": "ecmwf_ifs",
+        "requested_run_init_utc": "2024-07-06T00:00:00Z",
+        "information_cutoff_utc": "2024-07-07T00:00:00Z",
+        "run_init_returned_by_api": false,
+        "archive_kind": "cycle49r1_hindcast_or_unverified_operational",
+        "model_cycle_note": "49R1 before 2026-05-12T06:00Z; 50R1 afterwards",
+        "available_at_utc": null,
+        "availability_record_id": null,
+        "as_issued_eligible": false,
+        "no_future_run": true,
+        "availability_limit": "An assumed latency or current metadata is not historical availability evidence.",
+        "source": "https://single-runs-api.open-meteo.com/v1/forecast",
+        "documentation": "https://open-meteo.com/en/docs/single-runs-api",
+        "request": {
+          "latitude": -13.0,
+          "longitude": 39.0,
+          "models": "ecmwf_ifs",
+          "run": "2024-07-06T00:00",
+          "hourly": "wind_speed_10m,wind_direction_10m,temperature_2m,relative_humidity_2m,precipitation",
+          "daily": "wind_speed_10m_max,wind_direction_10m_dominant,temperature_2m_max,relative_humidity_2m_min,precipitation_sum",
+          "forecast_days": 5,
+          "timezone": "GMT",
+          "temperature_unit": "celsius",
+          "wind_speed_unit": "kmh",
+          "precipitation_unit": "mm"
+        },
+        "response_sha256": "2ea697c63b7aaac7ebc41115750ca373258ef21dbbeeb8050876bae5f7b2992a",
+        "retrieved_at_utc": "2026-11-15T18:17:35Z",
+        "cache_hit": true,
+        "returned_grid": {
+          "latitude": -12.970122,
+          "longitude": 39.02727,
+          "elevation": 476.0
+        },
+        "coverage": {
+          "start_utc": "2024-07-06T00:00:00Z",
+          "end_utc": "2024-07-10T23:00:00Z",
+          "hours": 120,
+          "complete_hours": 119,
+          "complete_days": 4
+        },
+        "units": {
+          "time": "iso8601",
+          "wind_speed_10m": "km/h",
+          "wind_direction_10m": "\u00b0",
+          "temperature_2m": "\u00b0C",
+          "relative_humidity_2m": "%",
+          "precipitation": "mm"
+        },
+        "daily_units": {
+          "time": "iso8601",
+          "wind_speed_10m_max": "km/h",
+          "wind_direction_10m_dominant": "\u00b0",
+          "temperature_2m_max": "\u00b0C",
+          "relative_humidity_2m_min": "%",
+          "precipitation_sum": "mm"
+        }
+      },
+      "future_feature_harness": [
+        {
+          "date": "2024-07-08",
+          "values": [
+            12.3,
+            149,
+            28.7,
+            22,
+            0.0
+          ],
+          "complete": true,
+          "hours_present": 24,
+          "lead_start_hours_from_init": 48.0,
+          "lead_start_hours_from_cutoff": 24.0,
+          "fields": [
+            "wind_speed_10m_max",
+            "wind_direction_10m_dominant",
+            "temperature_2m_max",
+            "relative_humidity_2m_min",
+            "precipitation_sum"
+          ]
+        },
+        {
+          "date": "2024-07-09",
+          "values": [
+            15.5,
+            143,
+            30.6,
+            16,
+            0.0
+          ],
+          "complete": true,
+          "hours_present": 24,
+          "lead_start_hours_from_init": 72.0,
+          "lead_start_hours_from_cutoff": 48.0,
+          "fields": [
+            "wind_speed_10m_max",
+            "wind_direction_10m_dominant",
+            "temperature_2m_max",
+            "relative_humidity_2m_min",
+            "precipitation_sum"
+          ]
+        },
+        {
+          "date": "2024-07-10",
+          "values": [
+            17.1,
+            155,
+            28.1,
+            24,
+            0.0
+          ],
+          "complete": true,
+          "hours_present": 24,
+          "lead_start_hours_from_init": 96.0,
+          "lead_start_hours_from_cutoff": 72.0,
+          "fields": [
+            "wind_speed_10m_max",
+            "wind_direction_10m_dominant",
+            "temperature_2m_max",
+            "relative_humidity_2m_min",
+            "precipitation_sum"
+          ]
+        }
+      ],
+      "frozen_ml_input_sensitivity": {
+        "model_sha256": "17000f1f3ed7c2916a9e95a4e29759162fda2f56845d13b3cf8cf14027ab756e",
+        "meta_sha256": "e8c8d30f1874b7a563cb2cde766be6feef843e70ab77cd0dd33d54b29e9b0236",
+        "weights_and_rules_changed": false,
+        "horizons": [
+          {
+            "horizon_day": 1,
+            "eligible_cells": 689,
+            "baseline_brier": 0.1139509528875351,
+            "research_hindcast_brier": 0.11491132527589798,
+            "baseline_strict_iou": 0.19924812030075187,
+            "research_hindcast_strict_iou": 0.21076233183856502,
+            "mean_abs_probability_change": 0.020215613767504692,
+            "frozen_rule": [
+              "eiou",
+              0.8
+            ]
+          },
+          {
+            "horizon_day": 2,
+            "eligible_cells": 1122,
+            "baseline_brier": 0.14601369202136993,
+            "research_hindcast_brier": 0.149139404296875,
+            "baseline_strict_iou": 0.24511930585683298,
+            "research_hindcast_strict_iou": 0.2628992628992629,
+            "mean_abs_probability_change": 0.022974006831645966,
+            "frozen_rule": [
+              "eiou",
+              1.0
+            ]
+          },
+          {
+            "horizon_day": 3,
+            "eligible_cells": 1336,
+            "baseline_brier": 0.15730692446231842,
+            "research_hindcast_brier": 0.16125360131263733,
+            "baseline_strict_iou": 0.3274760383386581,
+            "research_hindcast_strict_iou": 0.3258620689655172,
+            "mean_abs_probability_change": 0.020045623183250427,
+            "frozen_rule": [
+              "eiou",
+              1.5
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "year": 2024,
+      "case": [
+        9040,
+        4298,
+        1573
+      ],
+      "selection": "first benchmark case on/after 2024-10-01; no outcome selection",
+      "valid_date": "2024-10-01",
+      "fire_location": [
+        -11.324999999999994,
+        34.925000000000004
+      ],
+      "weather_requested_location": [
+        -11.0,
+        35.0
+      ],
+      "weather_cutoff_utc": "2024-10-01T00:00:00Z",
+      "run_init_utc": "2024-09-30T00:00:00Z",
+      "benchmark_fire_information_cutoff_proxy": "2024-10-02T00:00:00Z",
+      "baseline_values": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "baseline_complete": false,
+      "strict_rejection": "As-issued input refused: hindcast/unverified archive or missing historical availability evidence.",
+      "status": "research_hindcast_only",
+      "forecast_values": [
+        20.3,
+        88.0,
+        30.1,
+        28.0,
+        0.0
+      ],
+      "metadata": {
+        "model": "ecmwf_ifs",
+        "requested_run_init_utc": "2024-09-30T00:00:00Z",
+        "information_cutoff_utc": "2024-10-01T00:00:00Z",
+        "run_init_returned_by_api": false,
+        "archive_kind": "cycle49r1_hindcast_or_unverified_operational",
+        "model_cycle_note": "49R1 before 2026-05-12T06:00Z; 50R1 afterwards",
+        "available_at_utc": null,
+        "availability_record_id": null,
+        "as_issued_eligible": false,
+        "no_future_run": true,
+        "availability_limit": "An assumed latency or current metadata is not historical availability evidence.",
+        "source": "https://single-runs-api.open-meteo.com/v1/forecast",
+        "documentation": "https://open-meteo.com/en/docs/single-runs-api",
+        "request": {
+          "latitude": -11.0,
+          "longitude": 35.0,
+          "models": "ecmwf_ifs",
+          "run": "2024-09-30T00:00",
+          "hourly": "wind_speed_10m,wind_direction_10m,temperature_2m,relative_humidity_2m,precipitation",
+          "daily": "wind_speed_10m_max,wind_direction_10m_dominant,temperature_2m_max,relative_humidity_2m_min,precipitation_sum",
+          "forecast_days": 5,
+          "timezone": "GMT",
+          "temperature_unit": "celsius",
+          "wind_speed_unit": "kmh",
+          "precipitation_unit": "mm"
+        },
+        "response_sha256": "ad83155fdb1c172bb615ac477d541f0bd4dd9aa60e2db073e35f372185c92df6",
+        "retrieved_at_utc": "2026-11-15T18:17:35Z",
+        "cache_hit": true,
+        "returned_grid": {
+          "latitude": -11.001757,
+          "longitude": 35.026596,
+          "elevation": 1432.0
+        },
+        "coverage": {
+          "start_utc": "2024-09-30T00:00:00Z",
+          "end_utc": "2024-10-04T23:00:00Z",
+          "hours": 120,
+          "complete_hours": 119,
+          "complete_days": 4
+        },
+        "units": {
+          "time": "iso8601",
+          "wind_speed_10m": "km/h",
+          "wind_direction_10m": "\u00b0",
+          "temperature_2m": "\u00b0C",
+          "relative_humidity_2m": "%",
+          "precipitation": "mm"
+        },
+        "daily_units": {
+          "time": "iso8601",
+          "wind_speed_10m_max": "km/h",
+          "wind_direction_10m_dominant": "\u00b0",
+          "temperature_2m_max": "\u00b0C",
+          "relative_humidity_2m_min": "%",
+          "precipitation_sum": "mm"
+        }
+      },
+      "future_feature_harness": [
+        {
+          "date": "2024-10-02",
+          "values": [
+            22.6,
+            102,
+            28.4,
+            29,
+            0.7
+          ],
+          "complete": true,
+          "hours_present": 24,
+          "lead_start_hours_from_init": 48.0,
+          "lead_start_hours_from_cutoff": 24.0,
+          "fields": [
+            "wind_speed_10m_max",
+            "wind_direction_10m_dominant",
+            "temperature_2m_max",
+            "relative_humidity_2m_min",
+            "precipitation_sum"
+          ]
+        },
+        {
+          "date": "2024-10-03",
+          "values": [
+            19.3,
+            128,
+            23.4,
+            58,
+            9.1
+          ],
+          "complete": true,
+          "hours_present": 24,
+          "lead_start_hours_from_init": 72.0,
+          "lead_start_hours_from_cutoff": 48.0,
+          "fields": [
+            "wind_speed_10m_max",
+            "wind_direction_10m_dominant",
+            "temperature_2m_max",
+            "relative_humidity_2m_min",
+            "precipitation_sum"
+          ]
+        },
+        {
+          "date": "2024-10-04",
+          "values": [
+            21.2,
+            154,
+            21.6,
+            53,
+            4.2
+          ],
+          "complete": true,
+          "hours_present": 24,
+          "lead_start_hours_from_init": 96.0,
+          "lead_start_hours_from_cutoff": 72.0,
+          "fields": [
+            "wind_speed_10m_max",
+            "wind_direction_10m_dominant",
+            "temperature_2m_max",
+            "relative_humidity_2m_min",
+            "precipitation_sum"
+          ]
+        }
+      ],
+      "frozen_ml_input_sensitivity": {
+        "model_sha256": "17000f1f3ed7c2916a9e95a4e29759162fda2f56845d13b3cf8cf14027ab756e",
+        "meta_sha256": "e8c8d30f1874b7a563cb2cde766be6feef843e70ab77cd0dd33d54b29e9b0236",
+        "weights_and_rules_changed": false,
+        "horizons": [
+          {
+            "horizon_day": 1,
+            "eligible_cells": 623,
+            "baseline_brier": 0.14616012573242188,
+            "research_hindcast_brier": 0.142421156167984,
+            "baseline_strict_iou": 0.2231404958677686,
+            "research_hindcast_strict_iou": 0.23868312757201646,
+            "mean_abs_probability_change": 0.022097956389188766,
+            "frozen_rule": [
+              "eiou",
+              0.8
+            ]
+          },
+          {
+            "horizon_day": 2,
+            "eligible_cells": 868,
+            "baseline_brier": 0.10184714943170547,
+            "research_hindcast_brier": 0.10133577138185501,
+            "baseline_strict_iou": 0.2360248447204969,
+            "research_hindcast_strict_iou": 0.23197492163009403,
+            "mean_abs_probability_change": 0.01317578088492155,
+            "frozen_rule": [
+              "eiou",
+              1.0
+            ]
+          },
+          {
+            "horizon_day": 3,
+            "eligible_cells": 1010,
+            "baseline_brier": 0.09141884744167328,
+            "research_hindcast_brier": 0.0916886255145073,
+            "baseline_strict_iou": 0.22779043280182232,
+            "research_hindcast_strict_iou": 0.23148148148148148,
+            "mean_abs_probability_change": 0.01598779857158661,
+            "frozen_rule": [
+              "eiou",
+              1.5
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "year": 2025,
+      "case": [
+        9226,
+        5198,
+        2291
+      ],
+      "selection": "first benchmark case on/after 2025-04-01; no outcome selection",
+      "valid_date": "2025-04-05",
+      "fire_location": [
+        24.57500000000001,
+        79.92500000000004
+      ],
+      "weather_requested_location": [
+        25.0,
+        79.0
+      ],
+      "weather_cutoff_utc": "2025-04-05T00:00:00Z",
+      "run_init_utc": "2025-04-04T00:00:00Z",
+      "benchmark_fire_information_cutoff_proxy": "2025-04-06T00:00:00Z",
+      "baseline_values": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "baseline_complete": false,
+      "strict_rejection": "As-issued input refused: hindcast/unverified archive or missing historical availability evidence.",
+      "status": "research_hindcast_only",
+      "forecast_values": [
+        19.4,
+        289.0,
+        38.2,
+        11.0,
+        0.0
+      ],
+      "metadata": {
+        "model": "ecmwf_ifs",
+        "requested_run_init_utc": "2025-04-04T00:00:00Z",
+        "information_cutoff_utc": "2025-04-05T00:00:00Z",
+        "run_init_returned_by_api": false,
+        "archive_kind": "cycle49r1_hindcast_or_unverified_operational",
+        "model_cycle_note": "49R1 before 2026-05-12T06:00Z; 50R1 afterwards",
+        "available_at_utc": null,
+        "availability_record_id": null,
+        "as_issued_eligible": false,
+        "no_future_run": true,
+        "availability_limit": "An assumed latency or current metadata is not historical availability evidence.",
+        "source": "https://single-runs-api.open-meteo.com/v1/forecast",
+        "documentation": "https://open-meteo.com/en/docs/single-runs-api",
+        "request": {
+          "latitude": 25.0,
+          "longitude": 79.0,
+          "models": "ecmwf_ifs",
+          "run": "2025-04-04T00:00",
+          "hourly": "wind_speed_10m,wind_direction_10m,temperature_2m,relative_humidity_2m,precipitation",
+          "daily": "wind_speed_10m_max,wind_direction_10m_dominant,temperature_2m_max,relative_humidity_2m_min,precipitation_sum",
+          "forecast_days": 5,
+          "timezone": "GMT",
+          "temperature_unit": "celsius",
+          "wind_speed_unit": "kmh",
+          "precipitation_unit": "mm"
+        },
+        "response_sha256": "08393d6d24a3fbe7f0585dddfd0bf247483b1fdb3d6bed92f3f6372ec94e4a50",
+        "retrieved_at_utc": "2026-11-15T18:17:35Z",
+        "cache_hit": true,
+        "returned_grid": {
+          "latitude": 24.99121,
+          "longitude": 78.955864,
+          "elevation": 292.0
+        },
+        "coverage": {
+          "start_utc": "2025-04-04T00:00:00Z",
+          "end_utc": "2025-04-08T23:00:00Z",
+          "hours": 120,
+          "complete_hours": 119,
+          "complete_days": 4
+        },
+        "units": {
+          "time": "iso8601",
+          "wind_speed_10m": "km/h",
+          "wind_direction_10m": "\u00b0",
+          "temperature_2m": "\u00b0C",
+          "relative_humidity_2m": "%",
+          "precipitation": "mm"
+        },
+        "daily_units": {
+          "time": "iso8601",
+          "wind_speed_10m_max": "km/h",
+          "wind_direction_10m_dominant": "\u00b0",
+          "temperature_2m_max": "\u00b0C",
+          "relative_humidity_2m_min": "%",
+          "precipitation_sum": "mm"
+        }
+      },
+      "future_feature_harness": [
+        {
+          "date": "2025-04-06",
+          "values": [
+            13.2,
+            272,
+            38.8,
+            12,
+            0.0
+          ],
+          "complete": true,
+          "hours_present": 24,
+          "lead_start_hours_from_init": 48.0,
+          "lead_start_hours_from_cutoff": 24.0,
+          "fields": [
+            "wind_speed_10m_max",
+            "wind_direction_10m_dominant",
+            "temperature_2m_max",
+            "relative_humidity_2m_min",
+            "precipitation_sum"
+          ]
+        },
+        {
+          "date": "2025-04-07",
+          "values": [
+            15.1,
+            194,
+            40.7,
+            10,
+            0.0
+          ],
+          "complete": true,
+          "hours_present": 24,
+          "lead_start_hours_from_init": 72.0,
+          "lead_start_hours_from_cutoff": 48.0,
+          "fields": [
+            "wind_speed_10m_max",
+            "wind_direction_10m_dominant",
+            "temperature_2m_max",
+            "relative_humidity_2m_min",
+            "precipitation_sum"
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "values": [
+            12.1,
+            80,
+            40.6,
+            11,
+            0.0
+          ],
+          "complete": true,
+          "hours_present": 24,
+          "lead_start_hours_from_init": 96.0,
+          "lead_start_hours_from_cutoff": 72.0,
+          "fields": [
+            "wind_speed_10m_max",
+            "wind_direction_10m_dominant",
+            "temperature_2m_max",
+            "relative_humidity_2m_min",
+            "precipitation_sum"
+          ]
+        }
+      ],
+      "frozen_ml_input_sensitivity": {
+        "model_sha256": "3c11ace0639cf8cd29ed2676f51f9d8f933335435d0bece99e078de2e2a45fb7",
+        "meta_sha256": "a789219222fadf2d8c817d36d4b8b2cd8aa1f9f73c7ded04c0fcedd8e71701b5",
+        "weights_and_rules_changed": false,
+        "horizons": [
+          {
+            "horizon_day": 1,
+            "eligible_cells": 560,
+            "baseline_brier": 0.07901420444250107,
+            "research_hindcast_brier": 0.07945793867111206,
+            "baseline_strict_iou": 0.19166666666666668,
+            "research_hindcast_strict_iou": 0.1875,
+            "mean_abs_probability_change": 0.009618086740374565,
+            "frozen_rule": [
+              "eiou",
+              0.6
+            ]
+          },
+          {
+            "horizon_day": 2,
+            "eligible_cells": 950,
+            "baseline_brier": 0.08966626971960068,
+            "research_hindcast_brier": 0.09016362577676773,
+            "baseline_strict_iou": 0.24344569288389514,
+            "research_hindcast_strict_iou": 0.22962962962962963,
+            "mean_abs_probability_change": 0.010158215649425983,
+            "frozen_rule": [
+              "eiou",
+              1.2
+            ]
+          },
+          {
+            "horizon_day": 3,
+            "eligible_cells": 1131,
+            "baseline_brier": 0.1168927252292633,
+            "research_hindcast_brier": 0.11753841489553452,
+            "baseline_strict_iou": 0.2716049382716049,
+            "research_hindcast_strict_iou": 0.2670807453416149,
+            "mean_abs_probability_change": 0.0106395548209548,
+            "frozen_rule": [
+              "eiou",
+              0.8
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "year": 2025,
+      "case": [
+        9314,
+        5674,
+        1725
+      ],
+      "selection": "first benchmark case on/after 2025-07-01; no outcome selection",
+      "valid_date": "2025-07-02",
+      "fire_location": [
+        -3.725,
+        103.725
+      ],
+      "weather_requested_location": [
+        -3.0,
+        103.0
+      ],
+      "weather_cutoff_utc": "2025-07-02T00:00:00Z",
+      "run_init_utc": "2025-07-01T00:00:00Z",
+      "benchmark_fire_information_cutoff_proxy": "2025-07-03T00:00:00Z",
+      "baseline_values": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "baseline_complete": false,
+      "strict_rejection": "As-issued input refused: hindcast/unverified archive or missing historical availability evidence.",
+      "status": "research_hindcast_only",
+      "forecast_values": [
+        8.6,
+        158.0,
+        31.9,
+        53.0,
+        0.5
+      ],
+      "metadata": {
+        "model": "ecmwf_ifs",
+        "requested_run_init_utc": "2025-07-01T00:00:00Z",
+        "information_cutoff_utc": "2025-07-02T00:00:00Z",
+        "run_init_returned_by_api": false,
+        "archive_kind": "cycle49r1_hindcast_or_unverified_operational",
+        "model_cycle_note": "49R1 before 2026-05-12T06:00Z; 50R1 afterwards",
+        "available_at_utc": null,
+        "availability_record_id": null,
+        "as_issued_eligible": false,
+        "no_future_run": true,
+        "availability_limit": "An assumed latency or current metadata is not historical availability evidence.",
+        "source": "https://single-runs-api.open-meteo.com/v1/forecast",
+        "documentation": "https://open-meteo.com/en/docs/single-runs-api",
+        "request": {
+          "latitude": -3.0,
+          "longitude": 103.0,
+          "models": "ecmwf_ifs",
+          "run": "2025-07-01T00:00",
+          "hourly": "wind_speed_10m,wind_direction_10m,temperature_2m,relative_humidity_2m,precipitation",
+          "daily": "wind_speed_10m_max,wind_direction_10m_dominant,temperature_2m_max,relative_humidity_2m_min,precipitation_sum",
+          "forecast_days": 5,
+          "timezone": "GMT",
+          "temperature_unit": "celsius",
+          "wind_speed_unit": "kmh",
+          "precipitation_unit": "mm"
+        },
+        "response_sha256": "4a2671ec8f22c55cf5eb9b746b88580ab63f85433d5b25f92a032812b94ec574",
+        "retrieved_at_utc": "2026-11-15T18:17:36Z",
+        "cache_hit": true,
+        "returned_grid": {
+          "latitude": -2.9876976,
+          "longitude": 102.97101,
+          "elevation": 37.0
+        },
+        "coverage": {
+          "start_utc": "2025-07-01T00:00:00Z",
+          "end_utc": "2025-07-05T23:00:00Z",
+          "hours": 120,
+          "complete_hours": 119,
+          "complete_days": 4
+        },
+        "units": {
+          "time": "iso8601",
+          "wind_speed_10m": "km/h",
+          "wind_direction_10m": "\u00b0",
+          "temperature_2m": "\u00b0C",
+          "relative_humidity_2m": "%",
+          "precipitation": "mm"
+        },
+        "daily_units": {
+          "time": "iso8601",
+          "wind_speed_10m_max": "km/h",
+          "wind_direction_10m_dominant": "\u00b0",
+          "temperature_2m_max": "\u00b0C",
+          "relative_humidity_2m_min": "%",
+          "precipitation_sum": "mm"
+        }
+      },
+      "future_feature_harness": [
+        {
+          "date": "2025-07-03",
+          "values": [
+            8.8,
+            154,
+            32.7,
+            56,
+            9.2
+          ],
+          "complete": true,
+          "hours_present": 24,
+          "lead_start_hours_from_init": 48.0,
+          "lead_start_hours_from_cutoff": 24.0,
+          "fields": [
+            "wind_speed_10m_max",
+            "wind_direction_10m_dominant",
+            "temperature_2m_max",
+            "relative_humidity_2m_min",
+            "precipitation_sum"
+          ]
+        },
+        {
+          "date": "2025-07-04",
+          "values": [
+            9.4,
+            135,
+            31.1,
+            63,
+            6.0
+          ],
+          "complete": true,
+          "hours_present": 24,
+          "lead_start_hours_from_init": 72.0,
+          "lead_start_hours_from_cutoff": 48.0,
+          "fields": [
+            "wind_speed_10m_max",
+            "wind_direction_10m_dominant",
+            "temperature_2m_max",
+            "relative_humidity_2m_min",
+            "precipitation_sum"
+          ]
+        },
+        {
+          "date": "2025-07-05",
+          "values": [
+            8.0,
+            154,
+            31.2,
+            67,
+            4.2
+          ],
+          "complete": true,
+          "hours_present": 24,
+          "lead_start_hours_from_init": 96.0,
+          "lead_start_hours_from_cutoff": 72.0,
+          "fields": [
+            "wind_speed_10m_max",
+            "wind_direction_10m_dominant",
+            "temperature_2m_max",
+            "relative_humidity_2m_min",
+            "precipitation_sum"
+          ]
+        }
+      ],
+      "frozen_ml_input_sensitivity": {
+        "model_sha256": "3c11ace0639cf8cd29ed2676f51f9d8f933335435d0bece99e078de2e2a45fb7",
+        "meta_sha256": "a789219222fadf2d8c817d36d4b8b2cd8aa1f9f73c7ded04c0fcedd8e71701b5",
+        "weights_and_rules_changed": false,
+        "horizons": [
+          {
+            "horizon_day": 1,
+            "eligible_cells": 128,
+            "baseline_brier": 0.01213989406824112,
+            "research_hindcast_brier": 0.011612978763878345,
+            "baseline_strict_iou": 0.0,
+            "research_hindcast_strict_iou": 0.0,
+            "mean_abs_probability_change": 0.002666428219527006,
+            "frozen_rule": [
+              "eiou",
+              0.6
+            ]
+          },
+          {
+            "horizon_day": 2,
+            "eligible_cells": 328,
+            "baseline_brier": 0.018815787509083748,
+            "research_hindcast_brier": 0.018990837037563324,
+            "baseline_strict_iou": 0.11764705882352941,
+            "research_hindcast_strict_iou": 0.1111111111111111,
+            "mean_abs_probability_change": 0.002126985462382436,
+            "frozen_rule": [
+              "eiou",
+              1.2
+            ]
+          },
+          {
+            "horizon_day": 3,
+            "eligible_cells": 552,
+            "baseline_brier": 0.011953775770962238,
+            "research_hindcast_brier": 0.012049000710248947,
+            "baseline_strict_iou": 0.09523809523809523,
+            "research_hindcast_strict_iou": 0.1,
+            "mean_abs_probability_change": 0.0020779436454176903,
+            "frozen_rule": [
+              "eiou",
+              0.8
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "year": 2025,
+      "case": [
+        9405,
+        6324,
+        1524
+      ],
+      "selection": "first benchmark case on/after 2025-10-01; no outcome selection",
+      "valid_date": "2025-10-01",
+      "fire_location": [
+        -13.774999999999997,
+        136.22500000000005
+      ],
+      "weather_requested_location": [
+        -13.0,
+        137.0
+      ],
+      "weather_cutoff_utc": "2025-10-01T00:00:00Z",
+      "run_init_utc": "2025-09-30T00:00:00Z",
+      "benchmark_fire_information_cutoff_proxy": "2025-10-02T00:00:00Z",
+      "baseline_values": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "baseline_complete": false,
+      "strict_rejection": "As-issued input refused: hindcast/unverified archive or missing historical availability evidence.",
+      "status": "research_hindcast_only",
+      "forecast_values": [
+        16.9,
+        60.0,
+        27.6,
+        75.0,
+        0.0
+      ],
+      "metadata": {
+        "model": "ecmwf_ifs",
+        "requested_run_init_utc": "2025-09-30T00:00:00Z",
+        "information_cutoff_utc": "2025-10-01T00:00:00Z",
+        "run_init_returned_by_api": false,
+        "archive_kind": "cycle49r1_hindcast_or_unverified_operational",
+        "model_cycle_note": "49R1 before 2026-05-12T06:00Z; 50R1 afterwards",
+        "available_at_utc": null,
+        "availability_record_id": null,
+        "as_issued_eligible": false,
+        "no_future_run": true,
+        "availability_limit": "An assumed latency or current metadata is not historical availability evidence.",
+        "source": "https://single-runs-api.open-meteo.com/v1/forecast",
+        "documentation": "https://open-meteo.com/en/docs/single-runs-api",
+        "request": {
+          "latitude": -13.0,
+          "longitude": 137.0,
+          "models": "ecmwf_ifs",
+          "run": "2025-09-30T00:00",
+          "hourly": "wind_speed_10m,wind_direction_10m,temperature_2m,relative_humidity_2m,precipitation",
+          "daily": "wind_speed_10m_max,wind_direction_10m_dominant,temperature_2m_max,relative_humidity_2m_min,precipitation_sum",
+          "forecast_days": 5,
+          "timezone": "GMT",
+          "temperature_unit": "celsius",
+          "wind_speed_unit": "kmh",
+          "precipitation_unit": "mm"
+        },
+        "response_sha256": "6f2b4e088215c79774a10a4c75c12385aeb16b9393fc96408d4c1261dfd8a1c3",
+        "retrieved_at_utc": "2026-11-15T18:17:36Z",
+        "cache_hit": true,
+        "returned_grid": {
+          "latitude": -13.0404215,
+          "longitude": 137.00638,
+          "elevation": 0.0
+        },
+        "coverage": {
+          "start_utc": "2025-09-30T00:00:00Z",
+          "end_utc": "2025-10-04T23:00:00Z",
+          "hours": 120,
+          "complete_hours": 119,
+          "complete_days": 4
+        },
+        "units": {
+          "time": "iso8601",
+          "wind_speed_10m": "km/h",
+          "wind_direction_10m": "\u00b0",
+          "temperature_2m": "\u00b0C",
+          "relative_humidity_2m": "%",
+          "precipitation": "mm"
+        },
+        "daily_units": {
+          "time": "iso8601",
+          "wind_speed_10m_max": "km/h",
+          "wind_direction_10m_dominant": "\u00b0",
+          "temperature_2m_max": "\u00b0C",
+          "relative_humidity_2m_min": "%",
+          "precipitation_sum": "mm"
+        }
+      },
+      "future_feature_harness": [
+        {
+          "date": "2025-10-02",
+          "values": [
+            17.3,
+            89,
+            28.0,
+            77,
+            0.0
+          ],
+          "complete": true,
+          "hours_present": 24,
+          "lead_start_hours_from_init": 48.0,
+          "lead_start_hours_from_cutoff": 24.0,
+          "fields": [
+            "wind_speed_10m_max",
+            "wind_direction_10m_dominant",
+            "temperature_2m_max",
+            "relative_humidity_2m_min",
+            "precipitation_sum"
+          ]
+        },
+        {
+          "date": "2025-10-03",
+          "values": [
+            21.7,
+            137,
+            28.7,
+            74,
+            0.0
+          ],
+          "complete": true,
+          "hours_present": 24,
+          "lead_start_hours_from_init": 72.0,
+          "lead_start_hours_from_cutoff": 48.0,
+          "fields": [
+            "wind_speed_10m_max",
+            "wind_direction_10m_dominant",
+            "temperature_2m_max",
+            "relative_humidity_2m_min",
+            "precipitation_sum"
+          ]
+        },
+        {
+          "date": "2025-10-04",
+          "values": [
+            26.9,
+            128,
+            28.9,
+            66,
+            0.0
+          ],
+          "complete": true,
+          "hours_present": 24,
+          "lead_start_hours_from_init": 96.0,
+          "lead_start_hours_from_cutoff": 72.0,
+          "fields": [
+            "wind_speed_10m_max",
+            "wind_direction_10m_dominant",
+            "temperature_2m_max",
+            "relative_humidity_2m_min",
+            "precipitation_sum"
+          ]
+        }
+      ],
+      "frozen_ml_input_sensitivity": {
+        "model_sha256": "3c11ace0639cf8cd29ed2676f51f9d8f933335435d0bece99e078de2e2a45fb7",
+        "meta_sha256": "a789219222fadf2d8c817d36d4b8b2cd8aa1f9f73c7ded04c0fcedd8e71701b5",
+        "weights_and_rules_changed": false,
+        "horizons": [
+          {
+            "horizon_day": 1,
+            "eligible_cells": 81,
+            "baseline_brier": 0.03407466039061546,
+            "research_hindcast_brier": 0.03411675617098808,
+            "baseline_strict_iou": 0.0,
+            "research_hindcast_strict_iou": 0.0,
+            "mean_abs_probability_change": 0.0064946794882416725,
+            "frozen_rule": [
+              "eiou",
+              0.6
+            ]
+          },
+          {
+            "horizon_day": 2,
+            "eligible_cells": 198,
+            "baseline_brier": 0.03346558287739754,
+            "research_hindcast_brier": 0.03375173360109329,
+            "baseline_strict_iou": 0.1,
+            "research_hindcast_strict_iou": 0.06451612903225806,
+            "mean_abs_probability_change": 0.005072079598903656,
+            "frozen_rule": [
+              "eiou",
+              1.2
+            ]
+          },
+          {
+            "horizon_day": 3,
+            "eligible_cells": 323,
+            "baseline_brier": 0.03832706809043884,
+            "research_hindcast_brier": 0.03847218304872513,
+            "baseline_strict_iou": 0.18181818181818182,
+            "research_hindcast_strict_iou": 0.15151515151515152,
+            "mean_abs_probability_change": 0.004377308301627636,
+            "frozen_rule": [
+              "eiou",
+              0.8
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "year": 2025,
+      "case": [
+        9475,
+        5349,
+        2274
+      ],
+      "selection": "first benchmark case on/after 2025-12-01; no outcome selection",
+      "valid_date": "2025-12-10",
+      "fire_location": [
+        23.725,
+        87.475
+      ],
+      "weather_requested_location": [
+        23.0,
+        87.0
+      ],
+      "weather_cutoff_utc": "2025-12-10T00:00:00Z",
+      "run_init_utc": "2025-12-09T00:00:00Z",
+      "benchmark_fire_information_cutoff_proxy": "2025-12-11T00:00:00Z",
+      "baseline_values": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "baseline_complete": false,
+      "strict_rejection": "As-issued input refused: hindcast/unverified archive or missing historical availability evidence.",
+      "status": "research_hindcast_only",
+      "forecast_values": [
+        13.7,
+        325.0,
+        25.1,
+        38.0,
+        0.0
+      ],
+      "metadata": {
+        "model": "ecmwf_ifs",
+        "requested_run_init_utc": "2025-12-09T00:00:00Z",
+        "information_cutoff_utc": "2025-12-10T00:00:00Z",
+        "run_init_returned_by_api": false,
+        "archive_kind": "cycle49r1_hindcast_or_unverified_operational",
+        "model_cycle_note": "49R1 before 2026-05-12T06:00Z; 50R1 afterwards",
+        "available_at_utc": null,
+        "availability_record_id": null,
+        "as_issued_eligible": false,
+        "no_future_run": true,
+        "availability_limit": "An assumed latency or current metadata is not historical availability evidence.",
+        "source": "https://single-runs-api.open-meteo.com/v1/forecast",
+        "documentation": "https://open-meteo.com/en/docs/single-runs-api",
+        "request": {
+          "latitude": 23.0,
+          "longitude": 87.0,
+          "models": "ecmwf_ifs",
+          "run": "2025-12-09T00:00",
+          "hourly": "wind_speed_10m,wind_direction_10m,temperature_2m,relative_humidity_2m,precipitation",
+          "daily": "wind_speed_10m_max,wind_direction_10m_dominant,temperature_2m_max,relative_humidity_2m_min,precipitation_sum",
+          "forecast_days": 5,
+          "timezone": "GMT",
+          "temperature_unit": "celsius",
+          "wind_speed_unit": "kmh",
+          "precipitation_unit": "mm"
+        },
+        "response_sha256": "d7463db6ecf531a22fa385190f13c501184e054b03347c871116ddc57ec7d095",
+        "retrieved_at_utc": "2026-11-15T18:17:37Z",
+        "cache_hit": true,
+        "returned_grid": {
+          "latitude": 23.022846,
+          "longitude": 86.99059,
+          "elevation": 88.0
+        },
+        "coverage": {
+          "start_utc": "2025-12-09T00:00:00Z",
+          "end_utc": "2025-12-13T23:00:00Z",
+          "hours": 120,
+          "complete_hours": 119,
+          "complete_days": 4
+        },
+        "units": {
+          "time": "iso8601",
+          "wind_speed_10m": "km/h",
+          "wind_direction_10m": "\u00b0",
+          "temperature_2m": "\u00b0C",
+          "relative_humidity_2m": "%",
+          "precipitation": "mm"
+        },
+        "daily_units": {
+          "time": "iso8601",
+          "wind_speed_10m_max": "km/h",
+          "wind_direction_10m_dominant": "\u00b0",
+          "temperature_2m_max": "\u00b0C",
+          "relative_humidity_2m_min": "%",
+          "precipitation_sum": "mm"
+        }
+      },
+      "future_feature_harness": [
+        {
+          "date": "2025-12-11",
+          "values": [
+            10.3,
+            327,
+            24.6,
+            40,
+            0.0
+          ],
+          "complete": true,
+          "hours_present": 24,
+          "lead_start_hours_from_init": 48.0,
+          "lead_start_hours_from_cutoff": 24.0,
+          "fields": [
+            "wind_speed_10m_max",
+            "wind_direction_10m_dominant",
+            "temperature_2m_max",
+            "relative_humidity_2m_min",
+            "precipitation_sum"
+          ]
+        },
+        {
+          "date": "2025-12-12",
+          "values": [
+            9.7,
+            333,
+            25.0,
+            37,
+            0.0
+          ],
+          "complete": true,
+          "hours_present": 24,
+          "lead_start_hours_from_init": 72.0,
+          "lead_start_hours_from_cutoff": 48.0,
+          "fields": [
+            "wind_speed_10m_max",
+            "wind_direction_10m_dominant",
+            "temperature_2m_max",
+            "relative_humidity_2m_min",
+            "precipitation_sum"
+          ]
+        },
+        {
+          "date": "2025-12-13",
+          "values": [
+            9.0,
+            344,
+            25.3,
+            41,
+            0.0
+          ],
+          "complete": true,
+          "hours_present": 24,
+          "lead_start_hours_from_init": 96.0,
+          "lead_start_hours_from_cutoff": 72.0,
+          "fields": [
+            "wind_speed_10m_max",
+            "wind_direction_10m_dominant",
+            "temperature_2m_max",
+            "relative_humidity_2m_min",
+            "precipitation_sum"
+          ]
+        }
+      ],
+      "frozen_ml_input_sensitivity": {
+        "model_sha256": "3c11ace0639cf8cd29ed2676f51f9d8f933335435d0bece99e078de2e2a45fb7",
+        "meta_sha256": "a789219222fadf2d8c817d36d4b8b2cd8aa1f9f73c7ded04c0fcedd8e71701b5",
+        "weights_and_rules_changed": false,
+        "horizons": [
+          {
+            "horizon_day": 1,
+            "eligible_cells": 340,
+            "baseline_brier": 0.10079827904701233,
+            "research_hindcast_brier": 0.09827840328216553,
+            "baseline_strict_iou": 0.1875,
+            "research_hindcast_strict_iou": 0.15789473684210525,
+            "mean_abs_probability_change": 0.024661429226398468,
+            "frozen_rule": [
+              "eiou",
+              0.6
+            ]
+          },
+          {
+            "horizon_day": 2,
+            "eligible_cells": 599,
+            "baseline_brier": 0.07647959887981415,
+            "research_hindcast_brier": 0.07732003182172775,
+            "baseline_strict_iou": 0.20408163265306123,
+            "research_hindcast_strict_iou": 0.2222222222222222,
+            "mean_abs_probability_change": 0.026649393141269684,
+            "frozen_rule": [
+              "eiou",
+              1.2
+            ]
+          },
+          {
+            "horizon_day": 3,
+            "eligible_cells": 776,
+            "baseline_brier": 0.07815270870923996,
+            "research_hindcast_brier": 0.07929607480764389,
+            "baseline_strict_iou": 0.2958579881656805,
+            "research_hindcast_strict_iou": 0.28717948717948716,
+            "mean_abs_probability_change": 0.03226463496685028,
+            "frozen_rule": [
+              "eiou",
+              0.8
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "http_requests_this_run": 0,
+  "prior_discovery_http_requests": 2,
+  "prior_failed_pilot_http_requests": 8,
+  "prior_successful_pilot_http_requests": 8,
+  "prior_failed_pilot_reason": "HTTP400: daily variables require the requested run to start at 00:00 in the requested timezone; corrected to older00UTC run, no fallback",
+  "elapsed_s": 1.767,
+  "summary": {
+    "cases_attempted": 8,
+    "research_cases_complete": 8,
+    "as_issued_eligible_cases": 0,
+    "baseline_complete_cases": 1,
+    "horizons": [
+      {
+        "horizon_day": 1,
+        "baseline_brier": 0.07445250068121823,
+        "research_hindcast_brier": 0.07380839643155923,
+        "baseline_strict_iou": 0.2546061750602807,
+        "research_hindcast_strict_iou": 0.2539116747778912,
+        "mean_abs_probability_change": 0.011208982221432962
+      },
+      {
+        "horizon_day": 2,
+        "baseline_brier": 0.07472152770787943,
+        "research_hindcast_brier": 0.07528615384217119,
+        "baseline_strict_iou": 0.30547989951185506,
+        "research_hindcast_strict_iou": 0.3024842422102003,
+        "mean_abs_probability_change": 0.010395340003015008
+      },
+      {
+        "horizon_day": 3,
+        "baseline_brier": 0.08161202674818924,
+        "research_hindcast_brier": 0.08240542217390612,
+        "baseline_strict_iou": 0.22095535218639822,
+        "research_hindcast_strict_iou": 0.21612698936813302,
+        "mean_abs_probability_change": 0.011249486880842596
+      }
+    ]
+  }
+}

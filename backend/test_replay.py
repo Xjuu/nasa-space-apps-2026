@@ -112,6 +112,73 @@ def test_tolerant_classes_near_hit():
     assert tol[10, 10] == 5 and tol[11, 10] == 5
 
 
+def test_observable_scoring_masks_both_sets_and_keeps_full_scores():
+    pred = _m([(5, 5), (8, 8), (9, 9)])
+    truth = _m([(5, 5), (8, 8), (20, 20)])
+    mask = np.ones((S, S), bool)
+    mask[8, 8] = mask[20, 20] = False
+    r = replay.score_day(pred, truth, ~mask, observable=mask, unknown=_m([]))
+    assert r["strict"] == replay.strict_counts(pred, truth)
+    assert r["observable"]["strict"]["hits"] == 1  # cloudy hit also excluded: no outcome-based exception
+    assert r["observable"]["excluded"] == {"predicted_cells": 1, "observed_cells": 2}
+    assert r["observable"]["coverage"]["observable_cells"] == S * S - 2
+    reverse = replay.observable_scores(truth, pred, mask, unknown=_m([]))
+    assert reverse["strict"]["iou"] == r["observable"]["strict"]["iou"]
+    assert reverse["tolerant"]["within_5km_score"] == r["observable"]["tolerant"]["within_5km_score"]
+
+
+def test_observable_tolerance_cannot_match_an_excluded_endpoint():
+    pred, truth = _m([(10, 10)]), _m([(11, 10)])
+    assert replay.tolerant_counts(pred, truth)["within_5km_score"] == 1.0
+    for excluded in [(10, 10), (11, 10)]:
+        mask = np.ones((S, S), bool)
+        mask[excluded] = False
+        conditional = replay.observable_scores(pred, truth, mask)
+        assert conditional["tolerant"]["within_5km_score"] == 0.0
+        assert conditional["tolerant"]["predicted_matched"] == 0
+        assert conditional["tolerant"]["observed_matched"] == 0
+
+
+def test_observable_missing_and_zero_coverage_do_not_claim_perfect_scores():
+    empty = _m([])
+    missing = replay.observable_scores(empty, empty)
+    zero = replay.observable_scores(empty, empty, empty, unknown=np.ones((S, S), bool))
+    assert missing["available"] is False and missing["coverage"]["observable_cells"] is None
+    assert zero["available"] is True and zero["coverage"]["observable_cells"] == 0
+    assert zero["coverage"]["unknown_cells"] == S * S
+    for result in [missing, zero]:
+        assert result["scored"] is False and result["strict"] is None and result["tolerant"] is None
+
+
+def test_observable_mask_shape_and_unknown_overlap_rejected():
+    empty = _m([])
+    with pytest.raises(ValueError):
+        replay.observable_scores(empty, empty, np.ones((2, 2), bool))
+    with pytest.raises(ValueError):
+        replay.observable_scores(empty, empty, np.ones_like(empty), unknown=np.ones_like(empty))
+
+
+def test_observable_elsewhere_but_no_evaluable_cells_is_unscored():
+    empty, eligible = _m([]), _m([(20, 20)])
+    observable = np.ones((S, S), bool)
+    observable[20, 20] = False
+    result = replay.observable_scores(empty, empty, observable, eligible=eligible)
+    assert result["coverage"]["observable_cells"] == S * S - 1
+    assert result["coverage"]["observable_eligible_cells"] == 0
+    assert result["scored"] is False and result["strict"] is None
+
+
+def test_observation_mask_serialization_exact_and_corruption_unavailable():
+    rng = np.random.default_rng(16)
+    mask = rng.random((3, S, S)) > 0.5
+    unknown = ~mask & (rng.random((3, S, S)) > 0.5)
+    encoded = replay._encode_observation_masks(mask, unknown)
+    decoded = replay._decode_observation_masks({"spatial_mask": encoded}, 3)
+    assert np.array_equal(mask, decoded[0]) and np.array_equal(unknown, decoded[1])
+    encoded["observable"][0] = "not-base64"
+    assert replay._decode_observation_masks({"spatial_mask": encoded}, 3) == (None, None)
+
+
 # ------------------------------------------------------------------ synthetic archive for leakage tests
 T0_DATE = "2025-03-10"
 CX, CY = 3000, 2000
@@ -338,6 +405,95 @@ def test_observation_quality_unavailable_on_error():
 
     q = replay.observation_quality(10.0, -30.0, dt.date(2025, 3, 10), 3, 3000, 2000, fetch=boom)
     assert q["available"] is False and "429" in q["error"]
+
+
+def test_missing_cloud_pass_is_unknown_not_clear_or_obscured():
+    import datetime as dt
+    def fetch(lats, lons, d1, d2, variables):
+        hours = np.arange(np.datetime64(d1.isoformat(), "h"), np.datetime64((d2 + dt.timedelta(days=1)).isoformat(), "h"))
+        cc = np.full((len(lats), len(hours)), np.nan, np.float32)
+        cc[:, :12] = 100.0  # at lon0, only the nominal night pass has data and it is cloudy
+        return hours, {"cloud_cover": cc}
+    q = replay.observation_quality(0.0, 0.0, dt.date(2025, 3, 10), 1, 3600, 1800, fetch=fetch)
+    assert q["available"]
+    assert not q["_observable"].any()
+    assert q["_unknown"].all()
+    json.dumps(replay._public(q), allow_nan=False)
+
+
+def test_observable_mask_independent_of_fire_truth(indices):
+    lat, lon = _lat_lon()
+    mask = np.ones((3, S, S), bool)
+    mask[:, :S//2] = False
+    unknown = np.zeros_like(mask)
+    masks_before = mask.copy()
+    def quality(*args):
+        return {"available": True, "_unverifiable": ~mask, "_observable": mask, "_unknown": unknown,
+                "spatial_mask": replay._encode_observation_masks(mask, unknown)}
+    if not (MODELS / "ensemble_blend_2025_meta.json").exists():
+        pytest.skip("model absent")
+    out = [replay.run_replay(lat, lon, T0_DATE, full=indices[k], physics_fn=_stub_physics, quality_fn=quality)
+           for k in ["real", "tampered"]]
+    assert out[0]["issued"] == out[1]["issued"]
+    assert out[0]["reveal"]["observation_quality"] == out[1]["reveal"]["observation_quality"]
+    assert np.array_equal(mask, masks_before)
+    for replayed in out:
+        for row in replayed["reveal"]["per_day"]:
+            coverages = [v["observable"]["coverage"] for v in row["methods"].values()]
+            assert all(c == coverages[0] for c in coverages)
+
+
+def _cached_example():
+    pred, truth = _m([(20, 19)]), _m([(20, 21)])
+    initial = _m([(20, 20)])
+    ring = replay._eligible(ndimage.distance_transform_cdt(~initial, metric="chessboard"), 1)
+    mask = np.ones((1, S, S), bool); mask[0, 20, 21] = False
+    cx, cy = CX, CY
+    feats = [{"properties": {"gx": cx - W + 20, "gy": cy - W + y, "observed_first_day": first,
+              "classes": {"ml": {"strict": [cls], "tolerant": [cls]}}}} for y, first, cls in
+             [(19, None, "false_alarm"), (21, 1, "miss")]]
+    res = {"centre": {"gx": cx, "gy": cy, "lat": 10.0, "lon": -30.0}, "init": {"date": T0_DATE},
+           "issued": {"example": "unchanged"}, "reveal": {"observation_quality": {"available": True,
+           "spatial_mask": replay._encode_observation_masks(mask, np.zeros_like(mask))},
+           "geojson": {"features": feats}, "burning_at_init": {"features": [{"geometry": replay._poly(cx, cy)}]},
+           "per_day": [{"day": 1, "scored": True, "methods": {"ml": replay.score_day(pred, truth),
+                       "baseline_ring": replay.score_day(ring, truth)}}]}}
+    return res
+
+
+def test_cached_upgrade_no_network_no_forecast_changes_and_same_mask(monkeypatch):
+    def forbidden(*args, **kwargs):
+        raise AssertionError("upgrade must not call HTTP or a forecast model")
+    monkeypatch.setattr(replay, "issue_forecast", forbidden)
+    monkeypatch.setattr("requests.get", forbidden)
+    saved = _cached_example()
+    before = json.loads(json.dumps(saved))
+    replay.add_cached_observability(saved)
+    assert saved["issued"] == before["issued"]
+    for name, scored in saved["reveal"]["per_day"][0]["methods"].items():
+        for original in ["strict", "tolerant", "adjusted"]:
+            assert scored[original] == before["reveal"]["per_day"][0]["methods"][name][original]
+        assert scored["observable"]["available"]
+        assert scored["observable"]["excluded"]["observed_cells"] == 1
+    assert saved["reveal"]["per_day"][0]["methods"]["ml"]["observable"]["coverage"] == saved["reveal"]["per_day"][0]["methods"]["baseline_ring"]["observable"]["coverage"]
+
+
+def test_cached_upgrade_missing_mask_never_uses_aggregates_or_network(monkeypatch):
+    monkeypatch.setattr("requests.get", lambda *a, **k: pytest.fail("no network allowed"))
+    monkeypatch.setattr(replay, "_cached_cloud_hourly", lambda *a, **k: (_ for _ in ()).throw(FileNotFoundError()))
+    saved = _cached_example()
+    saved["reveal"]["observation_quality"] = {"available": True, "per_day": [{"window_fraction_unverifiable_cumulative": 0.0}]}
+    replay.add_cached_observability(saved)
+    result = saved["reveal"]["per_day"][0]["methods"]["ml"]["observable"]
+    assert result["available"] is False and result["strict"] is None
+
+
+def test_cached_upgrade_corrupt_cell_sets_unavailable_even_with_mask():
+    saved = _cached_example()
+    saved["reveal"]["geojson"]["features"] = []
+    replay.add_cached_observability(saved)
+    result = saved["reveal"]["per_day"][0]["methods"]["ml"]["observable"]
+    assert result["available"] is False and "do not reproduce" in result["reason"]
 
 
 def test_curated_incidents_file_schema():

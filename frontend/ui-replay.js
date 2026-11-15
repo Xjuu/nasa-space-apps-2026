@@ -98,6 +98,7 @@
           <p class="rp-note small muted">Ring baseline: marks every cell within about 5 km of the burning area as burned. Not a forecast model. Within 5 km is an overlap score, not accuracy.</p>
           <div id="rp-verdict" class="rp-note small"></div>
           <div id="rp-cloud" class="rp-cloud"></div>
+          <div id="rp-observable"></div>
           <p class="rp-note small muted"><strong>One event is not a benchmark.</strong> Scores are uncalibrated; see the model card for the walk-forward benchmark.</p>
         </div>
 
@@ -422,6 +423,34 @@
         <div class="kpi"><span class="kpi-val">${num(c.fa)}</span><span class="kpi-lbl">false alarms</span></div></div>` : "";
     // cloud caveat
     renderCloud(cp);
+    renderObservable(days, M);
+  }
+
+  function renderObservable(days, method) {
+    const pl = document.documentElement.lang === "pl", t = (a, b) => pl ? a : b;
+    const head = [t("Dzień", "Day"), t("Pełne IoU", "Full IoU"), t("IoU w masce", "Masked IoU"),
+      t("Pełne w 5 km", "Full within 5 km"), t("W masce w 5 km", "Masked within 5 km"),
+      t("IoU pierścienia w masce", "Masked ring IoU"), t("Obserwowalne / kwalifikowane", "Observable / eligible")];
+    let rows = "";
+    for (const day of days) {
+      const m = day.methods?.[method], o = m?.observable, ring = day.methods?.baseline_ring?.observable;
+      const c = o?.coverage;
+      const count = o?.available && c ? `${num(c.observable_eligible_cells)} / ${num(c.eligible_cells)}` : t("niedostępne", "unavailable");
+      const scored = o?.available && o.scored;
+      rows += `<tr><th scope="row">${day.day}</th><td>${day.scored && m ? pct(m.strict?.iou, 1) : "—"}</td>` +
+        `<td>${scored ? pct(o.strict?.iou, 1) : "—"}</td><td>${day.scored && m ? pct(m.tolerant?.within_5km_score, 1) : "—"}</td>` +
+        `<td>${scored ? pct(o.tolerant?.within_5km_score, 1) : "—"}</td><td>${ring?.scored ? pct(ring.strict?.iou, 1) : "—"}</td><td>${esc(count)}</td></tr>`;
+    }
+    const cp = days[st.day - 1]?.methods?.[method]?.observable, c = cp?.coverage;
+    const detail = cp?.available && c ? t(
+      `Dzień ${st.day}: ${c.observable_eligible_cells}/${c.eligible_cells} komórek kwalifikowanych do oceny. W całym oknie ${c.observable_cells}/${c.total_cells} obserwowalnych; ${c.unknown_cells} bez danych. Poza maską: ${cp.excluded.predicted_cells} przewidywanych i ${cp.excluded.observed_cells} zaobserwowanych komórek.`,
+      `Day ${st.day}: ${c.observable_eligible_cells}/${c.eligible_cells} eligible cells evaluated. Whole window: ${c.observable_cells}/${c.total_cells} observable; ${c.unknown_cells} unknown. Excluded: ${cp.excluded.predicted_cells} predicted and ${cp.excluded.observed_cells} observed cells.`) :
+      t("Brak przestrzennej maski dla tego odtworzenia. Wynik ograniczony do maski pozostaje niedostępny; nie zastępujemy go wynikiem pełnym.", "No spatial mask for this replay. Masked scores remain unavailable; they are not replaced with full scores.");
+    el("rp-observable").innerHTML = `<h3>${esc(t("Pełna ocena i ocena w masce obserwacji", "Full and observation-masked evaluation"))}</h3>` +
+      `<div class="rp-table-wrap"><table class="rp-table"><thead><tr>${head.map((h) => `<th scope="col">${esc(h)}</th>`).join("")}</tr></thead><tbody>${rows}</tbody></table></div>` +
+      `<p class="rp-note small">${esc(detail)}</p><p class="rp-note small muted">${esc(t(
+        "Maska to modelowane zachmurzenie ERA5 w nominalnych godzinach przelotu, nie satelitarna maska piksela ani pełny model widoczności przez dym i kąt skanu. Ta sama ustalona maska ogranicza prognozę, obserwacje i pierścień. Obie oceny pozostają widoczne; większy wynik po ograniczeniu nie dowodzi poprawy prognozy.",
+        "The mask uses modeled ERA5 cloud cover at nominal pass hours, not a satellite pixel mask or a complete smoke/scan-angle visibility model. The same fixed mask restricts predictions, observations and the ring. Both evaluations remain visible; a higher masked score does not establish improved forecasts."))}</p>`;
   }
 
   function renderCloud(cp) {

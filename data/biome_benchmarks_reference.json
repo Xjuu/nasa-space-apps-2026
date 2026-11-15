@@ -1,0 +1,2345 @@
+{
+  "flin_flon_2025": {
+    "incident_id": "flin_flon_2025",
+    "reveal": {
+      "per_day": [
+        {
+          "day": 1,
+          "date": "2025-05-29",
+          "scored": true,
+          "observed_new_cells": 13,
+          "methods": {
+            "ml_physics": {
+              "strict": {
+                "predicted_cells": 59,
+                "observed_cells": 13,
+                "hits": 6,
+                "misses": 7,
+                "false_alarms": 53,
+                "precision": 0.1017,
+                "recall": 0.4615,
+                "iou": 0.0909
+              },
+              "tolerant": {
+                "predicted_cells": 59,
+                "observed_cells": 13,
+                "predicted_matched": 18,
+                "observed_matched": 9,
+                "misses": 4,
+                "false_alarms": 41,
+                "precision": 0.3051,
+                "recall": 0.6923,
+                "iou": 0.2308,
+                "within_5km_score": 0.375
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 0,
+                "unverifiable_predicted_cells_tolerant": 0,
+                "strict": {
+                  "predicted_cells": 59,
+                  "observed_cells": 13,
+                  "hits": 6,
+                  "misses": 7,
+                  "false_alarms": 53,
+                  "precision": 0.1017,
+                  "recall": 0.4615,
+                  "iou": 0.0909
+                },
+                "tolerant": {
+                  "predicted_cells": 59,
+                  "observed_cells": 13,
+                  "predicted_matched": 18,
+                  "observed_matched": 9,
+                  "misses": 4,
+                  "false_alarms": 41,
+                  "precision": 0.3051,
+                  "recall": 0.6923,
+                  "iou": 0.2308,
+                  "within_5km_score": 0.375
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "ml": {
+              "strict": {
+                "predicted_cells": 20,
+                "observed_cells": 13,
+                "hits": 5,
+                "misses": 8,
+                "false_alarms": 15,
+                "precision": 0.25,
+                "recall": 0.3846,
+                "iou": 0.1786
+              },
+              "tolerant": {
+                "predicted_cells": 20,
+                "observed_cells": 13,
+                "predicted_matched": 5,
+                "observed_matched": 7,
+                "misses": 6,
+                "false_alarms": 15,
+                "precision": 0.25,
+                "recall": 0.5385,
+                "iou": 0.2222,
+                "within_5km_score": 0.3636
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 0,
+                "unverifiable_predicted_cells_tolerant": 0,
+                "strict": {
+                  "predicted_cells": 20,
+                  "observed_cells": 13,
+                  "hits": 5,
+                  "misses": 8,
+                  "false_alarms": 15,
+                  "precision": 0.25,
+                  "recall": 0.3846,
+                  "iou": 0.1786
+                },
+                "tolerant": {
+                  "predicted_cells": 20,
+                  "observed_cells": 13,
+                  "predicted_matched": 5,
+                  "observed_matched": 7,
+                  "misses": 6,
+                  "false_alarms": 15,
+                  "precision": 0.25,
+                  "recall": 0.5385,
+                  "iou": 0.2222,
+                  "within_5km_score": 0.3636
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "baseline_ring": {
+              "strict": {
+                "predicted_cells": 161,
+                "observed_cells": 13,
+                "hits": 13,
+                "misses": 0,
+                "false_alarms": 148,
+                "precision": 0.0807,
+                "recall": 1.0,
+                "iou": 0.0807
+              },
+              "tolerant": {
+                "predicted_cells": 161,
+                "observed_cells": 13,
+                "predicted_matched": 45,
+                "observed_matched": 13,
+                "misses": 0,
+                "false_alarms": 116,
+                "precision": 0.2795,
+                "recall": 1.0,
+                "iou": 0.2,
+                "within_5km_score": 0.3333
+              },
+              "adjusted": null,
+              "description": "comparator only: marks EVERY cell within k cells of the burning area as burned"
+            }
+          }
+        },
+        {
+          "day": 2,
+          "date": "2025-05-30",
+          "scored": true,
+          "observed_new_cells": 33,
+          "methods": {
+            "ml_physics": {
+              "strict": {
+                "predicted_cells": 91,
+                "observed_cells": 33,
+                "hits": 23,
+                "misses": 10,
+                "false_alarms": 68,
+                "precision": 0.2527,
+                "recall": 0.697,
+                "iou": 0.2277
+              },
+              "tolerant": {
+                "predicted_cells": 91,
+                "observed_cells": 33,
+                "predicted_matched": 47,
+                "observed_matched": 32,
+                "misses": 1,
+                "false_alarms": 44,
+                "precision": 0.5165,
+                "recall": 0.9697,
+                "iou": 0.4675,
+                "within_5km_score": 0.6371
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 0,
+                "unverifiable_predicted_cells_tolerant": 0,
+                "strict": {
+                  "predicted_cells": 91,
+                  "observed_cells": 33,
+                  "hits": 23,
+                  "misses": 10,
+                  "false_alarms": 68,
+                  "precision": 0.2527,
+                  "recall": 0.697,
+                  "iou": 0.2277
+                },
+                "tolerant": {
+                  "predicted_cells": 91,
+                  "observed_cells": 33,
+                  "predicted_matched": 47,
+                  "observed_matched": 32,
+                  "misses": 1,
+                  "false_alarms": 44,
+                  "precision": 0.5165,
+                  "recall": 0.9697,
+                  "iou": 0.4675,
+                  "within_5km_score": 0.6371
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "ml": {
+              "strict": {
+                "predicted_cells": 47,
+                "observed_cells": 33,
+                "hits": 17,
+                "misses": 16,
+                "false_alarms": 30,
+                "precision": 0.3617,
+                "recall": 0.5152,
+                "iou": 0.2698
+              },
+              "tolerant": {
+                "predicted_cells": 47,
+                "observed_cells": 33,
+                "predicted_matched": 28,
+                "observed_matched": 27,
+                "misses": 6,
+                "false_alarms": 19,
+                "precision": 0.5957,
+                "recall": 0.8182,
+                "iou": 0.5238,
+                "within_5km_score": 0.6875
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 0,
+                "unverifiable_predicted_cells_tolerant": 0,
+                "strict": {
+                  "predicted_cells": 47,
+                  "observed_cells": 33,
+                  "hits": 17,
+                  "misses": 16,
+                  "false_alarms": 30,
+                  "precision": 0.3617,
+                  "recall": 0.5152,
+                  "iou": 0.2698
+                },
+                "tolerant": {
+                  "predicted_cells": 47,
+                  "observed_cells": 33,
+                  "predicted_matched": 28,
+                  "observed_matched": 27,
+                  "misses": 6,
+                  "false_alarms": 19,
+                  "precision": 0.5957,
+                  "recall": 0.8182,
+                  "iou": 0.5238,
+                  "within_5km_score": 0.6875
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "baseline_ring": {
+              "strict": {
+                "predicted_cells": 322,
+                "observed_cells": 33,
+                "hits": 33,
+                "misses": 0,
+                "false_alarms": 289,
+                "precision": 0.1025,
+                "recall": 1.0,
+                "iou": 0.1025
+              },
+              "tolerant": {
+                "predicted_cells": 322,
+                "observed_cells": 33,
+                "predicted_matched": 119,
+                "observed_matched": 33,
+                "misses": 0,
+                "false_alarms": 203,
+                "precision": 0.3696,
+                "recall": 1.0,
+                "iou": 0.2724,
+                "within_5km_score": 0.4282
+              },
+              "adjusted": null,
+              "description": "comparator only: marks EVERY cell within k cells of the burning area as burned"
+            }
+          }
+        },
+        {
+          "day": 3,
+          "date": "2025-05-31",
+          "scored": true,
+          "observed_new_cells": 74,
+          "methods": {
+            "ml_physics": {
+              "strict": {
+                "predicted_cells": 102,
+                "observed_cells": 74,
+                "hits": 44,
+                "misses": 30,
+                "false_alarms": 58,
+                "precision": 0.4314,
+                "recall": 0.5946,
+                "iou": 0.3333
+              },
+              "tolerant": {
+                "predicted_cells": 102,
+                "observed_cells": 74,
+                "predicted_matched": 74,
+                "observed_matched": 62,
+                "misses": 12,
+                "false_alarms": 28,
+                "precision": 0.7255,
+                "recall": 0.8378,
+                "iou": 0.6296,
+                "within_5km_score": 0.7727
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 0,
+                "unverifiable_predicted_cells_tolerant": 0,
+                "strict": {
+                  "predicted_cells": 102,
+                  "observed_cells": 74,
+                  "hits": 44,
+                  "misses": 30,
+                  "false_alarms": 58,
+                  "precision": 0.4314,
+                  "recall": 0.5946,
+                  "iou": 0.3333
+                },
+                "tolerant": {
+                  "predicted_cells": 102,
+                  "observed_cells": 74,
+                  "predicted_matched": 74,
+                  "observed_matched": 62,
+                  "misses": 12,
+                  "false_alarms": 28,
+                  "precision": 0.7255,
+                  "recall": 0.8378,
+                  "iou": 0.6296,
+                  "within_5km_score": 0.7727
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "ml": {
+              "strict": {
+                "predicted_cells": 41,
+                "observed_cells": 74,
+                "hits": 23,
+                "misses": 51,
+                "false_alarms": 18,
+                "precision": 0.561,
+                "recall": 0.3108,
+                "iou": 0.25
+              },
+              "tolerant": {
+                "predicted_cells": 41,
+                "observed_cells": 74,
+                "predicted_matched": 34,
+                "observed_matched": 47,
+                "misses": 27,
+                "false_alarms": 7,
+                "precision": 0.8293,
+                "recall": 0.6351,
+                "iou": 0.5436,
+                "within_5km_score": 0.7043
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 0,
+                "unverifiable_predicted_cells_tolerant": 0,
+                "strict": {
+                  "predicted_cells": 41,
+                  "observed_cells": 74,
+                  "hits": 23,
+                  "misses": 51,
+                  "false_alarms": 18,
+                  "precision": 0.561,
+                  "recall": 0.3108,
+                  "iou": 0.25
+                },
+                "tolerant": {
+                  "predicted_cells": 41,
+                  "observed_cells": 74,
+                  "predicted_matched": 34,
+                  "observed_matched": 47,
+                  "misses": 27,
+                  "false_alarms": 7,
+                  "precision": 0.8293,
+                  "recall": 0.6351,
+                  "iou": 0.5436,
+                  "within_5km_score": 0.7043
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "baseline_ring": {
+              "strict": {
+                "predicted_cells": 482,
+                "observed_cells": 74,
+                "hits": 74,
+                "misses": 0,
+                "false_alarms": 408,
+                "precision": 0.1535,
+                "recall": 1.0,
+                "iou": 0.1535
+              },
+              "tolerant": {
+                "predicted_cells": 482,
+                "observed_cells": 74,
+                "predicted_matched": 208,
+                "observed_matched": 74,
+                "misses": 0,
+                "false_alarms": 274,
+                "precision": 0.4315,
+                "recall": 1.0,
+                "iou": 0.3398,
+                "within_5km_score": 0.5072
+              },
+              "adjusted": null,
+              "description": "comparator only: marks EVERY cell within k cells of the burning area as burned"
+            }
+          }
+        }
+      ],
+      "revealed_through_day": 3
+    }
+  },
+  "kalimantan_2023": {
+    "incident_id": "kalimantan_2023",
+    "reveal": {
+      "per_day": [
+        {
+          "day": 1,
+          "date": "2023-10-11",
+          "scored": true,
+          "observed_new_cells": 42,
+          "methods": {
+            "ml": {
+              "strict": {
+                "predicted_cells": 68,
+                "observed_cells": 42,
+                "hits": 15,
+                "misses": 27,
+                "false_alarms": 53,
+                "precision": 0.2206,
+                "recall": 0.3571,
+                "iou": 0.1579
+              },
+              "tolerant": {
+                "predicted_cells": 68,
+                "observed_cells": 42,
+                "predicted_matched": 30,
+                "observed_matched": 29,
+                "misses": 13,
+                "false_alarms": 38,
+                "precision": 0.4412,
+                "recall": 0.6905,
+                "iou": 0.3665,
+                "within_5km_score": 0.5364
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 24,
+                "unverifiable_predicted_cells_tolerant": 21,
+                "strict": {
+                  "predicted_cells": 44,
+                  "observed_cells": 42,
+                  "hits": 15,
+                  "misses": 27,
+                  "false_alarms": 29,
+                  "precision": 0.3409,
+                  "recall": 0.3571,
+                  "iou": 0.2113
+                },
+                "tolerant": {
+                  "predicted_cells": 47,
+                  "observed_cells": 42,
+                  "predicted_matched": 30,
+                  "observed_matched": 29,
+                  "misses": 13,
+                  "false_alarms": 17,
+                  "precision": 0.6383,
+                  "recall": 0.6905,
+                  "iou": 0.4958,
+                  "within_5km_score": 0.6629
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "baseline_ring": {
+              "strict": {
+                "predicted_cells": 432,
+                "observed_cells": 42,
+                "hits": 42,
+                "misses": 0,
+                "false_alarms": 390,
+                "precision": 0.0972,
+                "recall": 1.0,
+                "iou": 0.0972
+              },
+              "tolerant": {
+                "predicted_cells": 432,
+                "observed_cells": 42,
+                "predicted_matched": 143,
+                "observed_matched": 42,
+                "misses": 0,
+                "false_alarms": 289,
+                "precision": 0.331,
+                "recall": 1.0,
+                "iou": 0.2425,
+                "within_5km_score": 0.3903
+              },
+              "adjusted": null,
+              "description": "comparator only: marks EVERY cell within k cells of the burning area as burned"
+            }
+          }
+        },
+        {
+          "day": 2,
+          "date": "2023-10-12",
+          "scored": true,
+          "observed_new_cells": 79,
+          "methods": {
+            "ml": {
+              "strict": {
+                "predicted_cells": 152,
+                "observed_cells": 79,
+                "hits": 38,
+                "misses": 41,
+                "false_alarms": 114,
+                "precision": 0.25,
+                "recall": 0.481,
+                "iou": 0.1969
+              },
+              "tolerant": {
+                "predicted_cells": 152,
+                "observed_cells": 79,
+                "predicted_matched": 101,
+                "observed_matched": 65,
+                "misses": 14,
+                "false_alarms": 51,
+                "precision": 0.6645,
+                "recall": 0.8228,
+                "iou": 0.5608,
+                "within_5km_score": 0.7186
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 43,
+                "unverifiable_predicted_cells_tolerant": 21,
+                "strict": {
+                  "predicted_cells": 109,
+                  "observed_cells": 79,
+                  "hits": 38,
+                  "misses": 41,
+                  "false_alarms": 71,
+                  "precision": 0.3486,
+                  "recall": 0.481,
+                  "iou": 0.2533
+                },
+                "tolerant": {
+                  "predicted_cells": 131,
+                  "observed_cells": 79,
+                  "predicted_matched": 101,
+                  "observed_matched": 65,
+                  "misses": 14,
+                  "false_alarms": 30,
+                  "precision": 0.771,
+                  "recall": 0.8228,
+                  "iou": 0.6535,
+                  "within_5km_score": 0.7905
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "baseline_ring": {
+              "strict": {
+                "predicted_cells": 836,
+                "observed_cells": 79,
+                "hits": 79,
+                "misses": 0,
+                "false_alarms": 757,
+                "precision": 0.0945,
+                "recall": 1.0,
+                "iou": 0.0945
+              },
+              "tolerant": {
+                "predicted_cells": 836,
+                "observed_cells": 79,
+                "predicted_matched": 370,
+                "observed_matched": 79,
+                "misses": 0,
+                "false_alarms": 466,
+                "precision": 0.4426,
+                "recall": 1.0,
+                "iou": 0.3251,
+                "within_5km_score": 0.4907
+              },
+              "adjusted": null,
+              "description": "comparator only: marks EVERY cell within k cells of the burning area as burned"
+            }
+          }
+        },
+        {
+          "day": 3,
+          "date": "2023-10-13",
+          "scored": true,
+          "observed_new_cells": 170,
+          "methods": {
+            "ml": {
+              "strict": {
+                "predicted_cells": 204,
+                "observed_cells": 170,
+                "hits": 88,
+                "misses": 82,
+                "false_alarms": 116,
+                "precision": 0.4314,
+                "recall": 0.5176,
+                "iou": 0.3077
+              },
+              "tolerant": {
+                "predicted_cells": 204,
+                "observed_cells": 170,
+                "predicted_matched": 178,
+                "observed_matched": 148,
+                "misses": 22,
+                "false_alarms": 26,
+                "precision": 0.8725,
+                "recall": 0.8706,
+                "iou": 0.7725,
+                "within_5km_score": 0.8717
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 0,
+                "unverifiable_predicted_cells_tolerant": 0,
+                "strict": {
+                  "predicted_cells": 204,
+                  "observed_cells": 170,
+                  "hits": 88,
+                  "misses": 82,
+                  "false_alarms": 116,
+                  "precision": 0.4314,
+                  "recall": 0.5176,
+                  "iou": 0.3077
+                },
+                "tolerant": {
+                  "predicted_cells": 204,
+                  "observed_cells": 170,
+                  "predicted_matched": 178,
+                  "observed_matched": 148,
+                  "misses": 22,
+                  "false_alarms": 26,
+                  "precision": 0.8725,
+                  "recall": 0.8706,
+                  "iou": 0.7725,
+                  "within_5km_score": 0.8717
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "baseline_ring": {
+              "strict": {
+                "predicted_cells": 1119,
+                "observed_cells": 170,
+                "hits": 170,
+                "misses": 0,
+                "false_alarms": 949,
+                "precision": 0.1519,
+                "recall": 1.0,
+                "iou": 0.1519
+              },
+              "tolerant": {
+                "predicted_cells": 1119,
+                "observed_cells": 170,
+                "predicted_matched": 644,
+                "observed_matched": 170,
+                "misses": 0,
+                "false_alarms": 475,
+                "precision": 0.5755,
+                "recall": 1.0,
+                "iou": 0.4615,
+                "within_5km_score": 0.6315
+              },
+              "adjusted": null,
+              "description": "comparator only: marks EVERY cell within k cells of the burning area as burned"
+            }
+          }
+        }
+      ],
+      "revealed_through_day": 3
+    }
+  },
+  "pantanal_2024": {
+    "incident_id": "pantanal_2024",
+    "reveal": {
+      "per_day": [
+        {
+          "day": 1,
+          "date": "2024-08-21",
+          "scored": true,
+          "observed_new_cells": 24,
+          "methods": {
+            "ml_physics": {
+              "strict": {
+                "predicted_cells": 25,
+                "observed_cells": 24,
+                "hits": 11,
+                "misses": 13,
+                "false_alarms": 14,
+                "precision": 0.44,
+                "recall": 0.4583,
+                "iou": 0.2895
+              },
+              "tolerant": {
+                "predicted_cells": 25,
+                "observed_cells": 24,
+                "predicted_matched": 19,
+                "observed_matched": 20,
+                "misses": 4,
+                "false_alarms": 6,
+                "precision": 0.76,
+                "recall": 0.8333,
+                "iou": 0.661,
+                "within_5km_score": 0.7959
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 0,
+                "unverifiable_predicted_cells_tolerant": 0,
+                "strict": {
+                  "predicted_cells": 25,
+                  "observed_cells": 24,
+                  "hits": 11,
+                  "misses": 13,
+                  "false_alarms": 14,
+                  "precision": 0.44,
+                  "recall": 0.4583,
+                  "iou": 0.2895
+                },
+                "tolerant": {
+                  "predicted_cells": 25,
+                  "observed_cells": 24,
+                  "predicted_matched": 19,
+                  "observed_matched": 20,
+                  "misses": 4,
+                  "false_alarms": 6,
+                  "precision": 0.76,
+                  "recall": 0.8333,
+                  "iou": 0.661,
+                  "within_5km_score": 0.7959
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "ml": {
+              "strict": {
+                "predicted_cells": 23,
+                "observed_cells": 24,
+                "hits": 10,
+                "misses": 14,
+                "false_alarms": 13,
+                "precision": 0.4348,
+                "recall": 0.4167,
+                "iou": 0.2703
+              },
+              "tolerant": {
+                "predicted_cells": 23,
+                "observed_cells": 24,
+                "predicted_matched": 18,
+                "observed_matched": 19,
+                "misses": 5,
+                "false_alarms": 5,
+                "precision": 0.7826,
+                "recall": 0.7917,
+                "iou": 0.6491,
+                "within_5km_score": 0.7872
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 0,
+                "unverifiable_predicted_cells_tolerant": 0,
+                "strict": {
+                  "predicted_cells": 23,
+                  "observed_cells": 24,
+                  "hits": 10,
+                  "misses": 14,
+                  "false_alarms": 13,
+                  "precision": 0.4348,
+                  "recall": 0.4167,
+                  "iou": 0.2703
+                },
+                "tolerant": {
+                  "predicted_cells": 23,
+                  "observed_cells": 24,
+                  "predicted_matched": 18,
+                  "observed_matched": 19,
+                  "misses": 5,
+                  "false_alarms": 5,
+                  "precision": 0.7826,
+                  "recall": 0.7917,
+                  "iou": 0.6491,
+                  "within_5km_score": 0.7872
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "baseline_ring": {
+              "strict": {
+                "predicted_cells": 136,
+                "observed_cells": 24,
+                "hits": 24,
+                "misses": 0,
+                "false_alarms": 112,
+                "precision": 0.1765,
+                "recall": 1.0,
+                "iou": 0.1765
+              },
+              "tolerant": {
+                "predicted_cells": 136,
+                "observed_cells": 24,
+                "predicted_matched": 71,
+                "observed_matched": 24,
+                "misses": 0,
+                "false_alarms": 65,
+                "precision": 0.5221,
+                "recall": 1.0,
+                "iou": 0.4222,
+                "within_5km_score": 0.5938
+              },
+              "adjusted": null,
+              "description": "comparator only: marks EVERY cell within k cells of the burning area as burned"
+            }
+          }
+        },
+        {
+          "day": 2,
+          "date": "2024-08-22",
+          "scored": true,
+          "observed_new_cells": 45,
+          "methods": {
+            "ml_physics": {
+              "strict": {
+                "predicted_cells": 44,
+                "observed_cells": 45,
+                "hits": 27,
+                "misses": 18,
+                "false_alarms": 17,
+                "precision": 0.6136,
+                "recall": 0.6,
+                "iou": 0.4355
+              },
+              "tolerant": {
+                "predicted_cells": 44,
+                "observed_cells": 45,
+                "predicted_matched": 34,
+                "observed_matched": 41,
+                "misses": 4,
+                "false_alarms": 10,
+                "precision": 0.7727,
+                "recall": 0.9111,
+                "iou": 0.7282,
+                "within_5km_score": 0.8427
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 0,
+                "unverifiable_predicted_cells_tolerant": 0,
+                "strict": {
+                  "predicted_cells": 44,
+                  "observed_cells": 45,
+                  "hits": 27,
+                  "misses": 18,
+                  "false_alarms": 17,
+                  "precision": 0.6136,
+                  "recall": 0.6,
+                  "iou": 0.4355
+                },
+                "tolerant": {
+                  "predicted_cells": 44,
+                  "observed_cells": 45,
+                  "predicted_matched": 34,
+                  "observed_matched": 41,
+                  "misses": 4,
+                  "false_alarms": 10,
+                  "precision": 0.7727,
+                  "recall": 0.9111,
+                  "iou": 0.7282,
+                  "within_5km_score": 0.8427
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "ml": {
+              "strict": {
+                "predicted_cells": 40,
+                "observed_cells": 45,
+                "hits": 26,
+                "misses": 19,
+                "false_alarms": 14,
+                "precision": 0.65,
+                "recall": 0.5778,
+                "iou": 0.4407
+              },
+              "tolerant": {
+                "predicted_cells": 40,
+                "observed_cells": 45,
+                "predicted_matched": 33,
+                "observed_matched": 41,
+                "misses": 4,
+                "false_alarms": 7,
+                "precision": 0.825,
+                "recall": 0.9111,
+                "iou": 0.7708,
+                "within_5km_score": 0.8706
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 0,
+                "unverifiable_predicted_cells_tolerant": 0,
+                "strict": {
+                  "predicted_cells": 40,
+                  "observed_cells": 45,
+                  "hits": 26,
+                  "misses": 19,
+                  "false_alarms": 14,
+                  "precision": 0.65,
+                  "recall": 0.5778,
+                  "iou": 0.4407
+                },
+                "tolerant": {
+                  "predicted_cells": 40,
+                  "observed_cells": 45,
+                  "predicted_matched": 33,
+                  "observed_matched": 41,
+                  "misses": 4,
+                  "false_alarms": 7,
+                  "precision": 0.825,
+                  "recall": 0.9111,
+                  "iou": 0.7708,
+                  "within_5km_score": 0.8706
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "baseline_ring": {
+              "strict": {
+                "predicted_cells": 285,
+                "observed_cells": 45,
+                "hits": 45,
+                "misses": 0,
+                "false_alarms": 240,
+                "precision": 0.1579,
+                "recall": 1.0,
+                "iou": 0.1579
+              },
+              "tolerant": {
+                "predicted_cells": 285,
+                "observed_cells": 45,
+                "predicted_matched": 119,
+                "observed_matched": 45,
+                "misses": 0,
+                "false_alarms": 166,
+                "precision": 0.4175,
+                "recall": 1.0,
+                "iou": 0.3306,
+                "within_5km_score": 0.497
+              },
+              "adjusted": null,
+              "description": "comparator only: marks EVERY cell within k cells of the burning area as burned"
+            }
+          }
+        },
+        {
+          "day": 3,
+          "date": "2024-08-23",
+          "scored": true,
+          "observed_new_cells": 49,
+          "methods": {
+            "ml_physics": {
+              "strict": {
+                "predicted_cells": 79,
+                "observed_cells": 49,
+                "hits": 40,
+                "misses": 9,
+                "false_alarms": 39,
+                "precision": 0.5063,
+                "recall": 0.8163,
+                "iou": 0.4545
+              },
+              "tolerant": {
+                "predicted_cells": 79,
+                "observed_cells": 49,
+                "predicted_matched": 63,
+                "observed_matched": 49,
+                "misses": 0,
+                "false_alarms": 16,
+                "precision": 0.7975,
+                "recall": 1.0,
+                "iou": 0.7778,
+                "within_5km_score": 0.875
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 0,
+                "unverifiable_predicted_cells_tolerant": 0,
+                "strict": {
+                  "predicted_cells": 79,
+                  "observed_cells": 49,
+                  "hits": 40,
+                  "misses": 9,
+                  "false_alarms": 39,
+                  "precision": 0.5063,
+                  "recall": 0.8163,
+                  "iou": 0.4545
+                },
+                "tolerant": {
+                  "predicted_cells": 79,
+                  "observed_cells": 49,
+                  "predicted_matched": 63,
+                  "observed_matched": 49,
+                  "misses": 0,
+                  "false_alarms": 16,
+                  "precision": 0.7975,
+                  "recall": 1.0,
+                  "iou": 0.7778,
+                  "within_5km_score": 0.875
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "ml": {
+              "strict": {
+                "predicted_cells": 65,
+                "observed_cells": 49,
+                "hits": 37,
+                "misses": 12,
+                "false_alarms": 28,
+                "precision": 0.5692,
+                "recall": 0.7551,
+                "iou": 0.4805
+              },
+              "tolerant": {
+                "predicted_cells": 65,
+                "observed_cells": 49,
+                "predicted_matched": 51,
+                "observed_matched": 46,
+                "misses": 3,
+                "false_alarms": 14,
+                "precision": 0.7846,
+                "recall": 0.9388,
+                "iou": 0.7405,
+                "within_5km_score": 0.8509
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 0,
+                "unverifiable_predicted_cells_tolerant": 0,
+                "strict": {
+                  "predicted_cells": 65,
+                  "observed_cells": 49,
+                  "hits": 37,
+                  "misses": 12,
+                  "false_alarms": 28,
+                  "precision": 0.5692,
+                  "recall": 0.7551,
+                  "iou": 0.4805
+                },
+                "tolerant": {
+                  "predicted_cells": 65,
+                  "observed_cells": 49,
+                  "predicted_matched": 51,
+                  "observed_matched": 46,
+                  "misses": 3,
+                  "false_alarms": 14,
+                  "precision": 0.7846,
+                  "recall": 0.9388,
+                  "iou": 0.7405,
+                  "within_5km_score": 0.8509
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "baseline_ring": {
+              "strict": {
+                "predicted_cells": 457,
+                "observed_cells": 49,
+                "hits": 49,
+                "misses": 0,
+                "false_alarms": 408,
+                "precision": 0.1072,
+                "recall": 1.0,
+                "iou": 0.1072
+              },
+              "tolerant": {
+                "predicted_cells": 457,
+                "observed_cells": 49,
+                "predicted_matched": 128,
+                "observed_matched": 49,
+                "misses": 0,
+                "false_alarms": 329,
+                "precision": 0.2801,
+                "recall": 1.0,
+                "iou": 0.212,
+                "within_5km_score": 0.3498
+              },
+              "adjusted": null,
+              "description": "comparator only: marks EVERY cell within k cells of the burning area as burned"
+            }
+          }
+        }
+      ],
+      "revealed_through_day": 3
+    }
+  },
+  "punjab_stubble_2024": {
+    "incident_id": "punjab_stubble_2024",
+    "reveal": {
+      "per_day": [
+        {
+          "day": 1,
+          "date": "2024-11-02",
+          "scored": true,
+          "observed_new_cells": 189,
+          "methods": {
+            "ml_physics": {
+              "strict": {
+                "predicted_cells": 581,
+                "observed_cells": 189,
+                "hits": 174,
+                "misses": 15,
+                "false_alarms": 407,
+                "precision": 0.2995,
+                "recall": 0.9206,
+                "iou": 0.2919
+              },
+              "tolerant": {
+                "predicted_cells": 581,
+                "observed_cells": 189,
+                "predicted_matched": 439,
+                "observed_matched": 185,
+                "misses": 4,
+                "false_alarms": 142,
+                "precision": 0.7556,
+                "recall": 0.9788,
+                "iou": 0.6812,
+                "within_5km_score": 0.8104
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 0,
+                "unverifiable_predicted_cells_tolerant": 0,
+                "strict": {
+                  "predicted_cells": 581,
+                  "observed_cells": 189,
+                  "hits": 174,
+                  "misses": 15,
+                  "false_alarms": 407,
+                  "precision": 0.2995,
+                  "recall": 0.9206,
+                  "iou": 0.2919
+                },
+                "tolerant": {
+                  "predicted_cells": 581,
+                  "observed_cells": 189,
+                  "predicted_matched": 439,
+                  "observed_matched": 185,
+                  "misses": 4,
+                  "false_alarms": 142,
+                  "precision": 0.7556,
+                  "recall": 0.9788,
+                  "iou": 0.6812,
+                  "within_5km_score": 0.8104
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "ml": {
+              "strict": {
+                "predicted_cells": 412,
+                "observed_cells": 189,
+                "hits": 148,
+                "misses": 41,
+                "false_alarms": 264,
+                "precision": 0.3592,
+                "recall": 0.7831,
+                "iou": 0.3267
+              },
+              "tolerant": {
+                "predicted_cells": 412,
+                "observed_cells": 189,
+                "predicted_matched": 339,
+                "observed_matched": 174,
+                "misses": 15,
+                "false_alarms": 73,
+                "precision": 0.8228,
+                "recall": 0.9206,
+                "iou": 0.7446,
+                "within_5km_score": 0.8536
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 0,
+                "unverifiable_predicted_cells_tolerant": 0,
+                "strict": {
+                  "predicted_cells": 412,
+                  "observed_cells": 189,
+                  "hits": 148,
+                  "misses": 41,
+                  "false_alarms": 264,
+                  "precision": 0.3592,
+                  "recall": 0.7831,
+                  "iou": 0.3267
+                },
+                "tolerant": {
+                  "predicted_cells": 412,
+                  "observed_cells": 189,
+                  "predicted_matched": 339,
+                  "observed_matched": 174,
+                  "misses": 15,
+                  "false_alarms": 73,
+                  "precision": 0.8228,
+                  "recall": 0.9206,
+                  "iou": 0.7446,
+                  "within_5km_score": 0.8536
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "baseline_ring": {
+              "strict": {
+                "predicted_cells": 819,
+                "observed_cells": 189,
+                "hits": 189,
+                "misses": 0,
+                "false_alarms": 630,
+                "precision": 0.2308,
+                "recall": 1.0,
+                "iou": 0.2308
+              },
+              "tolerant": {
+                "predicted_cells": 819,
+                "observed_cells": 189,
+                "predicted_matched": 534,
+                "observed_matched": 189,
+                "misses": 0,
+                "false_alarms": 285,
+                "precision": 0.652,
+                "recall": 1.0,
+                "iou": 0.5592,
+                "within_5km_score": 0.7173
+              },
+              "adjusted": null,
+              "description": "comparator only: marks EVERY cell within k cells of the burning area as burned"
+            }
+          }
+        },
+        {
+          "day": 2,
+          "date": "2024-11-03",
+          "scored": true,
+          "observed_new_cells": 268,
+          "methods": {
+            "ml_physics": {
+              "strict": {
+                "predicted_cells": 682,
+                "observed_cells": 268,
+                "hits": 251,
+                "misses": 17,
+                "false_alarms": 431,
+                "precision": 0.368,
+                "recall": 0.9366,
+                "iou": 0.3591
+              },
+              "tolerant": {
+                "predicted_cells": 682,
+                "observed_cells": 268,
+                "predicted_matched": 591,
+                "observed_matched": 266,
+                "misses": 2,
+                "false_alarms": 91,
+                "precision": 0.8666,
+                "recall": 0.9925,
+                "iou": 0.8217,
+                "within_5km_score": 0.9021
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 0,
+                "unverifiable_predicted_cells_tolerant": 0,
+                "strict": {
+                  "predicted_cells": 682,
+                  "observed_cells": 268,
+                  "hits": 251,
+                  "misses": 17,
+                  "false_alarms": 431,
+                  "precision": 0.368,
+                  "recall": 0.9366,
+                  "iou": 0.3591
+                },
+                "tolerant": {
+                  "predicted_cells": 682,
+                  "observed_cells": 268,
+                  "predicted_matched": 591,
+                  "observed_matched": 266,
+                  "misses": 2,
+                  "false_alarms": 91,
+                  "precision": 0.8666,
+                  "recall": 0.9925,
+                  "iou": 0.8217,
+                  "within_5km_score": 0.9021
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "ml": {
+              "strict": {
+                "predicted_cells": 506,
+                "observed_cells": 268,
+                "hits": 222,
+                "misses": 46,
+                "false_alarms": 284,
+                "precision": 0.4387,
+                "recall": 0.8284,
+                "iou": 0.4022
+              },
+              "tolerant": {
+                "predicted_cells": 506,
+                "observed_cells": 268,
+                "predicted_matched": 457,
+                "observed_matched": 255,
+                "misses": 13,
+                "false_alarms": 49,
+                "precision": 0.9032,
+                "recall": 0.9515,
+                "iou": 0.8517,
+                "within_5km_score": 0.9199
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 0,
+                "unverifiable_predicted_cells_tolerant": 0,
+                "strict": {
+                  "predicted_cells": 506,
+                  "observed_cells": 268,
+                  "hits": 222,
+                  "misses": 46,
+                  "false_alarms": 284,
+                  "precision": 0.4387,
+                  "recall": 0.8284,
+                  "iou": 0.4022
+                },
+                "tolerant": {
+                  "predicted_cells": 506,
+                  "observed_cells": 268,
+                  "predicted_matched": 457,
+                  "observed_matched": 255,
+                  "misses": 13,
+                  "false_alarms": 49,
+                  "precision": 0.9032,
+                  "recall": 0.9515,
+                  "iou": 0.8517,
+                  "within_5km_score": 0.9199
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "baseline_ring": {
+              "strict": {
+                "predicted_cells": 1018,
+                "observed_cells": 268,
+                "hits": 268,
+                "misses": 0,
+                "false_alarms": 750,
+                "precision": 0.2633,
+                "recall": 1.0,
+                "iou": 0.2633
+              },
+              "tolerant": {
+                "predicted_cells": 1018,
+                "observed_cells": 268,
+                "predicted_matched": 731,
+                "observed_matched": 268,
+                "misses": 0,
+                "false_alarms": 287,
+                "precision": 0.7181,
+                "recall": 1.0,
+                "iou": 0.6351,
+                "within_5km_score": 0.7768
+              },
+              "adjusted": null,
+              "description": "comparator only: marks EVERY cell within k cells of the burning area as burned"
+            }
+          }
+        },
+        {
+          "day": 3,
+          "date": "2024-11-04",
+          "scored": true,
+          "observed_new_cells": 335,
+          "methods": {
+            "ml_physics": {
+              "strict": {
+                "predicted_cells": 838,
+                "observed_cells": 335,
+                "hits": 329,
+                "misses": 6,
+                "false_alarms": 509,
+                "precision": 0.3926,
+                "recall": 0.9821,
+                "iou": 0.3898
+              },
+              "tolerant": {
+                "predicted_cells": 838,
+                "observed_cells": 335,
+                "predicted_matched": 734,
+                "observed_matched": 331,
+                "misses": 4,
+                "false_alarms": 104,
+                "precision": 0.8759,
+                "recall": 0.9881,
+                "iou": 0.8314,
+                "within_5km_score": 0.9079
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 0,
+                "unverifiable_predicted_cells_tolerant": 0,
+                "strict": {
+                  "predicted_cells": 838,
+                  "observed_cells": 335,
+                  "hits": 329,
+                  "misses": 6,
+                  "false_alarms": 509,
+                  "precision": 0.3926,
+                  "recall": 0.9821,
+                  "iou": 0.3898
+                },
+                "tolerant": {
+                  "predicted_cells": 838,
+                  "observed_cells": 335,
+                  "predicted_matched": 734,
+                  "observed_matched": 331,
+                  "misses": 4,
+                  "false_alarms": 104,
+                  "precision": 0.8759,
+                  "recall": 0.9881,
+                  "iou": 0.8314,
+                  "within_5km_score": 0.9079
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "ml": {
+              "strict": {
+                "predicted_cells": 740,
+                "observed_cells": 335,
+                "hits": 319,
+                "misses": 16,
+                "false_alarms": 421,
+                "precision": 0.4311,
+                "recall": 0.9522,
+                "iou": 0.422
+              },
+              "tolerant": {
+                "predicted_cells": 740,
+                "observed_cells": 335,
+                "predicted_matched": 673,
+                "observed_matched": 331,
+                "misses": 4,
+                "false_alarms": 67,
+                "precision": 0.9095,
+                "recall": 0.9881,
+                "iou": 0.8761,
+                "within_5km_score": 0.934
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 0,
+                "unverifiable_predicted_cells_tolerant": 0,
+                "strict": {
+                  "predicted_cells": 740,
+                  "observed_cells": 335,
+                  "hits": 319,
+                  "misses": 16,
+                  "false_alarms": 421,
+                  "precision": 0.4311,
+                  "recall": 0.9522,
+                  "iou": 0.422
+                },
+                "tolerant": {
+                  "predicted_cells": 740,
+                  "observed_cells": 335,
+                  "predicted_matched": 673,
+                  "observed_matched": 331,
+                  "misses": 4,
+                  "false_alarms": 67,
+                  "precision": 0.9095,
+                  "recall": 0.9881,
+                  "iou": 0.8761,
+                  "within_5km_score": 0.934
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "baseline_ring": {
+              "strict": {
+                "predicted_cells": 1105,
+                "observed_cells": 335,
+                "hits": 335,
+                "misses": 0,
+                "false_alarms": 770,
+                "precision": 0.3032,
+                "recall": 1.0,
+                "iou": 0.3032
+              },
+              "tolerant": {
+                "predicted_cells": 1105,
+                "observed_cells": 335,
+                "predicted_matched": 809,
+                "observed_matched": 335,
+                "misses": 0,
+                "false_alarms": 296,
+                "precision": 0.7321,
+                "recall": 1.0,
+                "iou": 0.659,
+                "within_5km_score": 0.7944
+              },
+              "adjusted": null,
+              "description": "comparator only: marks EVERY cell within k cells of the burning area as burned"
+            }
+          }
+        }
+      ],
+      "revealed_through_day": 3
+    }
+  },
+  "roraima_2024": {
+    "incident_id": "roraima_2024",
+    "reveal": {
+      "per_day": [
+        {
+          "day": 1,
+          "date": "2024-03-11",
+          "scored": true,
+          "observed_new_cells": 55,
+          "methods": {
+            "ml_physics": {
+              "strict": {
+                "predicted_cells": 121,
+                "observed_cells": 55,
+                "hits": 30,
+                "misses": 25,
+                "false_alarms": 91,
+                "precision": 0.2479,
+                "recall": 0.5455,
+                "iou": 0.2055
+              },
+              "tolerant": {
+                "predicted_cells": 121,
+                "observed_cells": 55,
+                "predicted_matched": 74,
+                "observed_matched": 46,
+                "misses": 9,
+                "false_alarms": 47,
+                "precision": 0.6116,
+                "recall": 0.8364,
+                "iou": 0.5172,
+                "within_5km_score": 0.6818
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 35,
+                "unverifiable_predicted_cells_tolerant": 17,
+                "strict": {
+                  "predicted_cells": 86,
+                  "observed_cells": 55,
+                  "hits": 30,
+                  "misses": 25,
+                  "false_alarms": 56,
+                  "precision": 0.3488,
+                  "recall": 0.5455,
+                  "iou": 0.2703
+                },
+                "tolerant": {
+                  "predicted_cells": 104,
+                  "observed_cells": 55,
+                  "predicted_matched": 74,
+                  "observed_matched": 46,
+                  "misses": 9,
+                  "false_alarms": 30,
+                  "precision": 0.7115,
+                  "recall": 0.8364,
+                  "iou": 0.6061,
+                  "within_5km_score": 0.7547
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "ml": {
+              "strict": {
+                "predicted_cells": 92,
+                "observed_cells": 55,
+                "hits": 25,
+                "misses": 30,
+                "false_alarms": 67,
+                "precision": 0.2717,
+                "recall": 0.4545,
+                "iou": 0.2049
+              },
+              "tolerant": {
+                "predicted_cells": 92,
+                "observed_cells": 55,
+                "predicted_matched": 59,
+                "observed_matched": 41,
+                "misses": 14,
+                "false_alarms": 33,
+                "precision": 0.6413,
+                "recall": 0.7455,
+                "iou": 0.5155,
+                "within_5km_score": 0.6803
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 23,
+                "unverifiable_predicted_cells_tolerant": 9,
+                "strict": {
+                  "predicted_cells": 69,
+                  "observed_cells": 55,
+                  "hits": 25,
+                  "misses": 30,
+                  "false_alarms": 44,
+                  "precision": 0.3623,
+                  "recall": 0.4545,
+                  "iou": 0.2525
+                },
+                "tolerant": {
+                  "predicted_cells": 83,
+                  "observed_cells": 55,
+                  "predicted_matched": 59,
+                  "observed_matched": 41,
+                  "misses": 14,
+                  "false_alarms": 24,
+                  "precision": 0.7108,
+                  "recall": 0.7455,
+                  "iou": 0.5682,
+                  "within_5km_score": 0.7246
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "baseline_ring": {
+              "strict": {
+                "predicted_cells": 505,
+                "observed_cells": 55,
+                "hits": 55,
+                "misses": 0,
+                "false_alarms": 450,
+                "precision": 0.1089,
+                "recall": 1.0,
+                "iou": 0.1089
+              },
+              "tolerant": {
+                "predicted_cells": 505,
+                "observed_cells": 55,
+                "predicted_matched": 197,
+                "observed_matched": 55,
+                "misses": 0,
+                "false_alarms": 308,
+                "precision": 0.3901,
+                "recall": 1.0,
+                "iou": 0.2903,
+                "within_5km_score": 0.45
+              },
+              "adjusted": null,
+              "description": "comparator only: marks EVERY cell within k cells of the burning area as burned"
+            }
+          }
+        },
+        {
+          "day": 2,
+          "date": "2024-03-12",
+          "scored": true,
+          "observed_new_cells": 92,
+          "methods": {
+            "ml_physics": {
+              "strict": {
+                "predicted_cells": 192,
+                "observed_cells": 92,
+                "hits": 55,
+                "misses": 37,
+                "false_alarms": 137,
+                "precision": 0.2865,
+                "recall": 0.5978,
+                "iou": 0.2402
+              },
+              "tolerant": {
+                "predicted_cells": 192,
+                "observed_cells": 92,
+                "predicted_matched": 135,
+                "observed_matched": 83,
+                "misses": 9,
+                "false_alarms": 57,
+                "precision": 0.7031,
+                "recall": 0.9022,
+                "iou": 0.6229,
+                "within_5km_score": 0.7676
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 50,
+                "unverifiable_predicted_cells_tolerant": 24,
+                "strict": {
+                  "predicted_cells": 142,
+                  "observed_cells": 92,
+                  "hits": 55,
+                  "misses": 37,
+                  "false_alarms": 87,
+                  "precision": 0.3873,
+                  "recall": 0.5978,
+                  "iou": 0.3073
+                },
+                "tolerant": {
+                  "predicted_cells": 168,
+                  "observed_cells": 92,
+                  "predicted_matched": 135,
+                  "observed_matched": 83,
+                  "misses": 9,
+                  "false_alarms": 33,
+                  "precision": 0.8036,
+                  "recall": 0.9022,
+                  "iou": 0.7219,
+                  "within_5km_score": 0.8385
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "ml": {
+              "strict": {
+                "predicted_cells": 153,
+                "observed_cells": 92,
+                "hits": 49,
+                "misses": 43,
+                "false_alarms": 104,
+                "precision": 0.3203,
+                "recall": 0.5326,
+                "iou": 0.25
+              },
+              "tolerant": {
+                "predicted_cells": 153,
+                "observed_cells": 92,
+                "predicted_matched": 108,
+                "observed_matched": 78,
+                "misses": 14,
+                "false_alarms": 45,
+                "precision": 0.7059,
+                "recall": 0.8478,
+                "iou": 0.6118,
+                "within_5km_score": 0.7592
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 45,
+                "unverifiable_predicted_cells_tolerant": 20,
+                "strict": {
+                  "predicted_cells": 108,
+                  "observed_cells": 92,
+                  "hits": 49,
+                  "misses": 43,
+                  "false_alarms": 59,
+                  "precision": 0.4537,
+                  "recall": 0.5326,
+                  "iou": 0.3245
+                },
+                "tolerant": {
+                  "predicted_cells": 133,
+                  "observed_cells": 92,
+                  "predicted_matched": 108,
+                  "observed_matched": 78,
+                  "misses": 14,
+                  "false_alarms": 25,
+                  "precision": 0.812,
+                  "recall": 0.8478,
+                  "iou": 0.7045,
+                  "within_5km_score": 0.8267
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "baseline_ring": {
+              "strict": {
+                "predicted_cells": 928,
+                "observed_cells": 92,
+                "hits": 92,
+                "misses": 0,
+                "false_alarms": 836,
+                "precision": 0.0991,
+                "recall": 1.0,
+                "iou": 0.0991
+              },
+              "tolerant": {
+                "predicted_cells": 928,
+                "observed_cells": 92,
+                "predicted_matched": 402,
+                "observed_matched": 92,
+                "misses": 0,
+                "false_alarms": 526,
+                "precision": 0.4332,
+                "recall": 1.0,
+                "iou": 0.3195,
+                "within_5km_score": 0.4843
+              },
+              "adjusted": null,
+              "description": "comparator only: marks EVERY cell within k cells of the burning area as burned"
+            }
+          }
+        },
+        {
+          "day": 3,
+          "date": "2024-03-13",
+          "scored": true,
+          "observed_new_cells": 124,
+          "methods": {
+            "ml_physics": {
+              "strict": {
+                "predicted_cells": 340,
+                "observed_cells": 124,
+                "hits": 86,
+                "misses": 38,
+                "false_alarms": 254,
+                "precision": 0.2529,
+                "recall": 0.6935,
+                "iou": 0.2275
+              },
+              "tolerant": {
+                "predicted_cells": 340,
+                "observed_cells": 124,
+                "predicted_matched": 231,
+                "observed_matched": 123,
+                "misses": 1,
+                "false_alarms": 109,
+                "precision": 0.6794,
+                "recall": 0.9919,
+                "iou": 0.6167,
+                "within_5km_score": 0.7629
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 0,
+                "unverifiable_predicted_cells_tolerant": 0,
+                "strict": {
+                  "predicted_cells": 340,
+                  "observed_cells": 124,
+                  "hits": 86,
+                  "misses": 38,
+                  "false_alarms": 254,
+                  "precision": 0.2529,
+                  "recall": 0.6935,
+                  "iou": 0.2275
+                },
+                "tolerant": {
+                  "predicted_cells": 340,
+                  "observed_cells": 124,
+                  "predicted_matched": 231,
+                  "observed_matched": 123,
+                  "misses": 1,
+                  "false_alarms": 109,
+                  "precision": 0.6794,
+                  "recall": 0.9919,
+                  "iou": 0.6167,
+                  "within_5km_score": 0.7629
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "ml": {
+              "strict": {
+                "predicted_cells": 237,
+                "observed_cells": 124,
+                "hits": 77,
+                "misses": 47,
+                "false_alarms": 160,
+                "precision": 0.3249,
+                "recall": 0.621,
+                "iou": 0.2711
+              },
+              "tolerant": {
+                "predicted_cells": 237,
+                "observed_cells": 124,
+                "predicted_matched": 179,
+                "observed_matched": 113,
+                "misses": 11,
+                "false_alarms": 58,
+                "precision": 0.7553,
+                "recall": 0.9113,
+                "iou": 0.6791,
+                "within_5km_score": 0.8089
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 0,
+                "unverifiable_predicted_cells_tolerant": 0,
+                "strict": {
+                  "predicted_cells": 237,
+                  "observed_cells": 124,
+                  "hits": 77,
+                  "misses": 47,
+                  "false_alarms": 160,
+                  "precision": 0.3249,
+                  "recall": 0.621,
+                  "iou": 0.2711
+                },
+                "tolerant": {
+                  "predicted_cells": 237,
+                  "observed_cells": 124,
+                  "predicted_matched": 179,
+                  "observed_matched": 113,
+                  "misses": 11,
+                  "false_alarms": 58,
+                  "precision": 0.7553,
+                  "recall": 0.9113,
+                  "iou": 0.6791,
+                  "within_5km_score": 0.8089
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "baseline_ring": {
+              "strict": {
+                "predicted_cells": 1184,
+                "observed_cells": 124,
+                "hits": 124,
+                "misses": 0,
+                "false_alarms": 1060,
+                "precision": 0.1047,
+                "recall": 1.0,
+                "iou": 0.1047
+              },
+              "tolerant": {
+                "predicted_cells": 1184,
+                "observed_cells": 124,
+                "predicted_matched": 507,
+                "observed_matched": 124,
+                "misses": 0,
+                "false_alarms": 677,
+                "precision": 0.4282,
+                "recall": 1.0,
+                "iou": 0.3179,
+                "within_5km_score": 0.4824
+              },
+              "adjusted": null,
+              "description": "comparator only: marks EVERY cell within k cells of the burning area as burned"
+            }
+          }
+        }
+      ],
+      "revealed_through_day": 3
+    }
+  },
+  "smokehouse_creek_2024": {
+    "incident_id": "smokehouse_creek_2024",
+    "reveal": {
+      "per_day": [
+        {
+          "day": 1,
+          "date": "2024-02-27",
+          "scored": true,
+          "observed_new_cells": 13,
+          "methods": {
+            "ml_physics": {
+              "strict": {
+                "predicted_cells": 13,
+                "observed_cells": 13,
+                "hits": 5,
+                "misses": 8,
+                "false_alarms": 8,
+                "precision": 0.3846,
+                "recall": 0.3846,
+                "iou": 0.2381
+              },
+              "tolerant": {
+                "predicted_cells": 13,
+                "observed_cells": 13,
+                "predicted_matched": 8,
+                "observed_matched": 10,
+                "misses": 3,
+                "false_alarms": 5,
+                "precision": 0.6154,
+                "recall": 0.7692,
+                "iou": 0.5294,
+                "within_5km_score": 0.6923
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 2,
+                "unverifiable_predicted_cells_tolerant": 0,
+                "strict": {
+                  "predicted_cells": 11,
+                  "observed_cells": 13,
+                  "hits": 5,
+                  "misses": 8,
+                  "false_alarms": 6,
+                  "precision": 0.4545,
+                  "recall": 0.3846,
+                  "iou": 0.2632
+                },
+                "tolerant": {
+                  "predicted_cells": 13,
+                  "observed_cells": 13,
+                  "predicted_matched": 8,
+                  "observed_matched": 10,
+                  "misses": 3,
+                  "false_alarms": 5,
+                  "precision": 0.6154,
+                  "recall": 0.7692,
+                  "iou": 0.5294,
+                  "within_5km_score": 0.6923
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "ml": {
+              "strict": {
+                "predicted_cells": 7,
+                "observed_cells": 13,
+                "hits": 3,
+                "misses": 10,
+                "false_alarms": 4,
+                "precision": 0.4286,
+                "recall": 0.2308,
+                "iou": 0.1765
+              },
+              "tolerant": {
+                "predicted_cells": 7,
+                "observed_cells": 13,
+                "predicted_matched": 5,
+                "observed_matched": 7,
+                "misses": 6,
+                "false_alarms": 2,
+                "precision": 0.7143,
+                "recall": 0.5385,
+                "iou": 0.4286,
+                "within_5km_score": 0.6
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 1,
+                "unverifiable_predicted_cells_tolerant": 0,
+                "strict": {
+                  "predicted_cells": 6,
+                  "observed_cells": 13,
+                  "hits": 3,
+                  "misses": 10,
+                  "false_alarms": 3,
+                  "precision": 0.5,
+                  "recall": 0.2308,
+                  "iou": 0.1875
+                },
+                "tolerant": {
+                  "predicted_cells": 7,
+                  "observed_cells": 13,
+                  "predicted_matched": 5,
+                  "observed_matched": 7,
+                  "misses": 6,
+                  "false_alarms": 2,
+                  "precision": 0.7143,
+                  "recall": 0.5385,
+                  "iou": 0.4286,
+                  "within_5km_score": 0.6
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "baseline_ring": {
+              "strict": {
+                "predicted_cells": 51,
+                "observed_cells": 13,
+                "hits": 13,
+                "misses": 0,
+                "false_alarms": 38,
+                "precision": 0.2549,
+                "recall": 1.0,
+                "iou": 0.2549
+              },
+              "tolerant": {
+                "predicted_cells": 51,
+                "observed_cells": 13,
+                "predicted_matched": 20,
+                "observed_matched": 13,
+                "misses": 0,
+                "false_alarms": 31,
+                "precision": 0.3922,
+                "recall": 1.0,
+                "iou": 0.3474,
+                "within_5km_score": 0.5156
+              },
+              "adjusted": null,
+              "description": "comparator only: marks EVERY cell within k cells of the burning area as burned"
+            }
+          }
+        },
+        {
+          "day": 2,
+          "date": "2024-02-28",
+          "scored": true,
+          "observed_new_cells": 17,
+          "methods": {
+            "ml_physics": {
+              "strict": {
+                "predicted_cells": 19,
+                "observed_cells": 17,
+                "hits": 6,
+                "misses": 11,
+                "false_alarms": 13,
+                "precision": 0.3158,
+                "recall": 0.3529,
+                "iou": 0.2
+              },
+              "tolerant": {
+                "predicted_cells": 19,
+                "observed_cells": 17,
+                "predicted_matched": 10,
+                "observed_matched": 14,
+                "misses": 3,
+                "false_alarms": 9,
+                "precision": 0.5263,
+                "recall": 0.8235,
+                "iou": 0.5,
+                "within_5km_score": 0.6667
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 0,
+                "unverifiable_predicted_cells_tolerant": 0,
+                "strict": {
+                  "predicted_cells": 19,
+                  "observed_cells": 17,
+                  "hits": 6,
+                  "misses": 11,
+                  "false_alarms": 13,
+                  "precision": 0.3158,
+                  "recall": 0.3529,
+                  "iou": 0.2
+                },
+                "tolerant": {
+                  "predicted_cells": 19,
+                  "observed_cells": 17,
+                  "predicted_matched": 10,
+                  "observed_matched": 14,
+                  "misses": 3,
+                  "false_alarms": 9,
+                  "precision": 0.5263,
+                  "recall": 0.8235,
+                  "iou": 0.5,
+                  "within_5km_score": 0.6667
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "ml": {
+              "strict": {
+                "predicted_cells": 12,
+                "observed_cells": 17,
+                "hits": 5,
+                "misses": 12,
+                "false_alarms": 7,
+                "precision": 0.4167,
+                "recall": 0.2941,
+                "iou": 0.2083
+              },
+              "tolerant": {
+                "predicted_cells": 12,
+                "observed_cells": 17,
+                "predicted_matched": 8,
+                "observed_matched": 13,
+                "misses": 4,
+                "false_alarms": 4,
+                "precision": 0.6667,
+                "recall": 0.7647,
+                "iou": 0.5676,
+                "within_5km_score": 0.7241
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 0,
+                "unverifiable_predicted_cells_tolerant": 0,
+                "strict": {
+                  "predicted_cells": 12,
+                  "observed_cells": 17,
+                  "hits": 5,
+                  "misses": 12,
+                  "false_alarms": 7,
+                  "precision": 0.4167,
+                  "recall": 0.2941,
+                  "iou": 0.2083
+                },
+                "tolerant": {
+                  "predicted_cells": 12,
+                  "observed_cells": 17,
+                  "predicted_matched": 8,
+                  "observed_matched": 13,
+                  "misses": 4,
+                  "false_alarms": 4,
+                  "precision": 0.6667,
+                  "recall": 0.7647,
+                  "iou": 0.5676,
+                  "within_5km_score": 0.7241
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "baseline_ring": {
+              "strict": {
+                "predicted_cells": 127,
+                "observed_cells": 17,
+                "hits": 17,
+                "misses": 0,
+                "false_alarms": 110,
+                "precision": 0.1339,
+                "recall": 1.0,
+                "iou": 0.1339
+              },
+              "tolerant": {
+                "predicted_cells": 127,
+                "observed_cells": 17,
+                "predicted_matched": 44,
+                "observed_matched": 17,
+                "misses": 0,
+                "false_alarms": 83,
+                "precision": 0.3465,
+                "recall": 1.0,
+                "iou": 0.2687,
+                "within_5km_score": 0.4236
+              },
+              "adjusted": null,
+              "description": "comparator only: marks EVERY cell within k cells of the burning area as burned"
+            }
+          }
+        },
+        {
+          "day": 3,
+          "date": "2024-02-29",
+          "scored": true,
+          "observed_new_cells": 17,
+          "methods": {
+            "ml_physics": {
+              "strict": {
+                "predicted_cells": 26,
+                "observed_cells": 17,
+                "hits": 10,
+                "misses": 7,
+                "false_alarms": 16,
+                "precision": 0.3846,
+                "recall": 0.5882,
+                "iou": 0.303
+              },
+              "tolerant": {
+                "predicted_cells": 26,
+                "observed_cells": 17,
+                "predicted_matched": 16,
+                "observed_matched": 16,
+                "misses": 1,
+                "false_alarms": 10,
+                "precision": 0.6154,
+                "recall": 0.9412,
+                "iou": 0.5926,
+                "within_5km_score": 0.7442
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 0,
+                "unverifiable_predicted_cells_tolerant": 0,
+                "strict": {
+                  "predicted_cells": 26,
+                  "observed_cells": 17,
+                  "hits": 10,
+                  "misses": 7,
+                  "false_alarms": 16,
+                  "precision": 0.3846,
+                  "recall": 0.5882,
+                  "iou": 0.303
+                },
+                "tolerant": {
+                  "predicted_cells": 26,
+                  "observed_cells": 17,
+                  "predicted_matched": 16,
+                  "observed_matched": 16,
+                  "misses": 1,
+                  "false_alarms": 10,
+                  "precision": 0.6154,
+                  "recall": 0.9412,
+                  "iou": 0.5926,
+                  "within_5km_score": 0.7442
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "ml": {
+              "strict": {
+                "predicted_cells": 19,
+                "observed_cells": 17,
+                "hits": 6,
+                "misses": 11,
+                "false_alarms": 13,
+                "precision": 0.3158,
+                "recall": 0.3529,
+                "iou": 0.2
+              },
+              "tolerant": {
+                "predicted_cells": 19,
+                "observed_cells": 17,
+                "predicted_matched": 10,
+                "observed_matched": 14,
+                "misses": 3,
+                "false_alarms": 9,
+                "precision": 0.5263,
+                "recall": 0.8235,
+                "iou": 0.5,
+                "within_5km_score": 0.6667
+              },
+              "adjusted": {
+                "unverifiable_predicted_cells_strict": 0,
+                "unverifiable_predicted_cells_tolerant": 0,
+                "strict": {
+                  "predicted_cells": 19,
+                  "observed_cells": 17,
+                  "hits": 6,
+                  "misses": 11,
+                  "false_alarms": 13,
+                  "precision": 0.3158,
+                  "recall": 0.3529,
+                  "iou": 0.2
+                },
+                "tolerant": {
+                  "predicted_cells": 19,
+                  "observed_cells": 17,
+                  "predicted_matched": 10,
+                  "observed_matched": 14,
+                  "misses": 3,
+                  "false_alarms": 9,
+                  "precision": 0.5263,
+                  "recall": 0.8235,
+                  "iou": 0.5,
+                  "within_5km_score": 0.6667
+                },
+                "note": "predicted-but-unobserved cells with no clear overpass proxy are excluded from the predicted set; cloud proxy is ERA5 modelled cloud cover, not the satellite cloud mask"
+              }
+            },
+            "baseline_ring": {
+              "strict": {
+                "predicted_cells": 229,
+                "observed_cells": 17,
+                "hits": 17,
+                "misses": 0,
+                "false_alarms": 212,
+                "precision": 0.0742,
+                "recall": 1.0,
+                "iou": 0.0742
+              },
+              "tolerant": {
+                "predicted_cells": 229,
+                "observed_cells": 17,
+                "predicted_matched": 53,
+                "observed_matched": 17,
+                "misses": 0,
+                "false_alarms": 176,
+                "precision": 0.2314,
+                "recall": 1.0,
+                "iou": 0.1659,
+                "within_5km_score": 0.2846
+              },
+              "adjusted": null,
+              "description": "comparator only: marks EVERY cell within k cells of the burning area as burned"
+            }
+          }
+        }
+      ],
+      "revealed_through_day": 3
+    }
+  }
+}

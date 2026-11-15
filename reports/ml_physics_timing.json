@@ -1,0 +1,308 @@
+{
+ "measured_utc": "2026-11-15T19:20:55Z",
+ "base": "http://localhost:8080",
+ "first_call": {
+  "saved incident": {
+   "n": 4,
+   "failed": 1,
+   "p50_s": 5.5,
+   "p95_s": 13.4,
+   "max_s": 14.3,
+   "share_over_60s": 0.25
+  },
+  "fresh area": {
+   "n": 3,
+   "failed": 0,
+   "p50_s": 13.7,
+   "p95_s": 21.8,
+   "max_s": 22.7,
+   "share_over_60s": 0.0
+  }
+ },
+ "second_call_warm": {
+  "saved incident": {
+   "n": 4,
+   "failed": 1,
+   "p50_s": 3.0,
+   "p95_s": 3.2,
+   "max_s": 3.2,
+   "share_over_60s": 0.25
+  },
+  "fresh area": {
+   "n": 3,
+   "failed": 0,
+   "p50_s": 2.5,
+   "p95_s": 4.9,
+   "max_s": 5.2,
+   "share_over_60s": 0.0
+  }
+ },
+ "cases": [
+  {
+   "case": {
+    "name": "flin_flon_2025",
+    "lat": 54.77,
+    "lon": -101.87,
+    "date": "2025-05-28",
+    "group": "saved incident"
+   },
+   "first": {
+    "ok": true,
+    "wall_s": 5.5,
+    "timings": {
+     "hourly_total_s": 5.15,
+     "weather_and_landscape_s": 0.182,
+     "calibration_s": 0.0,
+     "physical_simulation_s": 4.954,
+     "landscape_fetch_s": 0.18,
+     "daily_guidance_s": 0.831,
+     "daily_guidance_cache_hit": false,
+     "hourly_start_offset_s": 0.321,
+     "combined_total_s": 5.474
+    },
+    "ignition": "archive"
+   },
+   "second": {
+    "ok": true,
+    "wall_s": 3.0,
+    "timings": {
+     "hourly_total_s": 3.029,
+     "weather_and_landscape_s": 0.065,
+     "calibration_s": 0.0,
+     "physical_simulation_s": 2.963,
+     "landscape_fetch_s": 0.06,
+     "daily_guidance_s": 0.002,
+     "daily_guidance_cache_hit": true,
+     "hourly_start_offset_s": 0.002,
+     "combined_total_s": 3.034
+    },
+    "ignition": "archive"
+   }
+  },
+  {
+   "case": {
+    "name": "kalimantan_2023",
+    "lat": -2.975,
+    "lon": 114.725,
+    "date": "2023-10-10",
+    "group": "saved incident"
+   },
+   "first": {
+    "ok": false,
+    "wall_s": 0.0,
+    "error": "HTTP 503"
+   },
+   "second": {
+    "ok": false,
+    "wall_s": 0.0,
+    "error": "HTTP 503"
+   }
+  },
+  {
+   "case": {
+    "name": "pantanal_2024",
+    "lat": -17.37,
+    "lon": -57.42,
+    "date": "2024-08-20",
+    "group": "saved incident"
+   },
+   "first": {
+    "ok": true,
+    "wall_s": 3.9,
+    "timings": {
+     "hourly_total_s": 3.804,
+     "weather_and_landscape_s": 0.163,
+     "calibration_s": 0.0,
+     "physical_simulation_s": 3.618,
+     "landscape_fetch_s": 0.16,
+     "daily_guidance_s": 0.744,
+     "daily_guidance_cache_hit": false,
+     "hourly_start_offset_s": 0.125,
+     "combined_total_s": 3.931
+    },
+    "ignition": "archive"
+   },
+   "second": {
+    "ok": true,
+    "wall_s": 2.5,
+    "timings": {
+     "hourly_total_s": 2.529,
+     "weather_and_landscape_s": 0.067,
+     "calibration_s": 0.0,
+     "physical_simulation_s": 2.46,
+     "landscape_fetch_s": 0.07,
+     "daily_guidance_s": 0.002,
+     "daily_guidance_cache_hit": true,
+     "hourly_start_offset_s": 0.002,
+     "combined_total_s": 2.533
+    },
+    "ignition": "archive"
+   }
+  },
+  {
+   "case": {
+    "name": "punjab_stubble_2024",
+    "lat": 30.93,
+    "lon": 75.18,
+    "date": "2024-11-01",
+    "group": "saved incident"
+   },
+   "first": {
+    "ok": true,
+    "wall_s": 14.3,
+    "timings": {
+     "hourly_total_s": 14.243,
+     "weather_and_landscape_s": 9.469,
+     "calibration_s": 0.0,
+     "physical_simulation_s": 4.761,
+     "landscape_fetch_s": 9.47,
+     "daily_guidance_s": 3.673,
+     "daily_guidance_cache_hit": false,
+     "hourly_start_offset_s": 0.001,
+     "combined_total_s": 14.248
+    },
+    "ignition": "archive"
+   },
+   "second": {
+    "ok": true,
+    "wall_s": 3.2,
+    "timings": {
+     "hourly_total_s": 3.16,
+     "weather_and_landscape_s": 0.071,
+     "calibration_s": 0.0,
+     "physical_simulation_s": 3.087,
+     "landscape_fetch_s": 0.07,
+     "daily_guidance_s": 0.01,
+     "daily_guidance_cache_hit": true,
+     "hourly_start_offset_s": 0.01,
+     "combined_total_s": 3.172
+    },
+    "ignition": "archive"
+   }
+  },
+  {
+   "case": {
+    "name": "fresh 2025-06-12",
+    "lat": -13.675,
+    "lon": -53.925,
+    "date": "2025-06-12",
+    "group": "fresh area"
+   },
+   "first": {
+    "ok": true,
+    "wall_s": 13.3,
+    "timings": {
+     "hourly_total_s": 13.297,
+     "weather_and_landscape_s": 9.233,
+     "calibration_s": 0.0,
+     "physical_simulation_s": 4.054,
+     "landscape_fetch_s": 9.23,
+     "daily_guidance_s": 2.005,
+     "daily_guidance_cache_hit": false,
+     "hourly_start_offset_s": 0.001,
+     "combined_total_s": 13.3
+    },
+    "ignition": "archive"
+   },
+   "second": {
+    "ok": true,
+    "wall_s": 2.5,
+    "timings": {
+     "hourly_total_s": 2.462,
+     "weather_and_landscape_s": 0.068,
+     "calibration_s": 0.0,
+     "physical_simulation_s": 2.393,
+     "landscape_fetch_s": 0.07,
+     "daily_guidance_s": 0.001,
+     "daily_guidance_cache_hit": true,
+     "hourly_start_offset_s": 0.001,
+     "combined_total_s": 2.466
+    },
+    "ignition": "archive"
+   }
+  },
+  {
+   "case": {
+    "name": "fresh 2025-07-22",
+    "lat": -11.825,
+    "lon": 133.075,
+    "date": "2025-07-22",
+    "group": "fresh area"
+   },
+   "first": {
+    "ok": true,
+    "wall_s": 22.7,
+    "timings": {
+     "hourly_total_s": 22.644,
+     "weather_and_landscape_s": 18.868,
+     "calibration_s": 0.0,
+     "physical_simulation_s": 3.761,
+     "landscape_fetch_s": 18.87,
+     "daily_guidance_s": 2.308,
+     "daily_guidance_cache_hit": false,
+     "hourly_start_offset_s": 0.001,
+     "combined_total_s": 22.647
+    },
+    "ignition": "archive"
+   },
+   "second": {
+    "ok": true,
+    "wall_s": 2.4,
+    "timings": {
+     "hourly_total_s": 2.416,
+     "weather_and_landscape_s": 0.068,
+     "calibration_s": 0.0,
+     "physical_simulation_s": 2.346,
+     "landscape_fetch_s": 0.07,
+     "daily_guidance_s": 0.004,
+     "daily_guidance_cache_hit": true,
+     "hourly_start_offset_s": 0.004,
+     "combined_total_s": 2.422
+    },
+    "ignition": "archive"
+   }
+  },
+  {
+   "case": {
+    "name": "fresh 2025-04-22",
+    "lat": 28.775,
+    "lon": 81.125,
+    "date": "2025-04-22",
+    "group": "fresh area"
+   },
+   "first": {
+    "ok": true,
+    "wall_s": 13.7,
+    "timings": {
+     "hourly_total_s": 13.709,
+     "weather_and_landscape_s": 9.421,
+     "calibration_s": 0.0,
+     "physical_simulation_s": 4.274,
+     "landscape_fetch_s": 9.42,
+     "daily_guidance_s": 2.313,
+     "daily_guidance_cache_hit": false,
+     "hourly_start_offset_s": 0.001,
+     "combined_total_s": 13.712
+    },
+    "ignition": "archive"
+   },
+   "second": {
+    "ok": true,
+    "wall_s": 5.2,
+    "timings": {
+     "hourly_total_s": 5.172,
+     "weather_and_landscape_s": 0.066,
+     "calibration_s": 0.0,
+     "physical_simulation_s": 5.104,
+     "landscape_fetch_s": 0.07,
+     "daily_guidance_s": 0.006,
+     "daily_guidance_cache_hit": true,
+     "hourly_start_offset_s": 0.006,
+     "combined_total_s": 5.18
+    },
+    "ignition": "archive"
+   }
+  }
+ ],
+ "note": "Small sample, one machine, server shared with other work. Wall clock of the whole HTTP call (ML daily guidance + physics + weather/landscape). Not a benchmark of every location."
+}

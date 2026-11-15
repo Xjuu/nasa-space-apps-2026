@@ -23,7 +23,7 @@
 }
 .tour-root:not(.tour-center) .tour-dim { background: transparent; }
 .tour-card {
-  position: fixed; box-sizing: border-box; width: min(380px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); overflow: auto;
+  position: fixed; box-sizing: border-box; width: min(600px, calc(100vw - 32px)); max-height: calc(100dvh - 24px); overflow: auto;
   padding: 16px 16px 14px; border: 1px solid var(--border, #3c3c3c); border-radius: 8px;
   background: var(--bg, #252526); color: var(--ink, #cccccc);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
@@ -70,3 +70,21 @@ html[data-theme="dark"] .gh-link:hover { background: #30363d; border-color: #8b9
 html[data-theme="dark"] a.gh-link, html[data-theme="dark"] a.gh-link:visited { color: #e6edf3; }
 html[data-theme="dark"] a.gh-link:hover { color: #ffffff; }
 a.gh-link, a.gh-link:visited { color: #ffffff; }
+
+/* headline card */
+.headline-card { position: relative; margin: 10px 16px; padding: 12px 36px 12px 14px; border: 1px solid var(--border, #3c3c3c); border-left: 4px solid var(--primary, #0e639c); border-radius: 8px; background: var(--surface-2, rgba(127,127,127,.08)); font-size: 14px; line-height: 1.45; }
+.headline-card p { margin: 6px 0; }
+.hl-eyebrow { font-weight: 700; font-size: 13px; letter-spacing: .02em; }
+.hl-x { position: absolute; top: 4px; right: 4px; width: 32px; height: 32px; border: 0; background: transparent; color: inherit; font-size: 20px; cursor: pointer; border-radius: 6px; }
+.hl-x:hover { background: rgba(127,127,127,.2); }
+.hl-go { margin-top: 4px; }
+
+/* wider guided tour and header button */
+.tour-card { padding: 22px 24px 18px; }
+.tour-card h3 { font-size: 20px; }
+.tour-text { font-size: 16px; line-height: 1.6; }
+.tour-btn { min-width: 120px; }
+@media (min-width: 641px) { #workspace-header .tour-launch { min-width: 150px; justify-content: center; } }
+html[data-theme] .tour-card h3 { font-size: 21px; font-weight: 650; margin: 6px 36px 10px 0; }
+html[data-theme] .tour-card .tour-count { font-size: 13px; }
+html[data-theme] .tour-card .tour-text { font-size: 16px; line-height: 1.6; }

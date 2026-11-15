@@ -1,0 +1,32 @@
+/* Top bar tidy-up: tabs on the left, all tools grouped on the right with one height, one gap and soft pill shapes. */
+#workspace-header { gap: 8px; }
+#workspace-header .mode-tabs { margin-right: auto; }
+#workspace-header .gh-link, #workspace-header .tour-launch, #workspace-header .lang-switch,
+#workspace-header .theme-toggle, #workspace-header .accessibility-toggle { margin: 0; flex: none; }
+@media (min-width: 641px) {
+  #workspace-header .gh-link, #workspace-header .tour-launch, #workspace-header .theme-toggle,
+  #workspace-header .accessibility-toggle, #workspace-header .lang-switch { height: 36px; min-height: 36px; box-sizing: border-box; }
+  #workspace-header .theme-toggle, #workspace-header .accessibility-toggle { width: 36px; min-width: 36px; padding: 0; display: inline-grid; place-items: center; }
+  #workspace-header .gh-link, #workspace-header .tour-launch { padding: 0 14px 0 10px; gap: 8px; }
+  #workspace-header .lang-switch button { min-height: 34px; height: 34px; }
+}
+#workspace-header .gh-link, #workspace-header .tour-launch, #workspace-header .lang-switch,
+#workspace-header .theme-toggle, #workspace-header .accessibility-toggle { border-radius: 999px; transition: background-color .15s ease, border-color .15s ease, transform .15s ease; }
+#workspace-header .gh-link:hover, #workspace-header .tour-launch:hover, #workspace-header .theme-toggle:hover,
+#workspace-header .accessibility-toggle:hover { transform: translateY(-1px); }
+#workspace-header .lang-switch button:first-child { border-radius: 999px 0 0 999px; }
+#workspace-header .lang-switch button:last-child { border-radius: 0 999px 999px 0; }
+@media (prefers-reduced-motion: reduce) { #workspace-header * { transition: none !important; transform: none !important; } }
+
+@media (max-width: 640px) {
+  #workspace-header { gap: 4px; padding-left: 8px; padding-right: 8px; }
+  #workspace-header .workspace-purpose { display: none; }
+  #workspace-header .brand-text { min-width: 0; }
+  /* touch targets stay 44 px high; width 40 px keeps the whole bar on one row at 390 px */
+  #workspace-header .gh-link, #workspace-header .tour-launch, #workspace-header .theme-toggle, #workspace-header .accessibility-toggle {
+    width: 40px; min-width: 40px; height: 44px; min-height: 44px; padding: 0; display: inline-grid; place-items: center; box-sizing: border-box;
+  }
+  #workspace-header .lang-switch { height: 44px; box-sizing: border-box; align-items: stretch; }
+  #workspace-header .lang-switch button { min-width: 40px; min-height: 44px; height: 44px; padding: 0 6px; }
+}
+@media (max-width: 420px) { #workspace-header .brand-text { display: none; } }

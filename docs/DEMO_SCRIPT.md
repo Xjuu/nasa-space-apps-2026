@@ -84,7 +84,7 @@ All numbers below come from `reports/harmonization_headline.json` and the saved 
 
 Click: **History** tab, scroll to **25-year harmonized record**. Region *Five countries*, measure *Fire detections*.
 
-Say: "If you just splice MODIS before 2012 onto VIIRS after, the record jumps. For our five countries, 2012 has 5.2 times the detections of 2011, and the naive record shows a fire trend of plus 7.7 percent a year. That is mostly the sensor change. After harmonization the 2012 step is 1.16 times, and the trend is plus 0.6 percent a year, not significant. The continuous MODIS-only record agrees: no significant trend. On held-out years 2021 to 2025, harmonized detection totals match real VIIRS within 6 percent (annual correlation 0.99)."
+Say: "If you just splice MODIS before 2012 onto VIIRS after, the record jumps. For our five countries, 2012 has 5.2 times the detections of 2011, and the naive record shows a fire trend of plus 13.8 percent a year in the detection count. That is mostly the sensor change. After harmonization the 2012 step is 1.16 times, and the trend is minus 0.8 percent a year, not significant. The continuous MODIS-only record agrees: no significant trend. On held-out years 2021 to 2025, harmonized detection totals match real VIIRS within 6 percent (annual correlation 0.99)."
 
 Say, honestly: "Burning cell-days are weaker: the harmonized step is still 1.5 times, or 1.12 with a calibration to the overlap years, and the reconstruction finds only about 36 percent of the cells VIIRS sees, so it is biased by region (0.5 to 1.5 times). Detections and fire power are the clean measures. Only five countries have the full 25 years."
 

@@ -1,0 +1,1077 @@
+{
+ "year": 2024,
+ "scored_cases": 60,
+ "share_flagged_outside": 0.767,
+ "in_range": {
+  "n": 14,
+  "day1_within5km": 0.58,
+  "day3_within5km": 0.63
+ },
+ "outside": {
+  "n": 46,
+  "day1_within5km": 0.536,
+  "day3_within5km": 0.761
+ },
+ "all": {
+  "n": 60,
+  "day1_within5km": 0.546,
+  "day3_within5km": 0.73
+ },
+ "reference": {
+  "n_reference_cases": 1500,
+  "years": "2013-2022",
+  "quantiles": {
+   "n0": {
+    "p1": 5.0,
+    "p5": 7.0,
+    "p50": 46.0,
+    "p99": 744.0899999999999
+   },
+   "h30": {
+    "p1": 16.0,
+    "p5": 52.0,
+    "p50": 366.5,
+    "p99": 1391.05
+   },
+   "h365": {
+    "p1": 101.94,
+    "p5": 312.95,
+    "p50": 998.0,
+    "p99": 1634.01
+   },
+   "tile": {
+    "p1": 3.8829227906025987,
+    "p5": 4.453257167502123,
+    "p50": 5.259574767597164,
+    "p99": 5.691028418271315
+   }
+  }
+ },
+ "cases": [
+  {
+   "case": [
+    8847,
+    4150,
+    1826
+   ],
+   "in_range": false,
+   "reasons": [
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 1.0,
+   "d3_tol": 0.2,
+   "n0": 5,
+   "h30": 350,
+   "h365": 424,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    9001,
+    4503,
+    1375
+   ],
+   "in_range": false,
+   "reasons": [
+    "h365=1665 outside the training range [102, 1634]",
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.6088235294117647,
+   "d3_tol": 0.9310661764705882,
+   "n0": 198,
+   "h30": 1375,
+   "h365": 1665,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    8796,
+    3982,
+    1885
+   ],
+   "in_range": false,
+   "reasons": [
+    "h30=1525 outside the training range [16, 1391]",
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.4275618374558304,
+   "d3_tol": 0.9670995670995671,
+   "n0": 128,
+   "h30": 1525,
+   "h365": 1625,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    8838,
+    1751,
+    2136
+   ],
+   "in_range": false,
+   "reasons": [
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.4666666666666667,
+   "d3_tol": 0.8083832335329342,
+   "n0": 49,
+   "h30": 432,
+   "h365": 1586,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    8876,
+    3355,
+    2036
+   ],
+   "in_range": false,
+   "reasons": [
+    "h365=1681 outside the training range [102, 1634]",
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.7076502732240437,
+   "d3_tol": 0.9327433628318584,
+   "n0": 217,
+   "h30": 1267,
+   "h365": 1681,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    8872,
+    5803,
+    2585
+   ],
+   "in_range": false,
+   "reasons": [
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.1875,
+   "d3_tol": 0.3018867924528302,
+   "n0": 39,
+   "h30": 188,
+   "h365": 455,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    9088,
+    4546,
+    1440
+   ],
+   "in_range": false,
+   "reasons": [
+    "h365=1661 outside the training range [102, 1634]",
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.6648936170212766,
+   "d3_tol": 0.8647342995169082,
+   "n0": 131,
+   "h30": 1324,
+   "h365": 1661,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    9091,
+    4543,
+    1461
+   ],
+   "in_range": false,
+   "reasons": [
+    "h30=1437 outside the training range [16, 1391]",
+    "h365=1649 outside the training range [102, 1634]",
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.4479166666666667,
+   "d3_tol": 0.467005076142132,
+   "n0": 145,
+   "h30": 1437,
+   "h365": 1649,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    9127,
+    3939,
+    1929
+   ],
+   "in_range": false,
+   "reasons": [
+    "h30=1470 outside the training range [16, 1391]",
+    "h365=1681 outside the training range [102, 1634]",
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.8707124010554089,
+   "d3_tol": 0.9851428571428571,
+   "n0": 335,
+   "h30": 1470,
+   "h365": 1681,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    8791,
+    5141,
+    2044
+   ],
+   "in_range": true,
+   "reasons": [],
+   "d1_tol": 0.5072463768115942,
+   "d3_tol": 0.695067264573991,
+   "n0": 59,
+   "h30": 352,
+   "h365": 1226,
+   "tile": 5.251168393100755
+  },
+  {
+   "case": [
+    8813,
+    3592,
+    1982
+   ],
+   "in_range": false,
+   "reasons": [
+    "h30=1610 outside the training range [16, 1391]",
+    "h365=1668 outside the training range [102, 1634]",
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.4470046082949309,
+   "d3_tol": 0.8994252873563219,
+   "n0": 194,
+   "h30": 1610,
+   "h365": 1668,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    9068,
+    4301,
+    1603
+   ],
+   "in_range": false,
+   "reasons": [
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.8081841432225064,
+   "d3_tol": 0.9094437257438551,
+   "n0": 328,
+   "h30": 1163,
+   "h365": 1419,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    8791,
+    5726,
+    2045
+   ],
+   "in_range": false,
+   "reasons": [
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.7713498622589532,
+   "d3_tol": 0.9166666666666666,
+   "n0": 402,
+   "h30": 1060,
+   "h365": 1330,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    8821,
+    1864,
+    2096
+   ],
+   "in_range": false,
+   "reasons": [
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.4117647058823529,
+   "d3_tol": 0.464,
+   "n0": 37,
+   "h30": 262,
+   "h365": 1612,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    8826,
+    3369,
+    2025
+   ],
+   "in_range": false,
+   "reasons": [
+    "h30=1410 outside the training range [16, 1391]",
+    "h365=1681 outside the training range [102, 1634]",
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.4797297297297297,
+   "d3_tol": 0.7807377049180327,
+   "n0": 180,
+   "h30": 1410,
+   "h365": 1681,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    9091,
+    2462,
+    1401
+   ],
+   "in_range": true,
+   "reasons": [],
+   "d1_tol": 1.0,
+   "d3_tol": 0.3333333333333333,
+   "n0": 12,
+   "h30": 69,
+   "h365": 958,
+   "tile": 5.138719420873998
+  },
+  {
+   "case": [
+    8891,
+    1794,
+    2158
+   ],
+   "in_range": false,
+   "reasons": [
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.7877906976744186,
+   "d3_tol": 0.952317880794702,
+   "n0": 277,
+   "h30": 916,
+   "h365": 1090,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    8855,
+    5606,
+    2095
+   ],
+   "in_range": false,
+   "reasons": [
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.6060606060606061,
+   "d3_tol": 0.8913043478260869,
+   "n0": 89,
+   "h30": 1096,
+   "h365": 1501,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    8822,
+    3889,
+    1917
+   ],
+   "in_range": false,
+   "reasons": [
+    "h30=1609 outside the training range [16, 1391]",
+    "h365=1651 outside the training range [102, 1634]",
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.8368298368298368,
+   "d3_tol": 0.9456635318704284,
+   "n0": 210,
+   "h30": 1609,
+   "h365": 1651,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    8933,
+    4265,
+    1681
+   ],
+   "in_range": false,
+   "reasons": [
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.5833333333333334,
+   "d3_tol": 0.7586206896551724,
+   "n0": 98,
+   "h30": 355,
+   "h365": 361,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    8979,
+    4406,
+    1513
+   ],
+   "in_range": false,
+   "reasons": [
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.5857740585774058,
+   "d3_tol": 0.9327485380116959,
+   "n0": 279,
+   "h30": 864,
+   "h365": 1135,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    9039,
+    2750,
+    1348
+   ],
+   "in_range": true,
+   "reasons": [],
+   "d1_tol": 0.3333333333333333,
+   "d3_tol": 0.8068181818181818,
+   "n0": 19,
+   "h30": 377,
+   "h365": 771,
+   "tile": 4.962946748019462
+  },
+  {
+   "case": [
+    8987,
+    3893,
+    1721
+   ],
+   "in_range": false,
+   "reasons": [
+    "h30=1480 outside the training range [16, 1391]",
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.726605504587156,
+   "d3_tol": 0.849250936329588,
+   "n0": 344,
+   "h30": 1480,
+   "h365": 1622,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    9123,
+    3609,
+    2018
+   ],
+   "in_range": false,
+   "reasons": [
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.7707509881422925,
+   "d3_tol": 0.8947368421052632,
+   "n0": 179,
+   "h30": 1081,
+   "h365": 1530,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    8801,
+    4074,
+    1971
+   ],
+   "in_range": false,
+   "reasons": [
+    "h30=1560 outside the training range [16, 1391]",
+    "h365=1671 outside the training range [102, 1634]",
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.6636085626911316,
+   "d3_tol": 0.8561872909698997,
+   "n0": 225,
+   "h30": 1560,
+   "h365": 1671,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    8945,
+    2656,
+    1684
+   ],
+   "in_range": true,
+   "reasons": [],
+   "d1_tol": 1.0,
+   "d3_tol": 0.11428571428571428,
+   "n0": 12,
+   "h30": 216,
+   "h365": 1462,
+   "tile": 5.691028418271315
+  },
+  {
+   "case": [
+    8972,
+    4118,
+    1766
+   ],
+   "in_range": false,
+   "reasons": [
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.0,
+   "d3_tol": 0.5476190476190477,
+   "n0": 58,
+   "h30": 353,
+   "h365": 654,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    9005,
+    2392,
+    1177
+   ],
+   "in_range": false,
+   "reasons": [
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.6363636363636364,
+   "d3_tol": 0.8252427184466019,
+   "n0": 82,
+   "h30": 436,
+   "h365": 914,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    8768,
+    2248,
+    1987
+   ],
+   "in_range": false,
+   "reasons": [
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.5163043478260869,
+   "d3_tol": 0.6575052854122622,
+   "n0": 183,
+   "h30": 228,
+   "h365": 228,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    8834,
+    3338,
+    2042
+   ],
+   "in_range": false,
+   "reasons": [
+    "h365=1681 outside the training range [102, 1634]",
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.5314685314685315,
+   "d3_tol": 0.7697841726618705,
+   "n0": 91,
+   "h30": 1164,
+   "h365": 1681,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    8936,
+    4143,
+    1586
+   ],
+   "in_range": false,
+   "reasons": [
+    "h30=1485 outside the training range [16, 1391]",
+    "h365=1681 outside the training range [102, 1634]",
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.8645276292335116,
+   "d3_tol": 0.9717682020802377,
+   "n0": 390,
+   "h30": 1485,
+   "h365": 1681,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    8787,
+    5546,
+    2297
+   ],
+   "in_range": false,
+   "reasons": [
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.0,
+   "d3_tol": 0.625,
+   "n0": 15,
+   "h30": 147,
+   "h365": 1303,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    8993,
+    4071,
+    1498
+   ],
+   "in_range": false,
+   "reasons": [
+    "h30=1630 outside the training range [16, 1391]",
+    "h365=1672 outside the training range [102, 1634]",
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.8115702479338843,
+   "d3_tol": 0.9690424766018718,
+   "n0": 447,
+   "h30": 1630,
+   "h365": 1672,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    8955,
+    4030,
+    1485
+   ],
+   "in_range": false,
+   "reasons": [
+    "h365=1664 outside the training range [102, 1634]",
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.6793893129770993,
+   "d3_tol": 0.9189443920829407,
+   "n0": 231,
+   "h30": 1281,
+   "h365": 1664,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    8981,
+    5990,
+    2450
+   ],
+   "in_range": false,
+   "reasons": [
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.5961538461538461,
+   "d3_tol": 0.5571428571428572,
+   "n0": 62,
+   "h30": 247,
+   "h365": 864,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    8886,
+    4164,
+    1945
+   ],
+   "in_range": false,
+   "reasons": [
+    "h365=1663 outside the training range [102, 1634]",
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.35365853658536583,
+   "d3_tol": 0.696165191740413,
+   "n0": 62,
+   "h30": 734,
+   "h365": 1663,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    8879,
+    2304,
+    1948
+   ],
+   "in_range": false,
+   "reasons": [
+    "little training data in this 5-degree tile (log10 cell-days 2.73 < 4.45)"
+   ],
+   "d1_tol": 0.07792207792207792,
+   "d3_tol": 0.5625,
+   "n0": 61,
+   "h30": 1052,
+   "h365": 1292,
+   "tile": 2.725094521081469
+  },
+  {
+   "case": [
+    8809,
+    3422,
+    1907
+   ],
+   "in_range": false,
+   "reasons": [
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.625,
+   "d3_tol": 0.8411764705882353,
+   "n0": 31,
+   "h30": 297,
+   "h365": 803,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    8835,
+    3984,
+    1874
+   ],
+   "in_range": false,
+   "reasons": [
+    "h30=1504 outside the training range [16, 1391]",
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.2301255230125523,
+   "d3_tol": 0.9622815087396505,
+   "n0": 266,
+   "h30": 1504,
+   "h365": 1589,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    9027,
+    2684,
+    1597
+   ],
+   "in_range": true,
+   "reasons": [],
+   "d1_tol": 0.43010752688172044,
+   "d3_tol": 0.6900958466453674,
+   "n0": 103,
+   "h30": 570,
+   "h365": 1384,
+   "tile": 5.502494034419186
+  },
+  {
+   "case": [
+    8927,
+    4226,
+    1774
+   ],
+   "in_range": false,
+   "reasons": [
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.7272727272727273,
+   "d3_tol": 0.7565217391304347,
+   "n0": 49,
+   "h30": 176,
+   "h365": 311,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    9049,
+    5013,
+    2431
+   ],
+   "in_range": true,
+   "reasons": [],
+   "d1_tol": 0.8,
+   "d3_tol": 0.9354838709677419,
+   "n0": 20,
+   "h30": 94,
+   "h365": 804,
+   "tile": 5.163340305618251
+  },
+  {
+   "case": [
+    8861,
+    1817,
+    2201
+   ],
+   "in_range": false,
+   "reasons": [
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.7100840336134454,
+   "d3_tol": 0.8758064516129033,
+   "n0": 215,
+   "h30": 773,
+   "h365": 1432,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    9014,
+    4369,
+    2861
+   ],
+   "in_range": false,
+   "reasons": [
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.0,
+   "d3_tol": 0.0,
+   "n0": 10,
+   "h30": 98,
+   "h365": 375,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    9071,
+    5045,
+    2439
+   ],
+   "in_range": true,
+   "reasons": [],
+   "d1_tol": 0.7051282051282052,
+   "d3_tol": 0.9139344262295082,
+   "n0": 85,
+   "h30": 278,
+   "h365": 1110,
+   "tile": 5.163340305618251
+  },
+  {
+   "case": [
+    9051,
+    2793,
+    1657
+   ],
+   "in_range": true,
+   "reasons": [],
+   "d1_tol": 0.40963855421686746,
+   "d3_tol": 0.46686746987951805,
+   "n0": 84,
+   "h30": 414,
+   "h365": 1412,
+   "tile": 5.588194367519653
+  },
+  {
+   "case": [
+    8837,
+    5137,
+    2142
+   ],
+   "in_range": true,
+   "reasons": [],
+   "d1_tol": 0.5857142857142857,
+   "d3_tol": 0.7254901960784313,
+   "n0": 70,
+   "h30": 927,
+   "h365": 1517,
+   "tile": 5.504805120191212
+  },
+  {
+   "case": [
+    8894,
+    2583,
+    1308
+   ],
+   "in_range": true,
+   "reasons": [],
+   "d1_tol": 0.0,
+   "d3_tol": 0.3333333333333333,
+   "n0": 18,
+   "h30": 115,
+   "h365": 892,
+   "tile": 4.958836127746832
+  },
+  {
+   "case": [
+    8859,
+    5607,
+    2124
+   ],
+   "in_range": false,
+   "reasons": [
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.5686274509803921,
+   "d3_tol": 0.7574370709382151,
+   "n0": 147,
+   "h30": 1007,
+   "h365": 1353,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    9039,
+    2146,
+    1542
+   ],
+   "in_range": false,
+   "reasons": [
+    "little training data in this 5-degree tile (log10 cell-days 2.35 < 4.45)"
+   ],
+   "d1_tol": 0.0,
+   "d3_tol": 0.75,
+   "n0": 5,
+   "h30": 394,
+   "h365": 682,
+   "tile": 2.3483048630481607
+  },
+  {
+   "case": [
+    9041,
+    4307,
+    1529
+   ],
+   "in_range": false,
+   "reasons": [
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.17573221757322174,
+   "d3_tol": 0.4796747967479675,
+   "n0": 284,
+   "h30": 1262,
+   "h365": 1370,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    8927,
+    5079,
+    2414
+   ],
+   "in_range": true,
+   "reasons": [],
+   "d1_tol": 0.5918367346938775,
+   "d3_tol": 0.8142076502732241,
+   "n0": 50,
+   "h30": 1031,
+   "h365": 1562,
+   "tile": 5.163340305618251
+  },
+  {
+   "case": [
+    8857,
+    5338,
+    2247
+   ],
+   "in_range": true,
+   "reasons": [],
+   "d1_tol": 0.5844155844155844,
+   "d3_tol": 0.5547703180212014,
+   "n0": 151,
+   "h30": 283,
+   "h365": 1044,
+   "tile": 5.217833870875089
+  },
+  {
+   "case": [
+    8787,
+    3929,
+    1914
+   ],
+   "in_range": false,
+   "reasons": [
+    "n0=941 outside the training range [5, 744]",
+    "h30=1677 outside the training range [16, 1391]",
+    "h365=1681 outside the training range [102, 1634]",
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.8584070796460177,
+   "d3_tol": 0.9937694704049844,
+   "n0": 941,
+   "h30": 1677,
+   "h365": 1681,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    8857,
+    5072,
+    2659
+   ],
+   "in_range": false,
+   "reasons": [
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.0,
+   "d3_tol": 0.5833333333333334,
+   "n0": 22,
+   "h30": 101,
+   "h365": 279,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    8816,
+    2310,
+    1846
+   ],
+   "in_range": true,
+   "reasons": [],
+   "d1_tol": 0.6,
+   "d3_tol": 0.7448979591836735,
+   "n0": 38,
+   "h30": 142,
+   "h365": 192,
+   "tile": 4.967388830550475
+  },
+  {
+   "case": [
+    8789,
+    3914,
+    1703
+   ],
+   "in_range": false,
+   "reasons": [
+    "h365=1671 outside the training range [102, 1634]",
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.6018518518518519,
+   "d3_tol": 0.5852090032154341,
+   "n0": 144,
+   "h30": 490,
+   "h365": 1671,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    9032,
+    4141,
+    1611
+   ],
+   "in_range": false,
+   "reasons": [
+    "h30=1441 outside the training range [16, 1391]",
+    "h365=1667 outside the training range [102, 1634]",
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.6653992395437263,
+   "d3_tol": 0.8959025470653378,
+   "n0": 157,
+   "h30": 1441,
+   "h365": 1667,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    8937,
+    4077,
+    1522
+   ],
+   "in_range": false,
+   "reasons": [
+    "h30=1513 outside the training range [16, 1391]",
+    "little training data in this 5-degree tile (log10 cell-days 0.00 < 4.45)"
+   ],
+   "d1_tol": 0.5773420479302832,
+   "d3_tol": 0.9153259949195597,
+   "n0": 411,
+   "h30": 1513,
+   "h365": 1585,
+   "tile": 0.0
+  },
+  {
+   "case": [
+    9116,
+    5109,
+    2465
+   ],
+   "in_range": true,
+   "reasons": [],
+   "d1_tol": 0.5671641791044776,
+   "d3_tol": 0.6851851851851852,
+   "n0": 82,
+   "h30": 264,
+   "h365": 906,
+   "tile": 5.514312612185954
+  }
+ ],
+ "note": "Small sample (one year, one model). A range flag, not a confidence. Differences within noise must not be read as a validated effect."
+}

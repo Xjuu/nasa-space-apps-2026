@@ -22,3 +22,6 @@ matplotlib
 httpx
 xarray
 pytest
+
+playwright
+Pillow

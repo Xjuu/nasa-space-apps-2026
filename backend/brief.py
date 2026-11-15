@@ -530,6 +530,22 @@ def _router():
             raise HTTPException(400, str(e)) from None
         b, png = brief_from(sim, expo, True)
         return Response(render_html(b, png), media_type="text/html; charset=utf-8")
+
+    @r.post("/brief.pdf", response_class=Response, tags=["brief"], summary="PDF brief for an already-run simulation")
+    def brief_post_pdf(body: dict = Body(...), buildings: bool = Query(True), population: bool = Query(True)):
+        sim = body.get("simulation", body)
+        if not sim.get("frames"):
+            raise HTTPException(400, "body needs frames[] with burned GeoJSON per frame")
+        try:
+            expo = ex.run_exposure(sim, buildings=buildings, population=population)
+        except ValueError as e:
+            raise HTTPException(400, str(e)) from None
+        b, png = brief_from(sim, expo, True)
+        pdf = html_pdf(render_html(b, png))
+        if pdf is None:
+            raise HTTPException(501, "PDF conversion unavailable on this server; open the HTML brief and print to PDF")
+        return Response(pdf, media_type="application/pdf",
+                        headers={"Content-Disposition": 'attachment; filename="firespot_brief.pdf"'})
     return r
 
 

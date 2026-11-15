@@ -1,4 +1,4 @@
-"""Serving-contract and temporal tests for the unfinished Claude combined predictor."""
+"""Serving-contract and temporal tests for the combined ML + physics predictor."""
 import json
 import os
 from pathlib import Path

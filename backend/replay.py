@@ -20,6 +20,7 @@ real-time forecast. Models are chosen so that they were trained on years strictl
 """
 from __future__ import annotations
 
+import base64
 import datetime as dt
 import functools
 import hashlib
@@ -39,6 +40,7 @@ from equifire.common import CACHE, EPOCH, GRID, MODELS, ROOT, cell_center
 from equifire.direct import HIST, LONG, S, W
 
 SCHEMA = "equifire.replay/1"
+OBSERVABILITY_SCORING_VERSION = "fixed-cloud-proxy-mask/1"
 CACHE_DIR = CACHE / "replay"
 INCIDENTS_FILE = ROOT / "data" / "incidents.json"
 OBS_CLOUD_THRESHOLD = 80.0      # % ERA5 cloud cover above which an overpass is treated as obscured (proxy)
@@ -178,12 +180,62 @@ def tolerant_counts(pred, truth) -> dict:
             "recall": _ratio(om, nobs), "iou": iou, "within_5km_score": score}
 
 
-def score_day(pred, truth, unverifiable=None) -> dict:
+def observable_scores(pred, truth, observable=None, *, unknown=None, eligible=None) -> dict:
+    """Evaluate BOTH sets on a fixed cloud-proxy mask, never selected from fire outcomes.
+
+    Masking precedes tolerant dilation: excluded predictions/truth cannot match an
+    included neighbour. The unchanged full-grid scores remain the primary comparison.
+    An empty observable domain is unscored, rather than a fabricated perfect score.
+    """
+    p, t = np.asarray(pred, bool), np.asarray(truth, bool)
+    if p.shape != t.shape:
+        raise ValueError("prediction and truth shapes differ")
+    out = {"version": OBSERVABILITY_SCORING_VERSION, "available": observable is not None, "scored": False,
+           "strict": None, "tolerant": None,
+           "coverage": {"total_cells": int(p.size), "observable_cells": None,
+                        "observable_fraction": None, "unknown_cells": None, "obscured_cells": None,
+                        "eligible_cells": int(np.asarray(eligible, bool).sum()) if eligible is not None else None,
+                        "observable_eligible_cells": None},
+           "excluded": {"predicted_cells": None, "observed_cells": None},
+           "mask_source": "ERA5 cloud_cover proxy at nominal local solar overpass hours, not a satellite cloud mask",
+           "note": "Same fixed mask for predictions, observations and baseline; both endpoints must be observable "
+                   "for tolerant matching. Cloud proxy omits actual swath, scan angle and smoke. Conditional scores "
+                   "are not independent validation and may improve or worsen after selection."}
+    if observable is None:
+        out["reason"] = "Spatial observation mask unavailable; aggregate cloud summaries cannot reconstruct it."
+        return out
+    mask = np.asarray(observable, bool)
+    if mask.shape != p.shape:
+        raise ValueError("observation mask shape differs")
+    if unknown is not None:
+        u = np.asarray(unknown, bool)
+        if u.shape != p.shape or np.any(mask & u):
+            raise ValueError("unknown mask differs or overlaps observable mask")
+        out["coverage"]["unknown_cells"] = int(u.sum())
+        out["coverage"]["obscured_cells"] = int((~mask & ~u).sum())
+    n = int(mask.sum())
+    out["coverage"].update(observable_cells=n, observable_fraction=round(n / p.size, 6) if p.size else None)
+    if eligible is not None:
+        e = np.asarray(eligible, bool)
+        if e.shape != p.shape:
+            raise ValueError("eligible mask shape differs")
+        out["coverage"]["observable_eligible_cells"] = int((e & mask).sum())
+    out["excluded"] = {"predicted_cells": int((p & ~mask).sum()), "observed_cells": int((t & ~mask).sum())}
+    if n == 0 or (eligible is not None and out["coverage"]["observable_eligible_cells"] == 0):
+        out["reason"] = "No observable cells in the evaluation domain; no conditional score is reported."
+        return out
+    out.update(scored=True, strict=strict_counts(p & mask, t & mask),
+               tolerant=tolerant_counts(p & mask, t & mask), reason=None)
+    return out
+
+
+def score_day(pred, truth, unverifiable=None, *, observable=None, unknown=None, eligible=None) -> dict:
     """Strict and within-1-cell scores for cumulative masks. `unverifiable` marks cells with no usable observation:
     predicted cells there that were not observed are reported as unverifiable instead of false alarms
     ("adjusted" block); the headline numbers keep them as false alarms (conservative)."""
     p, t = pred.astype(bool), truth.astype(bool)
-    out = {"strict": strict_counts(p, t), "tolerant": tolerant_counts(p, t), "adjusted": None}
+    out = {"strict": strict_counts(p, t), "tolerant": tolerant_counts(p, t), "adjusted": None,
+           "observable": observable_scores(p, t, observable, unknown=unknown, eligible=eligible)}
     if unverifiable is not None:
         u = unverifiable.astype(bool)
         drop_s = p & u & ~t
@@ -242,7 +294,9 @@ def observation_quality(clat, clon, t0_date: dt.date, days: int, cx: int, cy: in
         h = int(round((local_h - lon / 15.0) % 24))
         base = (np.datetime64((d1 + dt.timedelta(days=day_i)).isoformat(), "h")).astype("int64")
         vals = [cc_row[t_idx[base + h + dh]] for dh in (-1, 0, 1) if (base + h + dh) in t_idx]
-        return float(np.nanmean(vals)) if vals else float("nan")
+        finite = np.asarray(vals, float)
+        finite = finite[np.isfinite(finite)]
+        return float(finite.mean()) if len(finite) else float("nan")
 
     per_day_point = np.full((days, n, n), np.nan)
     dayc = np.full((days, n, n), np.nan)
@@ -253,7 +307,7 @@ def observation_quality(clat, clon, t0_date: dt.date, days: int, cx: int, cy: in
                 cc_row = cc[i, j]
                 dayc[k, i, j] = at(lons[j], k, OVERPASS_LOCAL_H["day"])
                 nightc[k, i, j] = at(lons[j], k, OVERPASS_LOCAL_H["night"])
-    clear = np.fmin(dayc, nightc)                     # clearest of the two overpasses
+    clear = np.fmin(dayc, nightc)                     # clearest of the two overpasses (legacy caveat)
     insuff_pt = clear >= threshold
     unknown_pt = ~np.isfinite(clear)
     # nearest sample point for every model-window cell
@@ -265,13 +319,87 @@ def observation_quality(clat, clon, t0_date: dt.date, days: int, cx: int, cy: in
     unknown = np.stack([unknown_pt[k][ii, jj] for k in range(days)])
     # cumulative: a cell is unverifiable by day k when no day 1..k had a clear-enough overpass
     unver = np.cumprod(insuff & ~unknown, axis=0).astype(bool)
-    out.update(available=not bool(unknown.all()), _insuff=insuff, _unverifiable=unver, per_day=[
+    # Strictly separate known clear, known obscured and unknown. One missing
+    # pass plus one cloudy pass is unknown, rather than evidence of obscuration.
+    clear_pt = ((np.isfinite(dayc) & (dayc < threshold)) |
+                (np.isfinite(nightc) & (nightc < threshold)))
+    known_obscured_pt = (np.isfinite(dayc) & np.isfinite(nightc) &
+                         (dayc >= threshold) & (nightc >= threshold))
+    clear_daily = np.stack([clear_pt[k][ii, jj] for k in range(days)])
+    unknown_daily = np.stack([(~clear_pt[k] & ~known_obscured_pt[k])[ii, jj] for k in range(days)])
+    observable = np.maximum.accumulate(clear_daily, axis=0)
+    unknown_cumulative = ~observable & np.maximum.accumulate(unknown_daily, axis=0)
+    def cloud_mean(values):
+        finite = values[np.isfinite(values)]
+        return round(float(finite.mean()), 1) if len(finite) else None
+    out.update(available=not bool(unknown.all()), _insuff=insuff, _unverifiable=unver,
+               _observable=observable, _unknown=unknown_cumulative,
+               spatial_mask=_encode_observation_masks(observable, unknown_cumulative), per_day=[
         {"day": k + 1, "date": (t0_date + dt.timedelta(days=k + 1)).isoformat(),
-         "mean_cloud_pct_day_pass": round(float(np.nanmean(dayc[k])), 1),
-         "mean_cloud_pct_night_pass": round(float(np.nanmean(nightc[k])), 1),
+         "mean_cloud_pct_day_pass": cloud_mean(dayc[k]),
+         "mean_cloud_pct_night_pass": cloud_mean(nightc[k]),
          "window_fraction_obscured": round(float(insuff[k].mean()), 3),
          "window_fraction_unverifiable_cumulative": round(float(unver[k].mean()), 3)} for k in range(days)])
     return out
+
+
+def _encode_observation_masks(observable, unknown):
+    def pack(a):
+        return [base64.b64encode(np.packbits(day.ravel(), bitorder="little").tobytes()).decode("ascii") for day in a]
+    return {"encoding": "packbits-little-base64", "shape": list(observable.shape),
+            "observable": pack(observable), "unknown": pack(unknown),
+            "protocol": OBSERVABILITY_SCORING_VERSION,
+            "selection": "fixed threshold/nominal pass hours; independent of prediction and detected fire outcome"}
+
+
+def _decode_observation_masks(quality, days):
+    info = (quality or {}).get("spatial_mask") or {}
+    if (info.get("encoding") != "packbits-little-base64" or info.get("protocol") != OBSERVABILITY_SCORING_VERSION or
+            info.get("shape") != [days, S, S]):
+        return None, None
+    try:
+        def unpack(name):
+            values = info[name]
+            if len(values) != days:
+                raise ValueError("mask day count differs")
+            rows = []
+            for encoded in values:
+                raw = base64.b64decode(encoded, validate=True)
+                if len(raw) != (S * S + 7) // 8:
+                    raise ValueError("mask byte count differs")
+                rows.append(np.unpackbits(np.frombuffer(raw, dtype=np.uint8), bitorder="little")[:S*S].reshape(S, S).astype(bool))
+            return np.stack(rows)
+        observable, unknown = unpack("observable"), unpack("unknown")
+        if np.any(observable & unknown):
+            raise ValueError("observation masks overlap")
+        return observable, unknown
+    except (KeyError, TypeError, ValueError):
+        return None, None
+
+
+def _cached_cloud_hourly(lats, lons, start_date, end_date, variables):
+    """Read the existing raw ERA5 cache only; never fall through to HTTP."""
+    from equifire import fireweather as fw
+    params = {"latitude": ",".join(str(round(float(v), 4)) for v in lats),
+              "longitude": ",".join(str(round(float(v), 4)) for v in lons),
+              "hourly": ",".join(variables), "timezone": "GMT",
+              "start_date": start_date.isoformat(), "end_date": end_date.isoformat()}
+    key = hashlib.sha1((fw.ARCHIVE_URL + "?" + json.dumps(params, sort_keys=True)).encode()).hexdigest()
+    raw = json.loads((fw.HTTP_DIR / f"{key}.json").read_text())
+    locations = raw if isinstance(raw, list) else [raw]
+    if len(locations) != len(lats):
+        raise ValueError("cached cloud grid differs")
+    times = np.arange(np.datetime64(start_date.isoformat(), "h"),
+                      np.datetime64((end_date + dt.timedelta(days=1)).isoformat(), "h"))
+    arrays = {v: np.full((len(lats), len(times)), np.nan, np.float32) for v in variables}
+    for i, location in enumerate(locations):
+        hourly = location["hourly"]
+        indexes = (np.asarray(hourly["time"], dtype="datetime64[h]") - times[0]).astype(int)
+        valid = (indexes >= 0) & (indexes < len(times))
+        for variable in variables:
+            values = np.asarray([np.nan if value is None else value for value in hourly[variable]], np.float32)
+            arrays[variable][i, indexes[valid]] = values[valid]
+    return times, arrays
 
 
 def _public(q: dict) -> dict:
@@ -399,6 +527,8 @@ def build_reveal(full, issued, days, quality=None, date=None) -> dict:
     methods = {k: v for k, v in methods.items() if v is not None}
     ring = np.stack([_eligible(dist, k + 1) for k in range(days)])
     unver = quality["_unverifiable"] if quality and quality.get("available") else None
+    observable = quality.get("_observable") if quality and quality.get("available") else None
+    unknown = quality.get("_unknown") if quality and quality.get("available") else None
     # data availability per day (VIIRS rows in the model window / a +-40 cell region)
     avail = []
     for k in range(1, days + 1):
@@ -416,14 +546,18 @@ def build_reveal(full, issued, days, quality=None, date=None) -> dict:
                "observed_new_cells": int(truth[k - 1].sum()) if k <= through else None, "methods": {}}
         if k <= through:
             u = unver[k - 1] if unver is not None else None
+            obs = observable[k - 1] if observable is not None else None
+            unk = unknown[k - 1] if unknown is not None else None
             for name, masks in methods.items():
-                row["methods"][name] = score_day(masks[k - 1], truth[k - 1], u)
+                row["methods"][name] = score_day(masks[k - 1], truth[k - 1], u,
+                                                 observable=obs, unknown=unk, eligible=ring[k - 1])
                 s, tol = classify(masks[k - 1], truth[k - 1], u)
                 for x, y in zip(*np.nonzero((s > 0) | (tol > 0))):
                     c = cell_cls.setdefault((int(x), int(y)), {})
                     c.setdefault(name, {"strict": [0] * days, "tolerant": [0] * days})
                     c[name]["strict"][k - 1], c[name]["tolerant"][k - 1] = int(s[x, y]), int(tol[x, y])
-            row["methods"]["baseline_ring"] = score_day(ring[k - 1], truth[k - 1], None)
+            row["methods"]["baseline_ring"] = score_day(ring[k - 1], truth[k - 1], None,
+                                                        observable=obs, unknown=unk, eligible=ring[k - 1])
             row["methods"]["baseline_ring"]["description"] = (
                 "comparator only: marks EVERY cell within k cells of the burning area as burned")
         per_day.append(row)
@@ -443,6 +577,7 @@ def build_reveal(full, issued, days, quality=None, date=None) -> dict:
               "properties": {"kind": "burning_at_init", "day": 0}} for x, y in zip(*np.nonzero(A0 > 0))]
     return {
         "revealed_through_day": through, "archive_last_day_utc": str(EPOCH + np.timedelta64(day_max, "D")),
+        "observability_scoring_version": OBSERVABILITY_SCORING_VERSION,
         "per_day": per_day, "data_availability": avail,
         "geojson": {"type": "FeatureCollection", "features": feats},
         "burning_at_init": {"type": "FeatureCollection", "features": start},
@@ -573,6 +708,77 @@ def summarize(res: dict) -> dict:
     return out
 
 
+def add_cached_observability(res):
+    """Augment old saved results in memory, without changing their forecast or disk file.
+
+    Public reveal classes retain every selected prediction and observed cell, so
+    they reconstruct the scoring sets. Old caches saved only aggregate cloud
+    statistics: recover a spatial mask ONLY from a matching existing raw ERA5
+    HTTP cache, or report it unavailable. No network, model or archive load here.
+    """
+    reveal = res["reveal"]
+    if reveal.get("observability_scoring_version") == OBSERVABILITY_SCORING_VERSION:
+        return res
+    rows = reveal.get("per_day", [])
+    days = len(rows)
+    quality = reveal.get("observation_quality") or {}
+    observable, unknown = _decode_observation_masks(quality, days)
+    if observable is None and quality.get("available"):
+        c = res.get("centre") or {}
+        try:
+            recovered = observation_quality(c["lat"], c["lon"], dt.date.fromisoformat(res["init"]["date"]),
+                                            days, c["gx"], c["gy"], fetch=_cached_cloud_hourly)
+            if recovered.get("available"):
+                observable, unknown = recovered.get("_observable"), recovered.get("_unknown")
+                quality = {**quality, "spatial_mask": recovered["spatial_mask"],
+                           "spatial_mask_recovery": "existing local raw ERA5 HTTP cache; no new request"}
+                reveal["observation_quality"] = quality
+        except (KeyError, ValueError, TypeError):
+            pass
+    cx, cy = res["centre"]["gx"], res["centre"]["gy"]
+    truth = np.zeros((days, S, S), bool)
+    predictions = {name: np.zeros_like(truth) for row in rows for name in row.get("methods", {}) if name != "baseline_ring"}
+    for feature in (reveal.get("geojson") or {}).get("features", []):
+        p = feature.get("properties") or {}
+        x, y = p.get("gx", -1) - (cx - W), p.get("gy", -1) - (cy - W)
+        if not (0 <= x < S and 0 <= y < S):
+            continue
+        first = p.get("observed_first_day")
+        if first and 1 <= first <= days:
+            truth[first - 1:, x, y] = True
+        for name, classes in p.get("classes", {}).items():
+            if name not in predictions:
+                continue
+            for k, cls in enumerate(classes.get("strict", [])[:days]):
+                predictions[name][k, x, y] = cls in ("hit", "false_alarm", "unverifiable")
+    initial = np.zeros((S, S), bool)
+    for feature in (reveal.get("burning_at_init") or {}).get("features", []):
+        coords = feature["geometry"]["coordinates"][0]
+        gx = int(round((min(p[0] for p in coords) + 180) / GRID))
+        gy = int(round((min(p[1] for p in coords) + 90) / GRID))
+        x, y = gx - (cx - W), gy - (cy - W)
+        if 0 <= x < S and 0 <= y < S:
+            initial[x, y] = True
+    dist = ndimage.distance_transform_cdt(~initial, metric="chessboard").astype(np.float32)
+    for k, row in enumerate(rows):
+        if not row.get("scored"):
+            continue
+        eligible = _eligible(dist, k + 1)
+        for name, score in row.get("methods", {}).items():
+            p = eligible if name == "baseline_ring" else predictions.get(name, np.zeros_like(truth))[k]
+            # Refuse conditional numbers if a damaged/old schema cannot exactly
+            # reproduce the unchanged full scores. Never silently reinterpret it.
+            matches = (strict_counts(p, truth[k]) == score.get("strict") and
+                       tolerant_counts(p, truth[k]) == score.get("tolerant"))
+            obs = observable[k] if matches and observable is not None else None
+            unk = unknown[k] if matches and unknown is not None else None
+            score["observable"] = observable_scores(p, truth[k], obs, unknown=unk, eligible=eligible)
+            if not matches:
+                score["observable"]["reason"] = "Saved cell sets do not reproduce full scores; conditional score unavailable."
+    reveal["observability_scoring_version"] = OBSERVABILITY_SCORING_VERSION
+    return res
+
+
 def get_replay(*, incident=None, lat=None, lon=None, date=None, days=3, objective="iou", method="auto",
                cached_only=False, refresh=False, **kw) -> dict:
     inc = None
@@ -587,6 +793,7 @@ def get_replay(*, incident=None, lat=None, lon=None, date=None, days=3, objectiv
     path = cache_path(key, objective)
     if path.exists() and not refresh:
         res = json.loads(path.read_text())
+        add_cached_observability(res)
         res["cached"] = True
         return res
     if cached_only:
@@ -724,12 +931,49 @@ def update_availability():
     return data
 
 
+def observability_report():
+    """Offline audit of already saved forecasts; curated/duplicate cases are not a benchmark."""
+    started = time.perf_counter()
+    cases = []
+    for path in sorted(CACHE_DIR.glob("*.json")):
+        raw = path.read_bytes()
+        saved = json.loads(raw)
+        original_issued = json.dumps(saved.get("issued"), sort_keys=True)
+        full_scores = {row["day"]: {name: {key: value[key] for key in ("strict", "tolerant", "adjusted")}
+                                   for name, value in row.get("methods", {}).items()}
+                       for row in saved["reveal"]["per_day"]}
+        add_cached_observability(saved)
+        if json.dumps(saved.get("issued"), sort_keys=True) != original_issued or path.read_bytes() != raw:
+            raise AssertionError("offline scoring must not alter issued forecasts or cache files")
+        rows = []
+        for row in saved["reveal"]["per_day"]:
+            for name, value in row.get("methods", {}).items():
+                if {key: value[key] for key in ("strict", "tolerant", "adjusted")} != full_scores[row["day"]][name]:
+                    raise AssertionError("offline scoring must not alter full/legacy scores")
+            rows.append({"day": row["day"], "date": row["date"], "scored": row["scored"],
+                         "methods": row.get("methods", {})})
+        cases.append({"file": path.name, "sha256": hashlib.sha256(raw).hexdigest(),
+                      "query": saved["query"], "methods": saved["issued"].get("methods_available"), "per_day": rows})
+    return {"version": OBSERVABILITY_SCORING_VERSION, "generated_utc": dt.datetime.now(dt.timezone.utc).isoformat(),
+            "protocol": "Fixed80% ERA5 cloud-cover proxy threshold at nominal01:30/13:30 local solar passes; "
+                        "same cumulative mask for prediction/truth/ring. No outcome-conditioned exception. "
+                        "Unknown and obscured excluded symmetrically before tolerant matching.",
+            "source": "saved replay masks + existing raw local ERA5 HTTP cache, no network or new forecast",
+            "limits": ["Curated/adhoc single-event diagnostics, not an independent representative benchmark.",
+                       "IOU/tol objective files can repeat the same incident; do not treat them as independent events.",
+                       "Modelled cloud proxy does not reconstruct real swath, scan angle, smoke or detection sensitivity.",
+                       "Full and conditional scores are both shown; selecting clearer cells may improve or worsen scores.",
+                       "A conditional score is absent when no spatial mask or no observable eligible cell is available."],
+            "cache_files": len(cases), "elapsed_s": round(time.perf_counter() - started, 4), "cases": cases}
+
+
 if __name__ == "__main__":
     import argparse
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("cmd", choices=["precompute", "availability", "scores"])
+    ap.add_argument("cmd", choices=["precompute", "availability", "scores", "observability"])
     ap.add_argument("--ids", nargs="*")
     ap.add_argument("--objectives", nargs="*", default=["iou", "tol"])
+    ap.add_argument("--output", type=Path, default=ROOT / "reports" / "observability_scoring.json")
     a = ap.parse_args()
     if a.cmd == "availability":
         for i in update_availability()["incidents"]:
@@ -737,5 +981,10 @@ if __name__ == "__main__":
     elif a.cmd == "precompute":
         for r in precompute(a.ids, tuple(a.objectives)):
             print(json.dumps(r[:4]))
+    elif a.cmd == "observability":
+        report = observability_report()
+        a.output.parent.mkdir(parents=True, exist_ok=True)
+        a.output.write_text(json.dumps(report, indent=2, allow_nan=False) + "\n")
+        print(f"[observability] {report['cache_files']} cached files in {report['elapsed_s']}s -> {a.output}")
     else:
         print(json.dumps(list_incidents()["incidents"][0].get("saved_replays"), indent=1))

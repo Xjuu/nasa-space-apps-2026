@@ -51,3 +51,8 @@
 .hz-table{font-size:13.5px}
 .hz-section .muted{color:var(--ink-2)}
 .panel-footer .footer-credits{font-size:13px;color:var(--ink-2)}
+
+/* before / after slider */
+.hz-compare { margin: 12px 0; }
+.hzc-slider { display: flex; gap: 8px; align-items: center; margin: 6px 0; }
+.hzc-slider input { flex: 1; min-height: 32px; }

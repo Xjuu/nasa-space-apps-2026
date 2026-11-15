@@ -15,6 +15,18 @@
 
 **[🇵🇱 Polska wersja → README.md](README.md)**
 
+<p align="center">
+  <a href="docs/FireSpot_Master_Guide.pdf"><b>📘 Master Guide (PDF, 100 pages)</b></a> ·
+  <a href="https://firespot.filipklon.online"><b>🌐 Live demo</b></a> ·
+  <a href="docs/MODEL_CARD.md"><b>🧾 Model card</b></a> ·
+  <a href="docs/DEMO_SCRIPT.md"><b>🎬 Demo script</b></a>
+</p>
+
+| 🛰️ Harmonization | 🚨 Live alerts | 🔮 Forecast and validation |
+|---|---|---|
+| MODIS → VIIRS-equivalent, the 2012 detection jump ×5.24 → ×1.16 | compared with the same week in 2008–2025, routine vs anomaly, CAP export | ML + physics for 1–3 days, leak-free replays, honest results (negative ones too) |
+
+
 ![Monitor view](docs/img/monitor.png)
 
 </div>
@@ -30,15 +42,18 @@
 3. [What we built: the 8 challenge goals](#-what-we-built-the-8-challenge-goals)
 4. [Architecture](#-architecture)
 5. [Web app tour](#-web-app-tour)
-6. [Methods step by step](#-methods-step-by-step)
-7. [Results, honestly](#-results-honestly)
-8. [Quick start](#-quick-start)
-9. [Data and licences](#-data-and-licences)
-10. [API](#-api)
-11. [Repository layout](#-repository-layout)
-12. [Tests and demo](#-tests-and-demo)
-13. [Limitations](#-limitations)
-14. [Team, licence, credits](#-team-licence-credits)
+6. [Extra modules (Forecast tab)](#-extra-modules-forecast-tab)
+7. [Experiments with negative or weak results](#-experiments-with-negative-or-weak-results)
+8. [How long does a forecast take?](#-how-long-does-a-forecast-take)
+9. [Methods step by step](#-methods-step-by-step)
+10. [Results, honestly](#-results-honestly)
+11. [Quick start](#-quick-start)
+12. [Data and licences](#-data-and-licences)
+13. [API](#-api)
+14. [Repository layout](#-repository-layout)
+15. [Tests and demo](#-tests-and-demo)
+16. [Limitations](#-limitations)
+17. [Team, licence, credits](#-team-licence-credits)
 
 ---
 
@@ -68,7 +83,7 @@ MODIS (Terra since 2000, Aqua since 2002) has a pixel of about **1 km²**. VIIRS
 | Fire radiative power (FRP) | averaged with background | different scale |
 | Swath edge | pixel up to 2.0 × 4.8 km ("bow-tie") | similar distortion |
 
-Result: when records are simply concatenated, detections **jump ×5.2 in 2012** and the apparent trend is **+7.7 %/year** — mostly an instrument change, not a change in fires. Our harmonization reduces the jump to **×1.16** and the trend to **+0.6 %/year (not significant)**.
+Result: when records are simply concatenated, detections **jump ×5.2 in 2012** and the apparent trend is **+13.8 %/year** (detection count, 5 countries) — mostly an instrument change, not a change in fires. Our harmonization reduces the jump to **×1.16** and the trend to **−0.8 %/year (not significant)**.
 
 ![2000–2025 record: raw vs harmonized](docs/img/harmonization.png)
 
@@ -149,12 +164,12 @@ flowchart LR
 
 ## 🖥️ Web app tour
 
-No build step (plain HTML/CSS/JS: Leaflet + globe.gl). Polish by default with a **PL | EN** switch, a VS Code-style dark theme (light available) and a full mobile layout with a bottom sheet.
+No build step (plain HTML/CSS/JS: Leaflet + globe.gl). English by default with a **PL | EN** switch, a VS Code-style dark theme (light available) and a full mobile layout with a bottom sheet.
 
 | Monitor | "?" guided tour |
 |---|---|
 | ![Monitor](docs/img/monitor.png) | ![Tour](docs/img/guide.png) |
-| Area up to 25 000 km², 24 h detections, observation age, satellite orbits, rain radar and wind | 13-step walk-through of every screen with highlighted elements |
+| Area up to 25 000 km², 24 h detections, observation age, satellite orbits, rain radar and wind | 30-step walk-through of every screen and feature with highlighted elements |
 
 | Replay (honest validation) | History and 25-year record |
 |---|---|
@@ -175,6 +190,52 @@ No build step (plain HTML/CSS/JS: Leaflet + globe.gl). Polish by default with a 
 **Forecast extras:** next satellite pass (when a satellite sees the fire again and whether clouds hide it), blind spots, weather scenarios ("what if wind is stronger / rain falls" — labelled hypothetical), estimated asset exposure (settlements, roads, power lines, hospitals, schools — **no monetary values**) and a printable event brief.
 
 ---
+
+## 🧰 Extra modules (Forecast tab)
+
+| Module | What it does | What it does **not** do |
+|---|---|---|
+| 🛸 **Drone recon route** (`backend/drone.py`) | builds a route around the forecast fire footprint (default +2 h): larger standoff on the downwind side, upwind launch, hover points aiming the camera at ignition points, flight-time budget. Export GPX, KML, CSV (Litchi), GeoJSON. | no thermal-updraft or turbulence model, no airspace data; **a planning aid, not a flight plan**. No native DJI file. |
+| 💶 **CO₂ and value ticker** (`backend/carbon.py`) | FRP → biomass (Wooster 2005: 0.368 kg/MJ) → CO₂ (biome emission factors) → value at an **assumed** price (default €70/t). Live mode (FIRMS, last 24 h) and forecast mode (follows the slider). | the price is not live (no keyless free source); **not** damage or insured loss; accuracy about a factor 2–3. |
+| 📡 **Direct Broadcast** (`backend/dbnet.py`) | from orbits (SGP4) computes whether a receiving station (Fairbanks, Svalbard, White Sands, McMurdo, Greenbelt) has the satellite above its horizon when it observes the fire, when the satellite next meets a station, a countdown to the next observation; stations and links on the 3D globe. | we have no X-band receiver and do not process L0/L1/L2; **we do not claim** our alert is faster than FIRMS (only the published "about 3 h"). Station list is approximate. |
+| ☀️ **Sun–satellite geometry** (`backend/dbnet.py`, `/illumination`) | sun and satellite angles at each pass: zenith, relative azimuth, scattering angle, sun-glint angle and false-alarm risk tier. | **no** BRDF (MCD43) correction and no fixed percentage; fire detection relies on thermal bands. |
+| 🎲 **Monte Carlo ensemble** (`backend/monte_carlo.py`) | 30–50 physics runs with perturbed wind, humidity and spread rate; contours of how often a cell burned in the ensemble (20/50/80/95 %). | the value is an **ensemble frequency of simulated runs, not a calibrated probability** of a real fire. |
+| 🛰️ **Nowcast of the next observation** (`backend/nowcast.py`) | extrapolates the front to the next satellite pass and estimates detectable pixels and FRP, with bow-tie geometry and cloud visibility. | an estimate from the simulation; it does not know whether the satellite will really detect the fire. |
+| 🧯 **Firebreak sandbox** (`backend/firebreak.py`) | what-if check of a drawn line or retardant drop: flame length (Byram), critical width, spotting distance, **heuristic holding score**. | the score is **not a calibrated probability** and not validated against suppression outcomes; not an incident action plan. |
+| 🚨 **Priority ranking** (`backend/fire_priority.py`) | ranks fires P1–P4 from settlement exposure, spread rate, FRP and fuel dryness. | a triage aid with fixed weights, not a validated dispatch model. |
+| 🌿 **Error analysis by biome** (`backend/biome_errors.py`) | misses, false alarms and IoU per biome from the saved replays (`/replay/biome-errors`). | six saved replays only; small sample, no learning from the test. |
+| 📄 **PDF export of every view** (`backend/analysis_reports.py`, `/reports/pdf`) | exports the result already on screen (monitor, forecast, history, alerts, replay and the extras) without a new simulation. | not a new analysis; the PDF shows what the view showed. |
+| 🔗 **Temporary share link** (`backend/shared_analysis.py`, `/share`) | short code with an expiry that reopens the same analysis state. | the link expires; nothing permanent is stored. |
+| ✈️ **Telegram alerts** (`backend/telegram_alerts.py`) | optional alerts for an area the user subscribes to. Token and chat id come from `.env` (`TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`). | **nothing is sent unless the user asks**; without a token the UI only shows setup instructions. |
+| 💬 **Explanations** (`frontend/ui-explanations.js`) | rule-based, deterministic summary of inputs, model and selected cells. | deterministic, no causal claim. |
+| 🗂️ **Extra data** (Forecast tab, collapsed section) | auxiliary panels kept apart from the forecast score: **MODIS vs VIIRS disagreement map** (`/extra/disagreement`, test years 2022–2025, 5 countries), **independent burned area from EFFIS** (`/extra/effis`, **Europe and the Mediterranean only**), **static heat-source mask** and **observation-quality indicator** (`/extra-sq/*`). | not part of any forecast result; the quality indicator is not a confidence interval; EFFIS shows no data outside Europe. |
+| ⏱️ **Detection latency in our poller** (`backend/latency.py`, `/latency/stats`) | time from satellite observation to the moment our poller first sees the detection in the FIRMS feed (resolution: one 5-minute poll). | not FIRMS' internal processing time and not a direct-broadcast latency. |
+| 📏 **Model scope flag** (`/scope/check`) | tells whether a case resembles the cases the spread model was trained on (size, recent burn history, training data nearby). | a range flag, **not a confidence**; see the negative results below. |
+| 🎚️ **Before / after slider** (History tab) | raw splice vs harmonized record in one chart (step 2011→2012: ×5.24 raw, ×1.16 harmonized). | uses the same series as the History charts. |
+| 📈 **Calibration diagnostics** (`/risk/diagnostics`) | research candidate: reliability chart, ECE and Brier before/after on 51 later cases. | **no significant Brier gain** (all 95 % intervals include zero); not promoted to production. |
+| 🔭 **Masked evaluation** (Replay tab) | the replay score with and without the observation mask, side by side. | the mask is modelled ERA5 cloud cover, not a satellite pixel mask. |
+
+## 🔬 Experiments with negative or weak results
+
+We report these instead of hiding them. None of them is wired into the forecast.
+
+| Idea | Result (source) |
+|---|---|
+| Geostationary GOES hot spots to fill gaps between VIIRS passes | on 15 fires from 2024 the day-0 VIIRS footprint already covers 55.3 % of new day-1 cells; GOES adds only **+2.5 points**, and 7 of 19 GOES-only cells (37 %) were confirmed (`reports/goes_feasibility.json`) |
+| "Explosive growth" early-warning classifier | test 2024 (1000 cases): AUC **0.68** (fire size alone 0.44), precision **17 %** at recall **15 %**, base rate 6.1 % (`reports/explosive_growth.json`) |
+| Sub-pixel fire fraction from VIIRS I4 | total fire area changes **about 26×** (4.4 to 113 km²) with the assumed fire temperature (1200 to 600 K); absolute area is not recoverable from FIRMS fields alone (`reports/subpixel_fire_fraction.json`) |
+| Model scope flag | 77 % of 60 test cases were flagged outside the range; day-1 within 5 km was 0.536 outside vs 0.580 inside (n = 14), day 3 the other way round (0.761 vs 0.630): **no evidence the flag predicts error** (`reports/scope_flag.json`) |
+| Calibrated daily probabilities | ECE improves, **Brier gain is not significant** (95 % intervals include zero) (`reports/DAILY_RISK_CALIBRATION.md`) |
+| ML + physics blend vs ML alone | no measurable gain (e.g. 2024 day 1: 58.7 % vs 58.9 %) |
+
+## ⏱️ How long does a forecast take?
+
+Full ML + physics result (`/predict/simulate`, 24 h, one machine shared with other work, small sample, `reports/ml_physics_timing.json`):
+
+- first call: saved incidents **p50 5.5 s** (max 14.3 s), fresh areas inside the 5 processed countries **p50 13.7 s** (max 22.7 s);
+- repeated call with warm disk caches: p50 about 2.5–3 s;
+- a **true cold start for a brand-new place** (landscape, weather and OpenStreetMap download) was not measured here and can take **2–3 minutes**;
+- one saved incident (Kalimantan, ML only) returns **HTTP 503** because no ML + physics blender was trained before 2023.
 
 ## 🔬 Methods step by step
 
@@ -216,7 +277,7 @@ All figures: **previously unseen fires**, walk-forward test (model for year *Y* 
 | Measure | Raw (concatenated) | Harmonized |
 |---|---|---|
 | Detections step 2012 / 2011 (5 countries) | ×5.24 | **×1.16** |
-| Apparent trend 2003–2025 | +7.7 %/yr | **+0.6 %/yr (not significant)** |
+| Apparent trend in detection count 2003–2025 | +13.8 %/yr | **−0.8 %/yr (not significant)** |
 | Detection totals vs real VIIRS (test years 2021–2025) | MODIS sees 0.11× | **1.00× (yearly correlation 0.99)** |
 | Fire-size error after MODIS → VIIRS conversion | raw MODIS | **−69 %** (−24 % vs a simple linear correction) |
 | FRP error | raw MODIS | **−18 %** |
@@ -323,7 +384,13 @@ Interactive docs at `/docs`. Main endpoints:
 | Forecast | `/predict`, `/predict/simulate`, `/simulate`, `/simulate/weather`, `/forecast`, `/forecast.cap` |
 | Event analysis | `/nextobs`, `/blindspots`, `/scenarios`, `/exposure`, `/brief` (+ `.html` `.json` `.pdf`) |
 | Verification | `/replay/incidents`, `/replay/run` |
-| Satellites and geometry | `/overpass`, `/geometry`, `/clusters` |
+| Satellites and geometry | `/overpass`, `/geometry`, `/clusters`, `/dbnet/live`, `/dbnet/race`, `/illumination` |
+| Drone and carbon | `/drone/mission`, `/carbon/live`, `/carbon/forecast` |
+| Ensemble, nowcast, firebreak | `/montecarlo/run`, `/montecarlo/presets`, `/nowcast/pass`, `/firebreak/evaluate`, `/firebreak/presets` |
+| Priority and biome errors | `/priority/rank`, `/priority/presets`, `/replay/biome-errors`, `/replay/biome-errors/summary` |
+| Extra data | `/extra/disagreement`, `/extra/effis`, `/extra-sq/quality-index`, `/extra-sq/static-sources` |
+| Diagnostics | `/risk/diagnostics`, `/risk/calibrate`, `/scope/check`, `/latency/stats` |
+| Export and sharing | `/reports/pdf`, `/share`, `/share/{share_id}`, `/telegram/config`, `/telegram/send` |
 
 ---
 
@@ -337,7 +404,7 @@ Interactive docs at `/docs`. Main endpoints:
 | `models/` | **trained models** (≈ 150 MB; largest `spread_direct.json` is 76 MB) |
 | `cache/replay/`, `cache/demo/`, `data/incidents.json` | saved replays and demo data that work offline |
 | `reports/` | measured results (JSON/CSV/charts) behind the numbers in this file |
-| `docs/` | model card, licences, demo script, architecture diagram, screenshots |
+| `docs/` | **Master Guide (PDF)**, model card, licences, demo script, architecture diagram, screenshots |
 | `scripts/` | demo preparation, harmonized series, helper tests |
 | `tests/` | unit tests |
 | `main.py`, `forecast.py`, `walk_forward.py`, `harmonize.py`, `classify.py`, `bowtie.py`, `alerts1km.py` | training and evaluation |

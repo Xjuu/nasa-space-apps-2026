@@ -1,0 +1,30 @@
+{
+ "file": "viirs-snpp_2024_Australia.csv",
+ "n_pixels_night_nominal_high": 200000,
+ "assumptions": "Tb = bright_ti5, Tf as listed; night pixels only (no reflected sunlight at 3.74 um)",
+ "by_Tf": {
+  "600": {
+   "median_fire_fraction_percent": 0.149,
+   "p90_fire_fraction_percent": 0.529,
+   "share_pixels_over_5_percent": 0.0,
+   "total_fire_area_km2": 113.06,
+   "spearman_with_FRP": 0.747
+  },
+  "900": {
+   "median_fire_fraction_percent": 0.017,
+   "p90_fire_fraction_percent": 0.062,
+   "share_pixels_over_5_percent": 0.0,
+   "total_fire_area_km2": 13.16,
+   "spearman_with_FRP": 0.747
+  },
+  "1200": {
+   "median_fire_fraction_percent": 0.006,
+   "p90_fire_fraction_percent": 0.021,
+   "share_pixels_over_5_percent": 0.0,
+   "total_fire_area_km2": 4.4,
+   "spearman_with_FRP": 0.747
+  }
+ },
+ "total_area_spread_factor_600_vs_1200K": 25.7,
+ "note": "Consistency check, not a validated retrieval: Tf is assumed, Tb is a proxy, no independent fire-area truth. The absolute area scales roughly with 1/(B(Tf)-B(Tb)), so it is uncertain by the factor shown. Useful as a relative size indicator within one sensor, not as a measurement."
+}

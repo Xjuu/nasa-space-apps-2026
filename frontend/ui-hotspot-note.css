@@ -1,0 +1,11 @@
+.hotspot-note { margin: 0 16px 8px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface-3, transparent); font-size: 13px; line-height: 1.5; }
+.hotspot-note > summary { cursor: pointer; padding: 9px 12px; font-weight: 600; }
+.hotspot-note > p, .hotspot-note > ul { margin: 0; padding: 0 12px 10px; }
+.hotspot-note ul { padding-left: 28px; }
+.hotspot-note li { margin: 3px 0; }
+.hotspot-note .hn-not { color: var(--muted); }
+.qc-badge { display: inline-block; margin: 0 6px 0 -2px; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--border-strong); font-size: 11px; font-weight: 600; color: var(--ink-2); background: var(--surface-2); vertical-align: middle; white-space: nowrap; }
+.qc-badge[data-cls="exceptional"] { border-color: #d93025; color: #ff8a80; }
+.qc-badge[data-cls="busy"] { border-color: #d9711c; color: #f6b26b; }
+.qc-badge[data-cls="quiet"] { border-color: #5b7fa8; color: #9bb8d9; }
+@media (max-width: 800px) { .qc-badge { font-size: 10.5px; } }

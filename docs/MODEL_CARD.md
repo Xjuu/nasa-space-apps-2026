@@ -80,7 +80,7 @@ Common conventions
 - **Inputs.** The ML probability per cell plus physics burned fraction/arrival from `equifire/physcells.py` (archive weather, flat terrain), fed to a small XGBoost blender.
 - **Training data/years.** Blender fitted on 150 earlier-year cases (fit year = test year - 1; `ensemble_blend_2024` is fit on 2023 with ML `wf_2024`, `ensemble_blend_2025` on 2024). The API refuses dates the blender was not trained before (e.g. no blender for 2023 dates).
 - **Evaluation.** 100 test fires per year, one-cell tolerance rules chosen before the test year.
-- **Validated numbers** (`reports/CLAUDE_CONTINUATION.md`):
+- **Validated numbers** (`reports/ensemble_ab_2024.json`, `reports/ensemble_ab_2025.json`):
 
 | Year | Method | Day 1 tolerance | Day 3 tolerance | Day 3 exact IoU |
 |---|---|---|---|---|

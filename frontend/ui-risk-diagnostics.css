@@ -1,0 +1,5 @@
+.risk-chart { display: block; width: 100%; height: auto; margin: 16px 0 8px; color: inherit; }
+.risk-chart text { fill: currentColor; font: 12px "Inter", sans-serif; }
+#risk-levels { margin: 12px 0; font-size: 13px; line-height: 1.6; }
+#rp-observable { margin-top: 16px; }
+#rp-observable table { min-width: 650px; }

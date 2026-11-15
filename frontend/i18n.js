@@ -21,7 +21,7 @@
       if (q) { try { localStorage.setItem(KEY, q[1]); } catch (e) {} return q[1]; }
     } catch (e) {}
     try { var v = localStorage.getItem(KEY); if (v === "pl" || v === "en") return v; } catch (e) {}
-    return "pl";
+    return "en";
   }
   var lang = readLang();
   document.documentElement.lang = lang;

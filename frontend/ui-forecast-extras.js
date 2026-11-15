@@ -405,7 +405,8 @@
     `<label class="input-field"><span>Horizon</span><select id="fx-brief-hours" name="fx-brief-hours"></select></label>` +
     `<div class="fx-brief-links"><a id="fx-brief-html" class="btn-download" target="_blank" rel="noopener" aria-disabled="true">${FX.ic("external-link")}<span>Open brief (HTML)</span></a>` +
     `<a id="fx-brief-pdf" class="btn-download" aria-disabled="true" download="firespot-brief.pdf">${FX.ic("download")}<span>Download brief (PDF)</span></a></div>` +
-    `<p id="fx-brief-note" class="fx-note"></p>`;
+    `<p id="fx-brief-note" class="fx-note"></p>` +
+    `<p class="fx-note">The PDF is generated when you click: usually about 50 seconds, up to 3 minutes in harder cases. Keep this tab open.</p>`;
   let briefTouched = false;   // keep the user's horizon; otherwise default to the current player run
   function refreshBrief() {
     const sel = $("fx-brief-hours"), p = FX.point();
@@ -427,6 +428,38 @@
     a.setAttribute("aria-disabled", "false"); b.setAttribute("aria-disabled", "false");
     $("fx-brief-note").textContent = `Point ${p.lat.toFixed(4)}, ${p.lon.toFixed(4)}, start ${startVal ? startVal.replace("T", " ") + " UTC" : "now"}, ${sel.value} h.`;
   }
+  // Warm the server cache while the user reads: the slow part of a brief is the first OpenStreetMap/Overpass query for a new area.
+  let warmedFor = null;
+  sec5.onOpen(() => {
+    const d = EF.sim && EF.sim.data;
+    if (!d || !(EF.sim.frames || []).length || warmedFor === d) return;
+    warmedFor = d;
+    const b = { ...d }; delete b.guidance;
+    fetch(`${EF.API}/exposure?top_n=25&buildings=true&population=true`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(b) }).catch(() => {});
+  });
+  // PDF: when a forecast is already in the player, send it to the server (no recomputation) and download the result.
+  let pdfBusy = false;
+  $("fx-brief-pdf").addEventListener("click", async (ev) => {
+    const d = EF.sim && EF.sim.data;
+    if (!d || !(EF.sim.frames || []).length) return;      // no run yet: the plain link (GET) does the work
+    ev.preventDefault();
+    if (pdfBusy) return;
+    pdfBusy = true;
+    const btn = $("fx-brief-pdf"), note = $("fx-brief-note"), lbl = btn.querySelector("span"), old = lbl.textContent;
+    btn.setAttribute("aria-disabled", "true"); lbl.textContent = "Generating PDF…";
+    note.textContent = "Generating the PDF: usually about 50 seconds, up to 3 minutes. Keep this tab open.";
+    try {
+      const body = { ...d }; delete body.guidance;
+      const res = await fetch(`${EF.API}/brief.pdf?buildings=true&population=true`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+      if (!res.ok) { let m = res.statusText; try { m = (await res.json()).detail || m; } catch (e) { /* not JSON */ } throw new Error(m); }
+      const url = URL.createObjectURL(await res.blob());
+      const a = document.createElement("a"); a.href = url; a.download = "firespot-brief.pdf"; document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 60000);
+      note.textContent = "PDF ready: the download has started.";
+    } catch (e) {
+      note.textContent = "PDF failed: " + e.message + ". Try the HTML brief and print it to PDF.";
+    } finally { pdfBusy = false; lbl.textContent = old; btn.setAttribute("aria-disabled", "false"); }
+  });
   $("fx-brief-hours").addEventListener("change", () => { briefTouched = true; refreshBrief(); });
   ["sim-start", "sim-ignition", "sim-fuel"].forEach((id) => $(id) && $(id).addEventListener("change", refreshBrief));
   refreshBrief();

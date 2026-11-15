@@ -1,0 +1,26 @@
+.analysis-report-actions {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border, #c9d3da);
+}
+#panel .analysis-report-button {
+  min-height: 44px;
+  max-width: 100%;
+  white-space: normal;
+  text-align: left;
+}
+.analysis-report-button:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+.analysis-report-button:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+.analysis-report-status {
+  margin: 8px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.analysis-report-status:empty { display: none; }

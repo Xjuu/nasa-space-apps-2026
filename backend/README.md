@@ -77,7 +77,7 @@ CORS allows all origins, for the frontend.
 
 `GET /simulate?lat=-18.3&lon=124.4&hours=6&step_min=180&ignition=point&weather=grid&landscape=on&fwi=false` uses hourly forecast conditions, optional gridded weather, and mapped fuel/terrain/barriers/dryness. `start` selects UTC initialization; `step_min` changes playback, while weather always changes hourly. Output includes `weather_timeline`, `weather`, `landscape` and explicit fallback metadata. The recent-weather fallback is public regional NOAA GFS GRIB, with cached 3-hour source slices interpolated hourly. `rasterio` is required for GFS and landscape raster decoding.
 
-Measured results, limitations and checks: [Claude continuation report](../reports/CLAUDE_CONTINUATION.md). The blend does not establish higher accuracy than equally retuned ML; the richer landscape simulation requires separate validation.
+Measured results, limitations and checks: [A/B reports](../reports/ensemble_ab_2025.json). The blend does not establish higher accuracy than equally retuned ML; the richer landscape simulation requires separate validation.
 
 
 ## Standard application forecast

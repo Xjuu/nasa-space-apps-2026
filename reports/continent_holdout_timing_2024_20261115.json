@@ -1,0 +1,3070 @@
+{
+  "scope": "ML-only daily diagnostic; not combined ML + physics and not global validation",
+  "groups": {
+    "South_America": [
+      "Brazil"
+    ],
+    "Oceania": [
+      "Australia"
+    ],
+    "Asia": [
+      "India"
+    ],
+    "North_America": [
+      "United_States",
+      "Canada"
+    ]
+  },
+  "settings": {
+    "test_year": 2024,
+    "fit_cases": 80,
+    "early_cases": 20,
+    "policy_cases": 20,
+    "test_cases": 5,
+    "groups": [
+      "Oceania"
+    ],
+    "run_id": "timing_2024_20261115",
+    "seed": 20261115
+  },
+  "protocol": {
+    "fit_years": [
+      2019,
+      2020,
+      2021
+    ],
+    "early_year": 2022,
+    "policy_year": 2023,
+    "test_year": 2024,
+    "label_horizons": [
+      1,
+      2,
+      3
+    ],
+    "threshold_grid_fixed_before_test": [
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.4,
+      0.5
+    ],
+    "balanced_source_group_case_budget": true,
+    "threads": 2,
+    "network": "disabled",
+    "weather": "legacy local ERA5 cache; missing values retained, not imputed from future forecasts",
+    "source_cases": "country-labelled SNPP cache, >=5 active cells at t0; unique 28day/10cell proxy blocks",
+    "validation": "early stopping and policy calibration exclude heldout geography as well",
+    "production_models": "not loaded, not overwritten"
+  },
+  "index_meta_sha256": "ead5ecc110ca41123d27e4e89a04c736a33950a84387ce1a47932804144f707c",
+  "implementation_sha256": "fa693bb84e4fc88a660ef08dbd7269de3cda217db3abc5291fb3616a83502ca6",
+  "folds": {
+    "all_regions_control": {
+      "excluded_group": null,
+      "features": [
+        "dist",
+        "act_r1",
+        "act_r2",
+        "act_r3",
+        "act_r5",
+        "act_r8",
+        "act_r12",
+        "frp_r1",
+        "frp_r2",
+        "frp_r4",
+        "frp_r8",
+        "frp_max_r2",
+        "act_lag1_r3",
+        "act_lag2_r3",
+        "act_lag3_r3",
+        "p7_r3",
+        "p7_cell",
+        "p30_cell",
+        "p30_r2",
+        "centre_dist",
+        "ux",
+        "uy",
+        "growth_align",
+        "wind_align",
+        "wind_push",
+        "fire_act_lag0",
+        "fire_act_lag1",
+        "fire_act_lag2",
+        "fire_act_lag3",
+        "fire_act_p7",
+        "fire_frp",
+        "fire_frp_lag1",
+        "lat",
+        "lon",
+        "doy_sin",
+        "doy_cos",
+        "wind_speed",
+        "temp_max",
+        "rh_min",
+        "precip",
+        "night_is_later",
+        "fire_late",
+        "fire_early",
+        "late_r1",
+        "late_r3",
+        "early_r3",
+        "lateonly_r2",
+        "dist_late",
+        "fire_lateonly",
+        "new0_r1",
+        "new0_r3",
+        "new1_r3",
+        "dist_new0",
+        "fire_new0",
+        "fire_new1",
+        "fire_new2",
+        "fire_growth3",
+        "fire_growth_ratio",
+        "dist_lag1",
+        "dist_p7",
+        "perim_r3",
+        "fire_perim_frac",
+        "fire_fill",
+        "fire_elong",
+        "fire_axis_wind",
+        "axis_align",
+        "h365_cell",
+        "h90_cell",
+        "h365_r2",
+        "burn_age",
+        "fire_h365_frac",
+        "m0_cell",
+        "m0_r1",
+        "m0_r3",
+        "m1_r2",
+        "mfrp0_r2",
+        "monly0_r2",
+        "m7_cell",
+        "dist_m0",
+        "fire_m0",
+        "fire_m1",
+        "fire_monly0",
+        "fire_mfrp0",
+        "k"
+      ],
+      "trees": 117,
+      "thresholds": [
+        0.05,
+        0.1,
+        0.1
+      ],
+      "fitting": {
+        "n": 80,
+        "countries": {
+          "Brazil": 20,
+          "India": 20,
+          "Canada": 11,
+          "United_States": 9,
+          "Australia": 20
+        },
+        "groups": {
+          "South_America": 20,
+          "Asia": 20,
+          "North_America": 20,
+          "Oceania": 20
+        },
+        "first_day": 7003,
+        "last_label_day": 8031,
+        "cases_sha256": "07c12ae825640bb8dd536b01c863c98024f87c716cf5afb3320b765ef850f3d1",
+        "cases": [
+          {
+            "day": 7003,
+            "gx": 2380,
+            "gy": 1831,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2019_Brazil.parquet"
+          },
+          {
+            "day": 7043,
+            "gx": 5167,
+            "gy": 2259,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2019_India.parquet"
+          },
+          {
+            "day": 7043,
+            "gx": 5260,
+            "gy": 2284,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2019_India.parquet"
+          },
+          {
+            "day": 7047,
+            "gx": 5262,
+            "gy": 2167,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2019_India.parquet"
+          },
+          {
+            "day": 7055,
+            "gx": 5148,
+            "gy": 2291,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2019_India.parquet"
+          },
+          {
+            "day": 7080,
+            "gx": 5196,
+            "gy": 2069,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2019_India.parquet"
+          },
+          {
+            "day": 7080,
+            "gx": 5280,
+            "gy": 2318,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2019_India.parquet"
+          },
+          {
+            "day": 7083,
+            "gx": 5119,
+            "gy": 2419,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2019_India.parquet"
+          },
+          {
+            "day": 7131,
+            "gx": 1333,
+            "gy": 2998,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2019_Canada.parquet"
+          },
+          {
+            "day": 7134,
+            "gx": 2588,
+            "gy": 1285,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2019_Brazil.parquet"
+          },
+          {
+            "day": 7135,
+            "gx": 1533,
+            "gy": 2441,
+            "country": "United_States",
+            "group": "North_America",
+            "source": "viirs-snpp_2019_United_States.parquet"
+          },
+          {
+            "day": 7153,
+            "gx": 972,
+            "gy": 3142,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2019_Canada.parquet"
+          },
+          {
+            "day": 7168,
+            "gx": 2305,
+            "gy": 1605,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2019_Brazil.parquet"
+          },
+          {
+            "day": 7193,
+            "gx": 6436,
+            "gy": 1543,
+            "country": "Australia",
+            "group": "Oceania",
+            "source": "viirs-snpp_2019_Australia.parquet"
+          },
+          {
+            "day": 7196,
+            "gx": 2413,
+            "gy": 1610,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2019_Brazil.parquet"
+          },
+          {
+            "day": 7197,
+            "gx": 2644,
+            "gy": 1480,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2019_Brazil.parquet"
+          },
+          {
+            "day": 7225,
+            "gx": 2672,
+            "gy": 1531,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2019_Brazil.parquet"
+          },
+          {
+            "day": 7226,
+            "gx": 2684,
+            "gy": 1581,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2019_Brazil.parquet"
+          },
+          {
+            "day": 7247,
+            "gx": 2524,
+            "gy": 1594,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2019_Brazil.parquet"
+          },
+          {
+            "day": 7257,
+            "gx": 2780,
+            "gy": 1463,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2019_Brazil.parquet"
+          },
+          {
+            "day": 7259,
+            "gx": 6320,
+            "gy": 1545,
+            "country": "Australia",
+            "group": "Oceania",
+            "source": "viirs-snpp_2019_Australia.parquet"
+          },
+          {
+            "day": 7356,
+            "gx": 1170,
+            "gy": 2924,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2020_Canada.parquet"
+          },
+          {
+            "day": 7394,
+            "gx": 5480,
+            "gy": 2305,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2020_India.parquet"
+          },
+          {
+            "day": 7396,
+            "gx": 5417,
+            "gy": 2315,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2020_India.parquet"
+          },
+          {
+            "day": 7413,
+            "gx": 6120,
+            "gy": 1507,
+            "country": "Australia",
+            "group": "Oceania",
+            "source": "viirs-snpp_2020_Australia.parquet"
+          },
+          {
+            "day": 7430,
+            "gx": 5154,
+            "gy": 2170,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2020_India.parquet"
+          },
+          {
+            "day": 7437,
+            "gx": 1522,
+            "gy": 2858,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2020_Canada.parquet"
+          },
+          {
+            "day": 7440,
+            "gx": 5128,
+            "gy": 2375,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2020_India.parquet"
+          },
+          {
+            "day": 7468,
+            "gx": 1689,
+            "gy": 2475,
+            "country": "United_States",
+            "group": "North_America",
+            "source": "viirs-snpp_2020_United_States.parquet"
+          },
+          {
+            "day": 7480,
+            "gx": 6250,
+            "gy": 1545,
+            "country": "Australia",
+            "group": "Oceania",
+            "source": "viirs-snpp_2020_Australia.parquet"
+          },
+          {
+            "day": 7500,
+            "gx": 6148,
+            "gy": 1499,
+            "country": "Australia",
+            "group": "Oceania",
+            "source": "viirs-snpp_2020_Australia.parquet"
+          },
+          {
+            "day": 7501,
+            "gx": 6317,
+            "gy": 1518,
+            "country": "Australia",
+            "group": "Oceania",
+            "source": "viirs-snpp_2020_Australia.parquet"
+          },
+          {
+            "day": 7502,
+            "gx": 6290,
+            "gy": 1548,
+            "country": "Australia",
+            "group": "Oceania",
+            "source": "viirs-snpp_2020_Australia.parquet"
+          },
+          {
+            "day": 7519,
+            "gx": 2590,
+            "gy": 1581,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2020_Brazil.parquet"
+          },
+          {
+            "day": 7523,
+            "gx": 2605,
+            "gy": 1229,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2020_Brazil.parquet"
+          },
+          {
+            "day": 7546,
+            "gx": 2152,
+            "gy": 1641,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2020_Brazil.parquet"
+          },
+          {
+            "day": 7549,
+            "gx": 6283,
+            "gy": 1551,
+            "country": "Australia",
+            "group": "Oceania",
+            "source": "viirs-snpp_2020_Australia.parquet"
+          },
+          {
+            "day": 7569,
+            "gx": 1337,
+            "gy": 2875,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2020_Canada.parquet"
+          },
+          {
+            "day": 7576,
+            "gx": 2538,
+            "gy": 1563,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2020_Brazil.parquet"
+          },
+          {
+            "day": 7584,
+            "gx": 2588,
+            "gy": 1543,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2020_Brazil.parquet"
+          },
+          {
+            "day": 7586,
+            "gx": 2564,
+            "gy": 1681,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2020_Brazil.parquet"
+          },
+          {
+            "day": 7592,
+            "gx": 1546,
+            "gy": 2818,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2020_Canada.parquet"
+          },
+          {
+            "day": 7612,
+            "gx": 1503,
+            "gy": 2821,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2020_Canada.parquet"
+          },
+          {
+            "day": 7612,
+            "gx": 1613,
+            "gy": 2819,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2020_Canada.parquet"
+          },
+          {
+            "day": 7622,
+            "gx": 1754,
+            "gy": 2475,
+            "country": "United_States",
+            "group": "North_America",
+            "source": "viirs-snpp_2020_United_States.parquet"
+          },
+          {
+            "day": 7632,
+            "gx": 1879,
+            "gy": 2412,
+            "country": "United_States",
+            "group": "North_America",
+            "source": "viirs-snpp_2020_United_States.parquet"
+          },
+          {
+            "day": 7633,
+            "gx": 2811,
+            "gy": 1656,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2020_Brazil.parquet"
+          },
+          {
+            "day": 7645,
+            "gx": 6474,
+            "gy": 1483,
+            "country": "Australia",
+            "group": "Oceania",
+            "source": "viirs-snpp_2020_Australia.parquet"
+          },
+          {
+            "day": 7660,
+            "gx": 5241,
+            "gy": 2223,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2020_India.parquet"
+          },
+          {
+            "day": 7675,
+            "gx": 1956,
+            "gy": 2349,
+            "country": "United_States",
+            "group": "North_America",
+            "source": "viirs-snpp_2021_United_States.parquet"
+          },
+          {
+            "day": 7686,
+            "gx": 5337,
+            "gy": 2231,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2021_India.parquet"
+          },
+          {
+            "day": 7690,
+            "gx": 5160,
+            "gy": 2247,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2021_India.parquet"
+          },
+          {
+            "day": 7733,
+            "gx": 6563,
+            "gy": 1133,
+            "country": "Australia",
+            "group": "Oceania",
+            "source": "viirs-snpp_2021_Australia.parquet"
+          },
+          {
+            "day": 7742,
+            "gx": 1625,
+            "gy": 2768,
+            "country": "United_States",
+            "group": "North_America",
+            "source": "viirs-snpp_2021_United_States.parquet"
+          },
+          {
+            "day": 7749,
+            "gx": 1912,
+            "gy": 2664,
+            "country": "United_States",
+            "group": "North_America",
+            "source": "viirs-snpp_2021_United_States.parquet"
+          },
+          {
+            "day": 7773,
+            "gx": 5322,
+            "gy": 2263,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2021_India.parquet"
+          },
+          {
+            "day": 7774,
+            "gx": 5188,
+            "gy": 2396,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2021_India.parquet"
+          },
+          {
+            "day": 7778,
+            "gx": 6242,
+            "gy": 1547,
+            "country": "Australia",
+            "group": "Oceania",
+            "source": "viirs-snpp_2021_Australia.parquet"
+          },
+          {
+            "day": 7779,
+            "gx": 6145,
+            "gy": 1503,
+            "country": "Australia",
+            "group": "Oceania",
+            "source": "viirs-snpp_2021_Australia.parquet"
+          },
+          {
+            "day": 7782,
+            "gx": 6226,
+            "gy": 1488,
+            "country": "Australia",
+            "group": "Oceania",
+            "source": "viirs-snpp_2021_Australia.parquet"
+          },
+          {
+            "day": 7804,
+            "gx": 5108,
+            "gy": 2400,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2021_India.parquet"
+          },
+          {
+            "day": 7806,
+            "gx": 5096,
+            "gy": 2427,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2021_India.parquet"
+          },
+          {
+            "day": 7815,
+            "gx": 6622,
+            "gy": 1167,
+            "country": "Australia",
+            "group": "Oceania",
+            "source": "viirs-snpp_2021_Australia.parquet"
+          },
+          {
+            "day": 7819,
+            "gx": 6591,
+            "gy": 1177,
+            "country": "Australia",
+            "group": "Oceania",
+            "source": "viirs-snpp_2021_Australia.parquet"
+          },
+          {
+            "day": 7881,
+            "gx": 1310,
+            "gy": 2728,
+            "country": "United_States",
+            "group": "North_America",
+            "source": "viirs-snpp_2021_United_States.parquet"
+          },
+          {
+            "day": 7883,
+            "gx": 1443,
+            "gy": 2926,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2021_Canada.parquet"
+          },
+          {
+            "day": 7884,
+            "gx": 939,
+            "gy": 3082,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2021_Canada.parquet"
+          },
+          {
+            "day": 7921,
+            "gx": 2141,
+            "gy": 1652,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2021_Brazil.parquet"
+          },
+          {
+            "day": 7925,
+            "gx": 1134,
+            "gy": 2610,
+            "country": "United_States",
+            "group": "North_America",
+            "source": "viirs-snpp_2021_United_States.parquet"
+          },
+          {
+            "day": 7928,
+            "gx": 6439,
+            "gy": 1490,
+            "country": "Australia",
+            "group": "Oceania",
+            "source": "viirs-snpp_2021_Australia.parquet"
+          },
+          {
+            "day": 7946,
+            "gx": 2263,
+            "gy": 1602,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2021_Brazil.parquet"
+          },
+          {
+            "day": 7947,
+            "gx": 5199,
+            "gy": 2106,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2021_India.parquet"
+          },
+          {
+            "day": 7953,
+            "gx": 2220,
+            "gy": 1586,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2021_Brazil.parquet"
+          },
+          {
+            "day": 7959,
+            "gx": 1428,
+            "gy": 2858,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2021_Canada.parquet"
+          },
+          {
+            "day": 7971,
+            "gx": 6463,
+            "gy": 1439,
+            "country": "Australia",
+            "group": "Oceania",
+            "source": "viirs-snpp_2021_Australia.parquet"
+          },
+          {
+            "day": 7973,
+            "gx": 6138,
+            "gy": 1502,
+            "country": "Australia",
+            "group": "Oceania",
+            "source": "viirs-snpp_2021_Australia.parquet"
+          },
+          {
+            "day": 7991,
+            "gx": 6201,
+            "gy": 1517,
+            "country": "Australia",
+            "group": "Oceania",
+            "source": "viirs-snpp_2021_Australia.parquet"
+          },
+          {
+            "day": 8005,
+            "gx": 2708,
+            "gy": 1701,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2021_Brazil.parquet"
+          },
+          {
+            "day": 8027,
+            "gx": 6481,
+            "gy": 1397,
+            "country": "Australia",
+            "group": "Oceania",
+            "source": "viirs-snpp_2021_Australia.parquet"
+          },
+          {
+            "day": 8028,
+            "gx": 5260,
+            "gy": 2241,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2021_India.parquet"
+          }
+        ]
+      },
+      "early_stopping": {
+        "n": 20,
+        "countries": {
+          "India": 5,
+          "Australia": 5,
+          "United_States": 3,
+          "Brazil": 5,
+          "Canada": 2
+        },
+        "groups": {
+          "Asia": 5,
+          "Oceania": 5,
+          "North_America": 5,
+          "South_America": 5
+        },
+        "first_day": 8081,
+        "last_label_day": 8393,
+        "cases_sha256": "4b13720b3fe3d33bed7d517c3fcfa814a36b2ea7f9619fa51ac6b0afe791360f",
+        "cases": [
+          {
+            "day": 8081,
+            "gx": 5109,
+            "gy": 2151,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2022_India.parquet"
+          },
+          {
+            "day": 8133,
+            "gx": 6161,
+            "gy": 1468,
+            "country": "Australia",
+            "group": "Oceania",
+            "source": "viirs-snpp_2022_Australia.parquet"
+          },
+          {
+            "day": 8139,
+            "gx": 6109,
+            "gy": 1450,
+            "country": "Australia",
+            "group": "Oceania",
+            "source": "viirs-snpp_2022_Australia.parquet"
+          },
+          {
+            "day": 8151,
+            "gx": 5209,
+            "gy": 2363,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2022_India.parquet"
+          },
+          {
+            "day": 8158,
+            "gx": 6598,
+            "gy": 1208,
+            "country": "Australia",
+            "group": "Oceania",
+            "source": "viirs-snpp_2022_Australia.parquet"
+          },
+          {
+            "day": 8174,
+            "gx": 1874,
+            "gy": 2509,
+            "country": "United_States",
+            "group": "North_America",
+            "source": "viirs-snpp_2022_United_States.parquet"
+          },
+          {
+            "day": 8181,
+            "gx": 2597,
+            "gy": 1534,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2022_Brazil.parquet"
+          },
+          {
+            "day": 8192,
+            "gx": 5141,
+            "gy": 2262,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2022_India.parquet"
+          },
+          {
+            "day": 8225,
+            "gx": 897,
+            "gy": 3121,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2022_Canada.parquet"
+          },
+          {
+            "day": 8273,
+            "gx": 1384,
+            "gy": 2983,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2022_Canada.parquet"
+          },
+          {
+            "day": 8286,
+            "gx": 1667,
+            "gy": 2475,
+            "country": "United_States",
+            "group": "North_America",
+            "source": "viirs-snpp_2022_United_States.parquet"
+          },
+          {
+            "day": 8298,
+            "gx": 1737,
+            "gy": 2408,
+            "country": "United_States",
+            "group": "North_America",
+            "source": "viirs-snpp_2022_United_States.parquet"
+          },
+          {
+            "day": 8306,
+            "gx": 2418,
+            "gy": 1730,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2022_Brazil.parquet"
+          },
+          {
+            "day": 8319,
+            "gx": 2753,
+            "gy": 1673,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2022_Brazil.parquet"
+          },
+          {
+            "day": 8324,
+            "gx": 2612,
+            "gy": 1718,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2022_Brazil.parquet"
+          },
+          {
+            "day": 8329,
+            "gx": 6236,
+            "gy": 1502,
+            "country": "Australia",
+            "group": "Oceania",
+            "source": "viirs-snpp_2022_Australia.parquet"
+          },
+          {
+            "day": 8344,
+            "gx": 5087,
+            "gy": 2415,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2022_India.parquet"
+          },
+          {
+            "day": 8362,
+            "gx": 6346,
+            "gy": 1459,
+            "country": "Australia",
+            "group": "Oceania",
+            "source": "viirs-snpp_2022_Australia.parquet"
+          },
+          {
+            "day": 8376,
+            "gx": 2569,
+            "gy": 1554,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2022_Brazil.parquet"
+          },
+          {
+            "day": 8390,
+            "gx": 5245,
+            "gy": 2236,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2022_India.parquet"
+          }
+        ]
+      },
+      "policy_calibration": {
+        "n": 20,
+        "countries": {
+          "United_States": 2,
+          "Australia": 5,
+          "India": 5,
+          "Canada": 3,
+          "Brazil": 5
+        },
+        "groups": {
+          "North_America": 5,
+          "Oceania": 5,
+          "Asia": 5,
+          "South_America": 5
+        },
+        "first_day": 8438,
+        "last_label_day": 8752,
+        "cases_sha256": "778091d611350dcd2ce82928b64e7cc52da82758ad898471c8fa42a0356cc084",
+        "cases": [
+          {
+            "day": 8438,
+            "gx": 1982,
+            "gy": 2371,
+            "country": "United_States",
+            "group": "North_America",
+            "source": "viirs-snpp_2023_United_States.parquet"
+          },
+          {
+            "day": 8449,
+            "gx": 6606,
+            "gy": 1272,
+            "country": "Australia",
+            "group": "Oceania",
+            "source": "viirs-snpp_2023_Australia.parquet"
+          },
+          {
+            "day": 8471,
+            "gx": 5224,
+            "gy": 2159,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2023_India.parquet"
+          },
+          {
+            "day": 8486,
+            "gx": 5450,
+            "gy": 2283,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2023_India.parquet"
+          },
+          {
+            "day": 8487,
+            "gx": 5132,
+            "gy": 2099,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2023_India.parquet"
+          },
+          {
+            "day": 8503,
+            "gx": 5282,
+            "gy": 2349,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2023_India.parquet"
+          },
+          {
+            "day": 8506,
+            "gx": 5202,
+            "gy": 2269,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2023_India.parquet"
+          },
+          {
+            "day": 8536,
+            "gx": 1300,
+            "gy": 2921,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2023_Canada.parquet"
+          },
+          {
+            "day": 8541,
+            "gx": 6233,
+            "gy": 1416,
+            "country": "Australia",
+            "group": "Oceania",
+            "source": "viirs-snpp_2023_Australia.parquet"
+          },
+          {
+            "day": 8593,
+            "gx": 6279,
+            "gy": 1560,
+            "country": "Australia",
+            "group": "Oceania",
+            "source": "viirs-snpp_2023_Australia.parquet"
+          },
+          {
+            "day": 8618,
+            "gx": 1343,
+            "gy": 3015,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2023_Canada.parquet"
+          },
+          {
+            "day": 8622,
+            "gx": 2500,
+            "gy": 1631,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2023_Brazil.parquet"
+          },
+          {
+            "day": 8623,
+            "gx": 1260,
+            "gy": 3119,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2023_Canada.parquet"
+          },
+          {
+            "day": 8632,
+            "gx": 6219,
+            "gy": 1563,
+            "country": "Australia",
+            "group": "Oceania",
+            "source": "viirs-snpp_2023_Australia.parquet"
+          },
+          {
+            "day": 8637,
+            "gx": 1718,
+            "gy": 2497,
+            "country": "United_States",
+            "group": "North_America",
+            "source": "viirs-snpp_2023_United_States.parquet"
+          },
+          {
+            "day": 8661,
+            "gx": 2416,
+            "gy": 1729,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2023_Brazil.parquet"
+          },
+          {
+            "day": 8666,
+            "gx": 2769,
+            "gy": 1409,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2023_Brazil.parquet"
+          },
+          {
+            "day": 8682,
+            "gx": 2580,
+            "gy": 1850,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2023_Brazil.parquet"
+          },
+          {
+            "day": 8711,
+            "gx": 2629,
+            "gy": 1738,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2023_Brazil.parquet"
+          },
+          {
+            "day": 8749,
+            "gx": 6628,
+            "gy": 1216,
+            "country": "Australia",
+            "group": "Oceania",
+            "source": "viirs-snpp_2023_Australia.parquet"
+          }
+        ]
+      },
+      "training_row_missing_wind_fraction": 0.7933445249580314,
+      "model_sha256": "39dd7ac4a72fb156844f4f9b7f83f6e8f36f27b1838f6a74fcc556cbce1b42bd",
+      "rows_seconds": 1.611,
+      "elapsed_seconds": 4.714
+    },
+    "Oceania": {
+      "excluded_group": "Oceania",
+      "features": [
+        "dist",
+        "act_r1",
+        "act_r2",
+        "act_r3",
+        "act_r5",
+        "act_r8",
+        "act_r12",
+        "frp_r1",
+        "frp_r2",
+        "frp_r4",
+        "frp_r8",
+        "frp_max_r2",
+        "act_lag1_r3",
+        "act_lag2_r3",
+        "act_lag3_r3",
+        "p7_r3",
+        "p7_cell",
+        "p30_cell",
+        "p30_r2",
+        "centre_dist",
+        "ux",
+        "uy",
+        "growth_align",
+        "wind_align",
+        "wind_push",
+        "fire_act_lag0",
+        "fire_act_lag1",
+        "fire_act_lag2",
+        "fire_act_lag3",
+        "fire_act_p7",
+        "fire_frp",
+        "fire_frp_lag1",
+        "lat",
+        "lon",
+        "doy_sin",
+        "doy_cos",
+        "wind_speed",
+        "temp_max",
+        "rh_min",
+        "precip",
+        "night_is_later",
+        "fire_late",
+        "fire_early",
+        "late_r1",
+        "late_r3",
+        "early_r3",
+        "lateonly_r2",
+        "dist_late",
+        "fire_lateonly",
+        "new0_r1",
+        "new0_r3",
+        "new1_r3",
+        "dist_new0",
+        "fire_new0",
+        "fire_new1",
+        "fire_new2",
+        "fire_growth3",
+        "fire_growth_ratio",
+        "dist_lag1",
+        "dist_p7",
+        "perim_r3",
+        "fire_perim_frac",
+        "fire_fill",
+        "fire_elong",
+        "fire_axis_wind",
+        "axis_align",
+        "h365_cell",
+        "h90_cell",
+        "h365_r2",
+        "burn_age",
+        "fire_h365_frac",
+        "m0_cell",
+        "m0_r1",
+        "m0_r3",
+        "m1_r2",
+        "mfrp0_r2",
+        "monly0_r2",
+        "m7_cell",
+        "dist_m0",
+        "fire_m0",
+        "fire_m1",
+        "fire_monly0",
+        "fire_mfrp0",
+        "k"
+      ],
+      "trees": 141,
+      "thresholds": [
+        0.1,
+        0.15,
+        0.15
+      ],
+      "fitting": {
+        "n": 80,
+        "countries": {
+          "India": 27,
+          "United_States": 8,
+          "Canada": 18,
+          "Brazil": 27
+        },
+        "groups": {
+          "Asia": 27,
+          "North_America": 26,
+          "South_America": 27
+        },
+        "first_day": 6960,
+        "last_label_day": 7979,
+        "cases_sha256": "ca5f93e6317b8ac92e3735e61a82c5b1fdd714be1cf10e2353930774393ec0c1",
+        "cases": [
+          {
+            "day": 6960,
+            "gx": 5067,
+            "gy": 2160,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2019_India.parquet"
+          },
+          {
+            "day": 6965,
+            "gx": 5091,
+            "gy": 2192,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2019_India.parquet"
+          },
+          {
+            "day": 6982,
+            "gx": 5448,
+            "gy": 2314,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2019_India.parquet"
+          },
+          {
+            "day": 7014,
+            "gx": 5216,
+            "gy": 2159,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2019_India.parquet"
+          },
+          {
+            "day": 7017,
+            "gx": 1134,
+            "gy": 2662,
+            "country": "United_States",
+            "group": "North_America",
+            "source": "viirs-snpp_2019_United_States.parquet"
+          },
+          {
+            "day": 7027,
+            "gx": 5472,
+            "gy": 2287,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2019_India.parquet"
+          },
+          {
+            "day": 7037,
+            "gx": 5215,
+            "gy": 2230,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2019_India.parquet"
+          },
+          {
+            "day": 7038,
+            "gx": 1668,
+            "gy": 2550,
+            "country": "United_States",
+            "group": "North_America",
+            "source": "viirs-snpp_2019_United_States.parquet"
+          },
+          {
+            "day": 7042,
+            "gx": 5270,
+            "gy": 2204,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2019_India.parquet"
+          },
+          {
+            "day": 7043,
+            "gx": 5192,
+            "gy": 2402,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2019_India.parquet"
+          },
+          {
+            "day": 7064,
+            "gx": 5124,
+            "gy": 2407,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2019_India.parquet"
+          },
+          {
+            "day": 7071,
+            "gx": 1168,
+            "gy": 2928,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2019_Canada.parquet"
+          },
+          {
+            "day": 7072,
+            "gx": 1590,
+            "gy": 2827,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2019_Canada.parquet"
+          },
+          {
+            "day": 7079,
+            "gx": 1486,
+            "gy": 2855,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2019_Canada.parquet"
+          },
+          {
+            "day": 7118,
+            "gx": 1527,
+            "gy": 2423,
+            "country": "United_States",
+            "group": "North_America",
+            "source": "viirs-snpp_2019_United_States.parquet"
+          },
+          {
+            "day": 7122,
+            "gx": 2412,
+            "gy": 1525,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2019_Brazil.parquet"
+          },
+          {
+            "day": 7163,
+            "gx": 2500,
+            "gy": 1653,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2019_Brazil.parquet"
+          },
+          {
+            "day": 7169,
+            "gx": 2055,
+            "gy": 2603,
+            "country": "United_States",
+            "group": "North_America",
+            "source": "viirs-snpp_2019_United_States.parquet"
+          },
+          {
+            "day": 7181,
+            "gx": 2500,
+            "gy": 1649,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2019_Brazil.parquet"
+          },
+          {
+            "day": 7182,
+            "gx": 2656,
+            "gy": 1539,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2019_Brazil.parquet"
+          },
+          {
+            "day": 7190,
+            "gx": 2399,
+            "gy": 1507,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2019_Brazil.parquet"
+          },
+          {
+            "day": 7192,
+            "gx": 871,
+            "gy": 3064,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2019_Canada.parquet"
+          },
+          {
+            "day": 7197,
+            "gx": 2665,
+            "gy": 1646,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2019_Brazil.parquet"
+          },
+          {
+            "day": 7223,
+            "gx": 1230,
+            "gy": 2805,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2019_Canada.parquet"
+          },
+          {
+            "day": 7242,
+            "gx": 2326,
+            "gy": 1595,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2019_Brazil.parquet"
+          },
+          {
+            "day": 7257,
+            "gx": 2870,
+            "gy": 1630,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2019_Brazil.parquet"
+          },
+          {
+            "day": 7259,
+            "gx": 2669,
+            "gy": 1665,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2019_Brazil.parquet"
+          },
+          {
+            "day": 7268,
+            "gx": 2615,
+            "gy": 1670,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2019_Brazil.parquet"
+          },
+          {
+            "day": 7268,
+            "gx": 5028,
+            "gy": 2262,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2019_India.parquet"
+          },
+          {
+            "day": 7349,
+            "gx": 5023,
+            "gy": 2229,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2020_India.parquet"
+          },
+          {
+            "day": 7355,
+            "gx": 5077,
+            "gy": 2145,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2020_India.parquet"
+          },
+          {
+            "day": 7394,
+            "gx": 1611,
+            "gy": 2786,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2020_Canada.parquet"
+          },
+          {
+            "day": 7401,
+            "gx": 5464,
+            "gy": 2326,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2020_India.parquet"
+          },
+          {
+            "day": 7408,
+            "gx": 5168,
+            "gy": 2138,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2020_India.parquet"
+          },
+          {
+            "day": 7424,
+            "gx": 5234,
+            "gy": 2152,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2020_India.parquet"
+          },
+          {
+            "day": 7426,
+            "gx": 5142,
+            "gy": 2397,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2020_India.parquet"
+          },
+          {
+            "day": 7430,
+            "gx": 5175,
+            "gy": 2292,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2020_India.parquet"
+          },
+          {
+            "day": 7433,
+            "gx": 2549,
+            "gy": 1178,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2020_Brazil.parquet"
+          },
+          {
+            "day": 7442,
+            "gx": 1504,
+            "gy": 2868,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2020_Canada.parquet"
+          },
+          {
+            "day": 7447,
+            "gx": 5088,
+            "gy": 2410,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2020_India.parquet"
+          },
+          {
+            "day": 7450,
+            "gx": 1587,
+            "gy": 2821,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2020_Canada.parquet"
+          },
+          {
+            "day": 7513,
+            "gx": 2617,
+            "gy": 1756,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2020_Brazil.parquet"
+          },
+          {
+            "day": 7523,
+            "gx": 1817,
+            "gy": 2461,
+            "country": "United_States",
+            "group": "North_America",
+            "source": "viirs-snpp_2020_United_States.parquet"
+          },
+          {
+            "day": 7548,
+            "gx": 1144,
+            "gy": 2598,
+            "country": "United_States",
+            "group": "North_America",
+            "source": "viirs-snpp_2020_United_States.parquet"
+          },
+          {
+            "day": 7565,
+            "gx": 2531,
+            "gy": 1658,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2020_Brazil.parquet"
+          },
+          {
+            "day": 7574,
+            "gx": 1208,
+            "gy": 2556,
+            "country": "United_States",
+            "group": "North_America",
+            "source": "viirs-snpp_2020_United_States.parquet"
+          },
+          {
+            "day": 7585,
+            "gx": 2418,
+            "gy": 1542,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2020_Brazil.parquet"
+          },
+          {
+            "day": 7586,
+            "gx": 2455,
+            "gy": 1382,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2020_Brazil.parquet"
+          },
+          {
+            "day": 7588,
+            "gx": 2353,
+            "gy": 1610,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2020_Brazil.parquet"
+          },
+          {
+            "day": 7595,
+            "gx": 5192,
+            "gy": 2257,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2020_India.parquet"
+          },
+          {
+            "day": 7597,
+            "gx": 1538,
+            "gy": 2816,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2020_Canada.parquet"
+          },
+          {
+            "day": 7600,
+            "gx": 1248,
+            "gy": 2785,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2020_Canada.parquet"
+          },
+          {
+            "day": 7605,
+            "gx": 5118,
+            "gy": 2392,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2020_India.parquet"
+          },
+          {
+            "day": 7620,
+            "gx": 2737,
+            "gy": 1530,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2020_Brazil.parquet"
+          },
+          {
+            "day": 7626,
+            "gx": 2698,
+            "gy": 1762,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2020_Brazil.parquet"
+          },
+          {
+            "day": 7629,
+            "gx": 5158,
+            "gy": 2063,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2020_India.parquet"
+          },
+          {
+            "day": 7640,
+            "gx": 2654,
+            "gy": 1743,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2020_Brazil.parquet"
+          },
+          {
+            "day": 7662,
+            "gx": 2669,
+            "gy": 1762,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2020_Brazil.parquet"
+          },
+          {
+            "day": 7752,
+            "gx": 5458,
+            "gy": 2313,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2021_India.parquet"
+          },
+          {
+            "day": 7754,
+            "gx": 5420,
+            "gy": 2311,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2021_India.parquet"
+          },
+          {
+            "day": 7774,
+            "gx": 5201,
+            "gy": 2287,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2021_India.parquet"
+          },
+          {
+            "day": 7802,
+            "gx": 5066,
+            "gy": 2214,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2021_India.parquet"
+          },
+          {
+            "day": 7819,
+            "gx": 5242,
+            "gy": 2226,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2021_India.parquet"
+          },
+          {
+            "day": 7838,
+            "gx": 1413,
+            "gy": 2473,
+            "country": "United_States",
+            "group": "North_America",
+            "source": "viirs-snpp_2021_United_States.parquet"
+          },
+          {
+            "day": 7847,
+            "gx": 824,
+            "gy": 3146,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2021_Canada.parquet"
+          },
+          {
+            "day": 7850,
+            "gx": 2639,
+            "gy": 1492,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2021_Brazil.parquet"
+          },
+          {
+            "day": 7863,
+            "gx": 1106,
+            "gy": 2873,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2021_Canada.parquet"
+          },
+          {
+            "day": 7869,
+            "gx": 1708,
+            "gy": 2821,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2021_Canada.parquet"
+          },
+          {
+            "day": 7871,
+            "gx": 1672,
+            "gy": 2839,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2021_Canada.parquet"
+          },
+          {
+            "day": 7877,
+            "gx": 1274,
+            "gy": 2787,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2021_Canada.parquet"
+          },
+          {
+            "day": 7881,
+            "gx": 1175,
+            "gy": 2804,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2021_Canada.parquet"
+          },
+          {
+            "day": 7881,
+            "gx": 1235,
+            "gy": 2791,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2021_Canada.parquet"
+          },
+          {
+            "day": 7882,
+            "gx": 1598,
+            "gy": 2915,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2021_Canada.parquet"
+          },
+          {
+            "day": 7925,
+            "gx": 2582,
+            "gy": 1464,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2021_Brazil.parquet"
+          },
+          {
+            "day": 7935,
+            "gx": 2771,
+            "gy": 1493,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2021_Brazil.parquet"
+          },
+          {
+            "day": 7939,
+            "gx": 2449,
+            "gy": 1423,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2021_Brazil.parquet"
+          },
+          {
+            "day": 7952,
+            "gx": 2686,
+            "gy": 1705,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2021_Brazil.parquet"
+          },
+          {
+            "day": 7955,
+            "gx": 2722,
+            "gy": 1621,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2021_Brazil.parquet"
+          },
+          {
+            "day": 7956,
+            "gx": 2712,
+            "gy": 1742,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2021_Brazil.parquet"
+          },
+          {
+            "day": 7976,
+            "gx": 5110,
+            "gy": 2415,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2021_India.parquet"
+          }
+        ]
+      },
+      "early_stopping": {
+        "n": 20,
+        "countries": {
+          "India": 7,
+          "United_States": 4,
+          "Brazil": 7,
+          "Canada": 2
+        },
+        "groups": {
+          "Asia": 7,
+          "North_America": 6,
+          "South_America": 7
+        },
+        "first_day": 8057,
+        "last_label_day": 8365,
+        "cases_sha256": "d769371c19c01f6b5a3da781b54598649f5e3de2928e128fd0fb6da2317a0987",
+        "cases": [
+          {
+            "day": 8057,
+            "gx": 5145,
+            "gy": 2004,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2022_India.parquet"
+          },
+          {
+            "day": 8081,
+            "gx": 1756,
+            "gy": 2506,
+            "country": "United_States",
+            "group": "North_America",
+            "source": "viirs-snpp_2022_United_States.parquet"
+          },
+          {
+            "day": 8085,
+            "gx": 5153,
+            "gy": 2097,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2022_India.parquet"
+          },
+          {
+            "day": 8120,
+            "gx": 1729,
+            "gy": 2398,
+            "country": "United_States",
+            "group": "North_America",
+            "source": "viirs-snpp_2022_United_States.parquet"
+          },
+          {
+            "day": 8121,
+            "gx": 5161,
+            "gy": 2207,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2022_India.parquet"
+          },
+          {
+            "day": 8121,
+            "gx": 5186,
+            "gy": 2283,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2022_India.parquet"
+          },
+          {
+            "day": 8122,
+            "gx": 5155,
+            "gy": 2229,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2022_India.parquet"
+          },
+          {
+            "day": 8127,
+            "gx": 1667,
+            "gy": 2488,
+            "country": "United_States",
+            "group": "North_America",
+            "source": "viirs-snpp_2022_United_States.parquet"
+          },
+          {
+            "day": 8135,
+            "gx": 5178,
+            "gy": 2088,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2022_India.parquet"
+          },
+          {
+            "day": 8165,
+            "gx": 2511,
+            "gy": 1571,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2022_Brazil.parquet"
+          },
+          {
+            "day": 8166,
+            "gx": 1915,
+            "gy": 2426,
+            "country": "United_States",
+            "group": "North_America",
+            "source": "viirs-snpp_2022_United_States.parquet"
+          },
+          {
+            "day": 8223,
+            "gx": 1410,
+            "gy": 2943,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2022_Canada.parquet"
+          },
+          {
+            "day": 8240,
+            "gx": 2251,
+            "gy": 1609,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2022_Brazil.parquet"
+          },
+          {
+            "day": 8268,
+            "gx": 2401,
+            "gy": 1663,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2022_Brazil.parquet"
+          },
+          {
+            "day": 8298,
+            "gx": 2499,
+            "gy": 1628,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2022_Brazil.parquet"
+          },
+          {
+            "day": 8301,
+            "gx": 2497,
+            "gy": 1669,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2022_Brazil.parquet"
+          },
+          {
+            "day": 8349,
+            "gx": 2605,
+            "gy": 1767,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2022_Brazil.parquet"
+          },
+          {
+            "day": 8352,
+            "gx": 2817,
+            "gy": 1664,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2022_Brazil.parquet"
+          },
+          {
+            "day": 8352,
+            "gx": 5223,
+            "gy": 2316,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2022_India.parquet"
+          },
+          {
+            "day": 8362,
+            "gx": 1275,
+            "gy": 2961,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2022_Canada.parquet"
+          }
+        ]
+      },
+      "policy_calibration": {
+        "n": 20,
+        "countries": {
+          "India": 7,
+          "United_States": 4,
+          "Brazil": 7,
+          "Canada": 2
+        },
+        "groups": {
+          "Asia": 7,
+          "North_America": 6,
+          "South_America": 7
+        },
+        "first_day": 8438,
+        "last_label_day": 8751,
+        "cases_sha256": "d33f0200b55448fc5613b1853b731510c11882fb8c83f9649beca1ab992da400",
+        "cases": [
+          {
+            "day": 8438,
+            "gx": 5072,
+            "gy": 2168,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2023_India.parquet"
+          },
+          {
+            "day": 8460,
+            "gx": 4992,
+            "gy": 2237,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2023_India.parquet"
+          },
+          {
+            "day": 8464,
+            "gx": 5088,
+            "gy": 2114,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2023_India.parquet"
+          },
+          {
+            "day": 8480,
+            "gx": 1966,
+            "gy": 2483,
+            "country": "United_States",
+            "group": "North_America",
+            "source": "viirs-snpp_2023_United_States.parquet"
+          },
+          {
+            "day": 8497,
+            "gx": 5189,
+            "gy": 2221,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2023_India.parquet"
+          },
+          {
+            "day": 8539,
+            "gx": 5187,
+            "gy": 2298,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2023_India.parquet"
+          },
+          {
+            "day": 8545,
+            "gx": 2727,
+            "gy": 1692,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2023_Brazil.parquet"
+          },
+          {
+            "day": 8572,
+            "gx": 2077,
+            "gy": 2869,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2023_Canada.parquet"
+          },
+          {
+            "day": 8618,
+            "gx": 1026,
+            "gy": 3137,
+            "country": "Canada",
+            "group": "North_America",
+            "source": "viirs-snpp_2023_Canada.parquet"
+          },
+          {
+            "day": 8630,
+            "gx": 1139,
+            "gy": 2634,
+            "country": "United_States",
+            "group": "North_America",
+            "source": "viirs-snpp_2023_United_States.parquet"
+          },
+          {
+            "day": 8671,
+            "gx": 2624,
+            "gy": 1734,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2023_Brazil.parquet"
+          },
+          {
+            "day": 8671,
+            "gx": 2817,
+            "gy": 1504,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2023_Brazil.parquet"
+          },
+          {
+            "day": 8677,
+            "gx": 2220,
+            "gy": 1612,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2023_Brazil.parquet"
+          },
+          {
+            "day": 8701,
+            "gx": 5105,
+            "gy": 2392,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2023_India.parquet"
+          },
+          {
+            "day": 8703,
+            "gx": 2485,
+            "gy": 1767,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2023_Brazil.parquet"
+          },
+          {
+            "day": 8705,
+            "gx": 2644,
+            "gy": 1721,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2023_Brazil.parquet"
+          },
+          {
+            "day": 8708,
+            "gx": 5101,
+            "gy": 2421,
+            "country": "India",
+            "group": "Asia",
+            "source": "viirs-snpp_2023_India.parquet"
+          },
+          {
+            "day": 8718,
+            "gx": 1616,
+            "gy": 2387,
+            "country": "United_States",
+            "group": "North_America",
+            "source": "viirs-snpp_2023_United_States.parquet"
+          },
+          {
+            "day": 8718,
+            "gx": 2640,
+            "gy": 1675,
+            "country": "Brazil",
+            "group": "South_America",
+            "source": "viirs-snpp_2023_Brazil.parquet"
+          },
+          {
+            "day": 8748,
+            "gx": 1986,
+            "gy": 2591,
+            "country": "United_States",
+            "group": "North_America",
+            "source": "viirs-snpp_2023_United_States.parquet"
+          }
+        ]
+      },
+      "training_row_missing_wind_fraction": 0.8528886489180546,
+      "model_sha256": "0a4a7a40cbfcdb7bab12e370e14c639b91bd408593fed2a07f82409249128d28",
+      "rows_seconds": 1.126,
+      "elapsed_seconds": 4.151
+    }
+  },
+  "comparisons": {
+    "Oceania": {
+      "all_regions_control": {
+        "horizons": [
+          {
+            "iou": 0.11529631529964704,
+            "iou_cases": 5,
+            "within_5km": 0.42499096983926316,
+            "within_5km_cases": 5,
+            "precision": 0.11624934320284559,
+            "precision_cases": 5,
+            "recall": 0.7703030303030304,
+            "recall_cases": 5,
+            "brier": 0.03954786341637373,
+            "brier_cases": 5,
+            "empty_truth_cases": 0,
+            "eligible_cells": 1030
+          },
+          {
+            "iou": 0.11737964846398581,
+            "iou_cases": 5,
+            "within_5km": 0.4770187028331437,
+            "within_5km_cases": 5,
+            "precision": 0.18891641691641692,
+            "precision_cases": 5,
+            "recall": 0.36145416428435295,
+            "recall_cases": 5,
+            "brier": 0.044053140096366405,
+            "brier_cases": 5,
+            "empty_truth_cases": 0,
+            "eligible_cells": 2212
+          },
+          {
+            "iou": 0.11196552140497143,
+            "iou_cases": 5,
+            "within_5km": 0.4684248150480189,
+            "within_5km_cases": 5,
+            "precision": 0.1690707474603824,
+            "precision_cases": 5,
+            "recall": 0.36672189879086425,
+            "recall_cases": 5,
+            "brier": 0.042267690598964694,
+            "brier_cases": 5,
+            "empty_truth_cases": 0,
+            "eligible_cells": 3338
+          }
+        ],
+        "cases": [
+          {
+            "case": {
+              "day": 8851,
+              "gx": 6437,
+              "gy": 1060,
+              "country": "Australia",
+              "group": "Oceania",
+              "source": "viirs-snpp_2024_Australia.parquet"
+            },
+            "horizons": [
+              {
+                "iou": 0.0970873786407767,
+                "within_5km": 0.4336283185840708,
+                "precision": 0.09900990099009901,
+                "recall": 0.8333333333333334,
+                "brier": 0.07477027177810669,
+                "predicted_cells": 202,
+                "observed_cells": 24,
+                "eligible_cells": 289
+              },
+              {
+                "iou": 0.16666666666666666,
+                "within_5km": 0.6551724137931034,
+                "precision": 0.19333333333333333,
+                "recall": 0.5471698113207547,
+                "brier": 0.08059684932231903,
+                "predicted_cells": 150,
+                "observed_cells": 53,
+                "eligible_cells": 551
+              },
+              {
+                "iou": 0.15668202764976957,
+                "within_5km": 0.6254980079681275,
+                "precision": 0.17616580310880828,
+                "recall": 0.5862068965517241,
+                "brier": 0.06480712443590164,
+                "predicted_cells": 193,
+                "observed_cells": 58,
+                "eligible_cells": 752
+              }
+            ]
+          },
+          {
+            "case": {
+              "day": 8932,
+              "gx": 6256,
+              "gy": 1508,
+              "country": "Australia",
+              "group": "Oceania",
+              "source": "viirs-snpp_2024_Australia.parquet"
+            },
+            "horizons": [
+              {
+                "iou": 0.0425531914893617,
+                "within_5km": 0.20918367346938777,
+                "precision": 0.0425531914893617,
+                "recall": 1.0,
+                "brier": 0.035725198686122894,
+                "predicted_cells": 188,
+                "observed_cells": 8,
+                "eligible_cells": 227
+              },
+              {
+                "iou": 0.09036144578313253,
+                "within_5km": 0.4585635359116022,
+                "precision": 0.09740259740259741,
+                "recall": 0.5555555555555556,
+                "brier": 0.054593946784734726,
+                "predicted_cells": 154,
+                "observed_cells": 27,
+                "eligible_cells": 456
+              },
+              {
+                "iou": 0.09615384615384616,
+                "within_5km": 0.5087719298245614,
+                "precision": 0.10869565217391304,
+                "recall": 0.45454545454545453,
+                "brier": 0.06202496215701103,
+                "predicted_cells": 184,
+                "observed_cells": 44,
+                "eligible_cells": 668
+              }
+            ]
+          },
+          {
+            "case": {
+              "day": 8984,
+              "gx": 6249,
+              "gy": 1536,
+              "country": "Australia",
+              "group": "Oceania",
+              "source": "viirs-snpp_2024_Australia.parquet"
+            },
+            "horizons": [
+              {
+                "iou": 0.08737864077669903,
+                "within_5km": 0.3392857142857143,
+                "precision": 0.0891089108910891,
+                "recall": 0.8181818181818182,
+                "brier": 0.05640596151351929,
+                "predicted_cells": 101,
+                "observed_cells": 11,
+                "eligible_cells": 176
+              },
+              {
+                "iou": 0.12987012987012986,
+                "within_5km": 0.6091954022988506,
+                "precision": 0.15384615384615385,
+                "recall": 0.45454545454545453,
+                "brier": 0.05125809088349342,
+                "predicted_cells": 65,
+                "observed_cells": 22,
+                "eligible_cells": 379
+              },
+              {
+                "iou": 0.1794871794871795,
+                "within_5km": 0.6304347826086957,
+                "precision": 0.20588235294117646,
+                "recall": 0.5833333333333334,
+                "brier": 0.05295804888010025,
+                "predicted_cells": 102,
+                "observed_cells": 36,
+                "eligible_cells": 580
+              }
+            ]
+          },
+          {
+            "case": {
+              "day": 9011,
+              "gx": 6646,
+              "gy": 1181,
+              "country": "Australia",
+              "group": "Oceania",
+              "source": "viirs-snpp_2024_Australia.parquet"
+            },
+            "horizons": [
+              {
+                "iou": 0.016129032258064516,
+                "within_5km": 0.14285714285714285,
+                "precision": 0.017241379310344827,
+                "recall": 0.2,
+                "brier": 0.02430233545601368,
+                "predicted_cells": 58,
+                "observed_cells": 5,
+                "eligible_cells": 213
+              },
+              {
+                "iou": 0.0,
+                "within_5km": 0.16216216216216217,
+                "precision": 0.0,
+                "recall": 0.0,
+                "brier": 0.022341011092066765,
+                "predicted_cells": 26,
+                "observed_cells": 11,
+                "eligible_cells": 508
+              },
+              {
+                "iou": 0.01639344262295082,
+                "within_5km": 0.1774193548387097,
+                "precision": 0.02127659574468085,
+                "recall": 0.06666666666666667,
+                "brier": 0.01975817233324051,
+                "predicted_cells": 47,
+                "observed_cells": 15,
+                "eligible_cells": 789
+              }
+            ]
+          },
+          {
+            "case": {
+              "day": 9025,
+              "gx": 6549,
+              "gy": 1130,
+              "country": "Australia",
+              "group": "Oceania",
+              "source": "viirs-snpp_2024_Australia.parquet"
+            },
+            "horizons": [
+              {
+                "iou": 0.3333333333333333,
+                "within_5km": 1.0,
+                "precision": 0.3333333333333333,
+                "recall": 1.0,
+                "brier": 0.006535549648106098,
+                "predicted_cells": 3,
+                "observed_cells": 1,
+                "eligible_cells": 125
+              },
+              {
+                "iou": 0.2,
+                "within_5km": 0.5,
+                "precision": 0.5,
+                "recall": 0.25,
+                "brier": 0.011475802399218082,
+                "predicted_cells": 2,
+                "observed_cells": 4,
+                "eligible_cells": 318
+              },
+              {
+                "iou": 0.1111111111111111,
+                "within_5km": 0.4,
+                "precision": 0.3333333333333333,
+                "recall": 0.14285714285714285,
+                "brier": 0.011790145188570023,
+                "predicted_cells": 3,
+                "observed_cells": 7,
+                "eligible_cells": 549
+              }
+            ]
+          }
+        ],
+        "n_cases": 5,
+        "countries": {
+          "Australia": 5
+        }
+      },
+      "Oceania": {
+        "horizons": [
+          {
+            "iou": 0.06529775700576551,
+            "iou_cases": 5,
+            "within_5km": 0.2911600810536981,
+            "within_5km_cases": 5,
+            "precision": 0.09523329493087557,
+            "precision_cases": 4,
+            "recall": 0.2825757575757576,
+            "recall_cases": 5,
+            "brier": 0.038638323079794645,
+            "brier_cases": 5,
+            "empty_truth_cases": 0,
+            "eligible_cells": 1030
+          },
+          {
+            "iou": 0.09488463426607756,
+            "iou_cases": 5,
+            "within_5km": 0.40697677538448324,
+            "within_5km_cases": 5,
+            "precision": 0.16570279797312182,
+            "precision_cases": 4,
+            "recall": 0.2281367130423734,
+            "recall_cases": 5,
+            "brier": 0.043251709267497065,
+            "brier_cases": 5,
+            "empty_truth_cases": 0,
+            "eligible_cells": 2212
+          },
+          {
+            "iou": 0.13028440666884605,
+            "iou_cases": 5,
+            "within_5km": 0.44518185208650163,
+            "within_5km_cases": 5,
+            "precision": 0.32424570912375794,
+            "precision_cases": 5,
+            "recall": 0.3050952878539085,
+            "recall_cases": 5,
+            "brier": 0.042116847820580006,
+            "brier_cases": 5,
+            "empty_truth_cases": 0,
+            "eligible_cells": 3338
+          }
+        ],
+        "cases": [
+          {
+            "case": {
+              "day": 8851,
+              "gx": 6437,
+              "gy": 1060,
+              "country": "Australia",
+              "group": "Oceania",
+              "source": "viirs-snpp_2024_Australia.parquet"
+            },
+            "horizons": [
+              {
+                "iou": 0.13253012048192772,
+                "within_5km": 0.5212765957446809,
+                "precision": 0.15714285714285714,
+                "recall": 0.4583333333333333,
+                "brier": 0.07088986784219742,
+                "predicted_cells": 70,
+                "observed_cells": 24,
+                "eligible_cells": 289
+              },
+              {
+                "iou": 0.2268041237113402,
+                "within_5km": 0.6890756302521008,
+                "precision": 0.3333333333333333,
+                "recall": 0.41509433962264153,
+                "brier": 0.0774260014295578,
+                "predicted_cells": 66,
+                "observed_cells": 53,
+                "eligible_cells": 551
+              },
+              {
+                "iou": 0.18571428571428572,
+                "within_5km": 0.6566265060240963,
+                "precision": 0.24074074074074073,
+                "recall": 0.4482758620689655,
+                "brier": 0.06284242123365402,
+                "predicted_cells": 108,
+                "observed_cells": 58,
+                "eligible_cells": 752
+              }
+            ]
+          },
+          {
+            "case": {
+              "day": 8932,
+              "gx": 6256,
+              "gy": 1508,
+              "country": "Australia",
+              "group": "Oceania",
+              "source": "viirs-snpp_2024_Australia.parquet"
+            },
+            "horizons": [
+              {
+                "iou": 0.058823529411764705,
+                "within_5km": 0.2916666666666667,
+                "precision": 0.0625,
+                "recall": 0.5,
+                "brier": 0.03667168319225311,
+                "predicted_cells": 64,
+                "observed_cells": 8,
+                "eligible_cells": 227
+              },
+              {
+                "iou": 0.10476190476190476,
+                "within_5km": 0.46551724137931033,
+                "precision": 0.12359550561797752,
+                "recall": 0.4074074074074074,
+                "brier": 0.054747480899095535,
+                "predicted_cells": 89,
+                "observed_cells": 27,
+                "eligible_cells": 456
+              },
+              {
+                "iou": 0.08074534161490683,
+                "within_5km": 0.4367816091954023,
+                "precision": 0.1,
+                "recall": 0.29545454545454547,
+                "brier": 0.06308914721012115,
+                "predicted_cells": 130,
+                "observed_cells": 44,
+                "eligible_cells": 668
+              }
+            ]
+          },
+          {
+            "case": {
+              "day": 8984,
+              "gx": 6249,
+              "gy": 1536,
+              "country": "Australia",
+              "group": "Oceania",
+              "source": "viirs-snpp_2024_Australia.parquet"
+            },
+            "horizons": [
+              {
+                "iou": 0.13513513513513514,
+                "within_5km": 0.47619047619047616,
+                "precision": 0.16129032258064516,
+                "recall": 0.45454545454545453,
+                "brier": 0.05432124435901642,
+                "predicted_cells": 31,
+                "observed_cells": 11,
+                "eligible_cells": 176
+              },
+              {
+                "iou": 0.14285714285714285,
+                "within_5km": 0.7321428571428571,
+                "precision": 0.20588235294117646,
+                "recall": 0.3181818181818182,
+                "brier": 0.04941553622484207,
+                "predicted_cells": 34,
+                "observed_cells": 22,
+                "eligible_cells": 379
+              },
+              {
+                "iou": 0.24210526315789474,
+                "within_5km": 0.7203389830508474,
+                "precision": 0.2804878048780488,
+                "recall": 0.6388888888888888,
+                "brier": 0.052231352776288986,
+                "predicted_cells": 82,
+                "observed_cells": 36,
+                "eligible_cells": 580
+              }
+            ]
+          },
+          {
+            "case": {
+              "day": 9011,
+              "gx": 6646,
+              "gy": 1181,
+              "country": "Australia",
+              "group": "Oceania",
+              "source": "viirs-snpp_2024_Australia.parquet"
+            },
+            "horizons": [
+              {
+                "iou": 0.0,
+                "within_5km": 0.16666666666666666,
+                "precision": 0.0,
+                "recall": 0.0,
+                "brier": 0.024214016273617744,
+                "predicted_cells": 13,
+                "observed_cells": 5,
+                "eligible_cells": 213
+              },
+              {
+                "iou": 0.0,
+                "within_5km": 0.14814814814814814,
+                "precision": 0.0,
+                "recall": 0.0,
+                "brier": 0.022825222462415695,
+                "predicted_cells": 16,
+                "observed_cells": 11,
+                "eligible_cells": 508
+              },
+              {
+                "iou": 0.0,
+                "within_5km": 0.16216216216216217,
+                "precision": 0.0,
+                "recall": 0.0,
+                "brier": 0.02046128176152706,
+                "predicted_cells": 22,
+                "observed_cells": 15,
+                "eligible_cells": 789
+              }
+            ]
+          },
+          {
+            "case": {
+              "day": 9025,
+              "gx": 6549,
+              "gy": 1130,
+              "country": "Australia",
+              "group": "Oceania",
+              "source": "viirs-snpp_2024_Australia.parquet"
+            },
+            "horizons": [
+              {
+                "iou": 0.0,
+                "within_5km": 0.0,
+                "precision": null,
+                "recall": 0.0,
+                "brier": 0.007094803731888533,
+                "predicted_cells": 0,
+                "observed_cells": 1,
+                "eligible_cells": 125
+              },
+              {
+                "iou": 0.0,
+                "within_5km": 0.0,
+                "precision": null,
+                "recall": 0.0,
+                "brier": 0.011844305321574211,
+                "predicted_cells": 0,
+                "observed_cells": 4,
+                "eligible_cells": 318
+              },
+              {
+                "iou": 0.14285714285714285,
+                "within_5km": 0.25,
+                "precision": 1.0,
+                "recall": 0.14285714285714285,
+                "brier": 0.011960036121308804,
+                "predicted_cells": 1,
+                "observed_cells": 7,
+                "eligible_cells": 549
+              }
+            ]
+          }
+        ],
+        "n_cases": 5,
+        "countries": {
+          "Australia": 5
+        }
+      },
+      "paired_delta_holdout_minus_control": [
+        {
+          "iou": -0.04999855829388153,
+          "within_5km": -0.13383088878556504,
+          "brier": -0.0009095403365790844
+        },
+        {
+          "iou": -0.022495014197908253,
+          "within_5km": -0.07004192744866045,
+          "brier": -0.00080143082886934
+        },
+        {
+          "iou": 0.018318885263874624,
+          "within_5km": -0.02324296296151729,
+          "brier": -0.0001508427783846883
+        }
+      ]
+    }
+  },
+  "source_files": {
+    "cache/cells/viirs-snpp_2024_Brazil.parquet": {
+      "size": 8359681,
+      "mtime_ns": 1794650280123002863,
+      "rows": 575690,
+      "fingerprint_kind": "size/mtime/schema, not a full-content checksum",
+      "schema_sha256": "4636812e69024c21c709bad8c06f59d09c4cf9390bc737412c736bcf59f7ada3"
+    },
+    "cache/cells/viirs-snpp_2024_Australia.parquet": {
+      "size": 3214553,
+      "mtime_ns": 1794650278536032215,
+      "rows": 206374,
+      "fingerprint_kind": "size/mtime/schema, not a full-content checksum",
+      "schema_sha256": "a9d22538fbf4a9ef2b094c8966a320b34d72f316663ea7bdf1c869ec8cbb472a"
+    },
+    "cache/cells/viirs-snpp_2024_India.parquet": {
+      "size": 3636571,
+      "mtime_ns": 1794650278370035291,
+      "rows": 279109,
+      "fingerprint_kind": "size/mtime/schema, not a full-content checksum",
+      "schema_sha256": "5bf4a9ac2305910fe766df42696ba5ffe6e615033c24af74c481dcdc625987cd"
+    },
+    "cache/cells/viirs-snpp_2024_United_States.parquet": {
+      "size": 2158088,
+      "mtime_ns": 1794650278081040647,
+      "rows": 142014,
+      "fingerprint_kind": "size/mtime/schema, not a full-content checksum",
+      "schema_sha256": "a2c674c4f2253fbdeadbe76703cb9dc09531e254abba1bf23e09ad34b072afc2"
+    },
+    "cache/cells/viirs-snpp_2024_Canada.parquet": {
+      "size": 1554974,
+      "mtime_ns": 1794650278126039813,
+      "rows": 75589,
+      "fingerprint_kind": "size/mtime/schema, not a full-content checksum",
+      "schema_sha256": "56276b2be55933874a881cb603e987fbaa4929d491f5dda6095bd243ca19afa0"
+    },
+    "cache/cells/viirs-snpp_2019_Brazil.parquet": {
+      "size": 7425070,
+      "mtime_ns": 1794651094027980408,
+      "rows": 522483,
+      "fingerprint_kind": "size/mtime/schema, not a full-content checksum",
+      "schema_sha256": "9fdfe5cc6b2cca20cf6fbcbb9bfaf6a4f6725777a22c5aed4769b6e8d9bca3f5"
+    },
+    "cache/cells/viirs-snpp_2020_Brazil.parquet": {
+      "size": 8072424,
+      "mtime_ns": 1794651094765981243,
+      "rows": 564404,
+      "fingerprint_kind": "size/mtime/schema, not a full-content checksum",
+      "schema_sha256": "35a57fb14f61c4db9cc48332fc94c9fa34fa0a76a941954be848c4738895a09c"
+    },
+    "cache/cells/viirs-snpp_2021_Brazil.parquet": {
+      "size": 6784300,
+      "mtime_ns": 1794650514032821747,
+      "rows": 478905,
+      "fingerprint_kind": "size/mtime/schema, not a full-content checksum",
+      "schema_sha256": "2d2fd9fae5be55786769937389e543e1ebe4a77e1d05d952a04dda55966e08bd"
+    },
+    "cache/cells/viirs-snpp_2019_Australia.parquet": {
+      "size": 4028507,
+      "mtime_ns": 1794651093837980195,
+      "rows": 252561,
+      "fingerprint_kind": "size/mtime/schema, not a full-content checksum",
+      "schema_sha256": "1f7c42bc8192060f50f5fb69768cdde0497323c18df342f321937f3ad004040f"
+    },
+    "cache/cells/viirs-snpp_2020_Australia.parquet": {
+      "size": 2815270,
+      "mtime_ns": 1794651093797980150,
+      "rows": 178565,
+      "fingerprint_kind": "size/mtime/schema, not a full-content checksum",
+      "schema_sha256": "d8ce5b11672bc700757ffe4f157c368fad63eb63b1c04eaa098cdae70a3400ae"
+    },
+    "cache/cells/viirs-snpp_2021_Australia.parquet": {
+      "size": 2919274,
+      "mtime_ns": 1794650513443827310,
+      "rows": 190610,
+      "fingerprint_kind": "size/mtime/schema, not a full-content checksum",
+      "schema_sha256": "89a0df02431921e6b38fe192097efabd45db3e57ec3fdc40ee0790a0cdec784c"
+    },
+    "cache/cells/viirs-snpp_2019_India.parquet": {
+      "size": 3325067,
+      "mtime_ns": 1794651093113979383,
+      "rows": 251956,
+      "fingerprint_kind": "size/mtime/schema, not a full-content checksum",
+      "schema_sha256": "8a175174fe06ad519ee8f8b22ebb3bcab0fae9ad18a9c5191481924e7de57ac2"
+    },
+    "cache/cells/viirs-snpp_2020_India.parquet": {
+      "size": 3105248,
+      "mtime_ns": 1794651093698980039,
+      "rows": 233783,
+      "fingerprint_kind": "size/mtime/schema, not a full-content checksum",
+      "schema_sha256": "ab79ed2f3b2ac27b85556935ee12bf4084bf8cbc1baadeea6bbfe404647fe633"
+    },
+    "cache/cells/viirs-snpp_2021_India.parquet": {
+      "size": 4679266,
+      "mtime_ns": 1794650513525826535,
+      "rows": 354668,
+      "fingerprint_kind": "size/mtime/schema, not a full-content checksum",
+      "schema_sha256": "82ead806a965330295ba12a2362d50525ec0ad2d7f56f824e621d7ab78fe0ba0"
+    },
+    "cache/cells/viirs-snpp_2019_United_States.parquet": {
+      "size": 2074765,
+      "mtime_ns": 1794651093018979276,
+      "rows": 135534,
+      "fingerprint_kind": "size/mtime/schema, not a full-content checksum",
+      "schema_sha256": "83513bf4e8af151e73af397a221369b9c27a7ab53056401d6565094c8cd8b5ee"
+    },
+    "cache/cells/viirs-snpp_2020_United_States.parquet": {
+      "size": 2295799,
+      "mtime_ns": 1794651094037980420,
+      "rows": 145832,
+      "fingerprint_kind": "size/mtime/schema, not a full-content checksum",
+      "schema_sha256": "d8ce5b11672bc700757ffe4f157c368fad63eb63b1c04eaa098cdae70a3400ae"
+    },
+    "cache/cells/viirs-snpp_2021_United_States.parquet": {
+      "size": 2344825,
+      "mtime_ns": 1794650513602825808,
+      "rows": 147922,
+      "fingerprint_kind": "size/mtime/schema, not a full-content checksum",
+      "schema_sha256": "4347e74f7d0e4eb0b7f212c98a845ced96036f5f7ff84f386e0fa06a4ebecc14"
+    },
+    "cache/cells/viirs-snpp_2019_Canada.parquet": {
+      "size": 580586,
+      "mtime_ns": 1794651092230978400,
+      "rows": 27264,
+      "fingerprint_kind": "size/mtime/schema, not a full-content checksum",
+      "schema_sha256": "2b007e1ac0d773af9409c5a490685175d0714d2088e9efcdf322f474c3fd506d"
+    },
+    "cache/cells/viirs-snpp_2020_Canada.parquet": {
+      "size": 295140,
+      "mtime_ns": 1794651092418978609,
+      "rows": 14803,
+      "fingerprint_kind": "size/mtime/schema, not a full-content checksum",
+      "schema_sha256": "55732bc77b9f43778b75b1b2a2cf5010315039329076c92bb2f8a771ffa5af47"
+    },
+    "cache/cells/viirs-snpp_2021_Canada.parquet": {
+      "size": 1185516,
+      "mtime_ns": 1794651093935980305,
+      "rows": 58145,
+      "fingerprint_kind": "size/mtime/schema, not a full-content checksum",
+      "schema_sha256": "81f5158805745c2c386d22a6b19d3d7a702d27ad3dd14169442d77845783a459"
+    },
+    "cache/cells/viirs-snpp_2022_Brazil.parquet": {
+      "size": 7413345,
+      "mtime_ns": 1794650370675517685,
+      "rows": 525824,
+      "fingerprint_kind": "size/mtime/schema, not a full-content checksum",
+      "schema_sha256": "8a175174fe06ad519ee8f8b22ebb3bcab0fae9ad18a9c5191481924e7de57ac2"
+    },
+    "cache/cells/viirs-snpp_2022_Australia.parquet": {
+      "size": 2798075,
+      "mtime_ns": 1794650369783530603,
+      "rows": 180013,
+      "fingerprint_kind": "size/mtime/schema, not a full-content checksum",
+      "schema_sha256": "ddf276f49d5bf6b227689b557776c1a28a6de54f770a50d7996add9e01085398"
+    },
+    "cache/cells/viirs-snpp_2022_India.parquet": {
+      "size": 3753261,
+      "mtime_ns": 1794650304087574188,
+      "rows": 283906,
+      "fingerprint_kind": "size/mtime/schema, not a full-content checksum",
+      "schema_sha256": "d47579e3b6ec8605db1c4147d1d84ffe918d6144c52ebecb3cb97f14bd580608"
+    },
+    "cache/cells/viirs-snpp_2022_United_States.parquet": {
+      "size": 2241055,
+      "mtime_ns": 1794650369725531445,
+      "rows": 144519,
+      "fingerprint_kind": "size/mtime/schema, not a full-content checksum",
+      "schema_sha256": "6cea72e4af318c35df5646cac2ad29891b075fcf7b3c62aa42ac674396707627"
+    },
+    "cache/cells/viirs-snpp_2022_Canada.parquet": {
+      "size": 591583,
+      "mtime_ns": 1794650369092540631,
+      "rows": 27837,
+      "fingerprint_kind": "size/mtime/schema, not a full-content checksum",
+      "schema_sha256": "0547ec23907f51b040a28dc1efb9d7d334f250f31e9b9f9b20f02db1d9a92430"
+    },
+    "cache/cells/viirs-snpp_2023_Brazil.parquet": {
+      "size": 7520876,
+      "mtime_ns": 1794650278902025432,
+      "rows": 540782,
+      "fingerprint_kind": "size/mtime/schema, not a full-content checksum",
+      "schema_sha256": "1f7c42bc8192060f50f5fb69768cdde0497323c18df342f321937f3ad004040f"
+    },
+    "cache/cells/viirs-snpp_2023_Australia.parquet": {
+      "size": 5056467,
+      "mtime_ns": 1794650278897025525,
+      "rows": 319563,
+      "fingerprint_kind": "size/mtime/schema, not a full-content checksum",
+      "schema_sha256": "d8ce5b11672bc700757ffe4f157c368fad63eb63b1c04eaa098cdae70a3400ae"
+    },
+    "cache/cells/viirs-snpp_2023_India.parquet": {
+      "size": 3816279,
+      "mtime_ns": 1794650277450052368,
+      "rows": 295459,
+      "fingerprint_kind": "size/mtime/schema, not a full-content checksum",
+      "schema_sha256": "47183efc7d061da3c2614622c714ed606e341e7f1ba8174b7275de6997a51118"
+    },
+    "cache/cells/viirs-snpp_2023_United_States.parquet": {
+      "size": 1954617,
+      "mtime_ns": 1794650276972061251,
+      "rows": 132494,
+      "fingerprint_kind": "size/mtime/schema, not a full-content checksum",
+      "schema_sha256": "3ad5865168db3e7b830a7fda8991cb1e11c5885b355be142ee1e7c34c5900a24"
+    },
+    "cache/cells/viirs-snpp_2023_Canada.parquet": {
+      "size": 3592408,
+      "mtime_ns": 1794650371090511683,
+      "rows": 186174,
+      "fingerprint_kind": "size/mtime/schema, not a full-content checksum",
+      "schema_sha256": "d8ce5b11672bc700757ffe4f157c368fad63eb63b1c04eaa098cdae70a3400ae"
+    }
+  },
+  "elapsed_seconds": 10.705,
+  "limitations": [
+    "Five selected countries in four represented continental groups; no Africa/Europe validation.",
+    "Small retrospective pilot; proxy blocks are not independently identified wildfire events.",
+    "Control and excluded fits have matched budgets, but sampling variance remains; one seed is not significance.",
+    "ML-only v2 experiment, not a production ML+physics benchmark or calibrated incident confidence.",
+    "VIIRS detections are imperfect truth; weather cache may be missing and is reanalysis, not as-issued forecasts.",
+    "Same test cases used for both models, no test-dependent thresholds or online learning."
+  ]
+}

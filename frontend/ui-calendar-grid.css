@@ -1,0 +1,25 @@
+/* Fire-activity calendar grid (History): rows = years, columns = months. */
+.cg{margin:12px 0}
+.cg-grid{display:grid;grid-template-columns:34px repeat(12,minmax(0,1fr));gap:2px;font-size:11px}
+.cg-h{color:var(--muted);text-align:center;padding:2px 0}
+.cg-y{color:var(--muted);text-align:right;padding-right:4px;line-height:16px}
+.cg-c{height:16px;border:0;padding:0;border-radius:3px;background:var(--surface-2);cursor:pointer;color:inherit;position:relative}
+.cg-c[data-l="0"]{background:var(--surface-2)}
+.cg-c[data-l="1"]{background:color-mix(in srgb,var(--primary) 22%,var(--surface-2))}
+.cg-c[data-l="2"]{background:color-mix(in srgb,var(--primary) 42%,var(--surface-2))}
+.cg-c[data-l="3"]{background:color-mix(in srgb,var(--primary) 62%,var(--surface-2))}
+.cg-c[data-l="4"]{background:color-mix(in srgb,var(--primary) 80%,var(--surface-2))}
+.cg-c[data-l="5"]{background:var(--primary)}
+.cg-c[data-est="1"]{background-image:repeating-linear-gradient(45deg,transparent 0 3px,rgba(255,255,255,.38) 3px 4px)}
+html[data-theme="light"] .cg-c[data-est="1"]{background-image:repeating-linear-gradient(45deg,transparent 0 3px,rgba(0,0,0,.32) 3px 4px)}
+.cg-c[data-cls="Exceptional"]{box-shadow:inset 0 3px 0 0 var(--accent,#e08a5c)}
+.cg-c[data-cls="Busy"]{box-shadow:inset 0 2px 0 0 var(--accent,#e08a5c)}
+.cg-top{display:inline-block;width:14px;height:10px;border-radius:2px;background:var(--surface-2);box-shadow:inset 0 3px 0 0 var(--accent,#e08a5c)}
+.cg-c.cg-sel{outline:2px solid var(--ink)!important;outline-offset:1px;z-index:1}
+.cg-c.cg-nodata{background:transparent;cursor:default;border:1px dashed var(--border)}
+.cg-leg{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:8px 0;font-size:11.5px;color:var(--muted)}
+.cg-ramp{display:inline-flex;gap:2px;align-items:center}
+.cg-ramp i{width:14px;height:10px;border-radius:2px;display:inline-block}
+.cg-hatch{width:14px;height:10px;border-radius:2px;display:inline-block;background:var(--primary);background-image:repeating-linear-gradient(45deg,transparent 0 3px,rgba(255,255,255,.45) 3px 4px)}
+.cg-out{margin:6px 0 0;min-height:1.4em}
+.cg-note{margin:4px 0 0;color:var(--muted);font-size:11.5px}
