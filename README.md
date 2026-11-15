@@ -2,136 +2,137 @@
 
 # 🔥 FireSpot (EquiFire)
 
-### Harmonizacja detekcji pożarów MODIS i VIIRS, wczesne ostrzeganie i krótkoterminowe prognozy rozprzestrzeniania
+### Harmonizing MODIS and VIIRS fire detections, early warning and short-term spread forecasts
 
-*NASA Space Apps Challenge 2026 — wyzwanie **Harmonization of MODIS and VIIRS Hot Spots***
+*NASA Space Apps Challenge 2026 — **Harmonization of MODIS and VIIRS Hot Spots***
 
 ![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-backend-009688?logo=fastapi&logoColor=white)
 ![XGBoost](https://img.shields.io/badge/XGBoost-ML-EC6B23)
-![NASA FIRMS](https://img.shields.io/badge/dane-NASA%20FIRMS-0B3D91?logo=nasa&logoColor=white)
-![Bez klucza API](https://img.shields.io/badge/klucz%20API-niepotrzebny-2EA44F)
-![Status](https://img.shields.io/badge/status-prototyp%20badawczy-orange)
+![NASA FIRMS](https://img.shields.io/badge/data-NASA%20FIRMS-0B3D91?logo=nasa&logoColor=white)
+![No API key](https://img.shields.io/badge/API%20key-not%20needed-2EA44F)
+![Status](https://img.shields.io/badge/status-research%20prototype-orange)
 
-**[🇬🇧 English version → README.en.md](README.en.md)**
+**[🇵🇱 Polska wersja → README.pl.md](README.pl.md)**
 
 <p align="center">
-  <a href="docs/FireSpot_Master_Guide.pdf"><b>📘 Master Guide (PDF, 100 stron, po angielsku)</b></a> ·
-  <a href="https://firespot.filipklon.online"><b>🌐 Wersja na żywo</b></a> ·
-  <a href="docs/MODEL_CARD.md"><b>🧾 Karta modelu</b></a> ·
-  <a href="docs/DEMO_SCRIPT.md"><b>🎬 Scenariusz pokazu</b></a>
+  <a href="docs/FireSpot_Master_Guide.pdf"><b>📘 Master Guide (PDF, 100 pages)</b></a> ·
+  <a href="https://firespot.filipklon.online"><b>🌐 Live demo</b></a> ·
+  <a href="docs/MODEL_CARD.md"><b>🧾 Model card</b></a> ·
+  <a href="docs/DEMO_SCRIPT.md"><b>🎬 Demo script</b></a>
 </p>
 
-| 🛰️ Harmonizacja | 🚨 Alerty na żywo | 🔮 Prognoza i weryfikacja |
+| 🛰️ Harmonization | 🚨 Live alerts | 🔮 Forecast and validation |
 |---|---|---|
-| MODIS → ekwiwalent VIIRS, skok wykryć w 2012 r. ×5,24 → ×1,16 | porównanie z tym samym tygodniem 2008–2025, rutyna vs anomalia, eksport CAP | ML + fizyka na 1–3 dni, odtworzenia bez wycieku, uczciwe wyniki (także negatywne) |
+| MODIS → VIIRS-equivalent, the 2012 detection jump ×5.24 → ×1.16 | compared with the same week in 2008–2025, routine vs anomaly, CAP export | ML + physics for 1–3 days, leak-free replays, honest results (negative ones too) |
 
 
-![Widok Monitoring](docs/img/monitor.png)
+![Monitor view](docs/img/monitor.png)
 
 </div>
 
-> ⚠️ **Prototyp badawczy.** Wyniki są eksperymentalne i niekalibrowane. Narzędzie **nie** służy do decyzji operacyjnych (ewakuacja, dysponowanie sił, ubezpieczenia, bezpieczeństwo życia). Wszystkie liczby w tym pliku pochodzą z naszych raportów (`reports/`) i opisane są w [karcie modelu](docs/MODEL_CARD.md) razem z ograniczeniami.
+> ⚠️ **Research prototype.** Results are experimental and uncalibrated. Do **not** use for operational decisions (evacuation, dispatch, insurance, life safety). Every number below comes from our own reports (`reports/`) and is documented with its limits in the [model card](docs/MODEL_CARD.md).
 
 ---
 
-## 📑 Spis treści
+## 📑 Contents
 
-1. [Co to jest i po co](#-co-to-jest-i-po-co)
-2. [Problem: skok w danych w 2012 roku](#-problem-skok-w-danych-w-2012-roku)
-3. [Co zbudowaliśmy — 8 celów wyzwania](#-co-zbudowaliśmy--8-celów-wyzwania)
-4. [Jak to działa (architektura)](#-jak-to-działa-architektura)
-5. [Aplikacja webowa — przegląd](#-aplikacja-webowa--przegląd)
-6. [Moduły dodatkowe (zakładka Prognoza)](#-moduły-dodatkowe-zakładka-prognoza)
-7. [Metody krok po kroku](#-metody-krok-po-kroku)
-8. [Wyniki — uczciwie](#-wyniki--uczciwie)
-9. [Eksperymenty z wynikiem negatywnym lub słabym](#-eksperymenty-z-wynikiem-negatywnym-lub-słabym)
-10. [Szybki start](#-szybki-start)
-11. [Dane i licencje](#-dane-i-licencje)
-12. [API](#-api)
-13. [Struktura repozytorium](#-struktura-repozytorium)
-14. [Testy i demo](#-testy-i-demo)
-15. [Ograniczenia](#-ograniczenia)
-16. [Zespół, licencja, podziękowania](#-zespół-licencja-podziękowania)
-
----
-
-## 🎯 Co to jest i po co
-
-**FireSpot** to narzędzie dla służb ratowniczych, naukowców, zarządców terenu i strażaków. Łączy w jednym miejscu:
-
-- **harmonizację danych satelitarnych** — doprowadza stare pomiary MODIS (1 km, od 2000 r.) i nowsze VIIRS (375 m, od 2012 r.) do jednego, porównywalnego zapisu 2000–2025,
-- **monitoring na żywo** — pożary z ostatnich 24 godzin na mapie 2D i globusie 3D, razem z orbitami satelitów,
-- **wczesne ostrzeganie** — porównanie bieżącej aktywności z tym samym tygodniem w latach 2008–2025 (z-score) i rozróżnienie *rutynowego wypalania* od *anomalii*,
-- **prognozy rozprzestrzeniania** — model uczenia maszynowego (komórki ~5,5 km, 1–3 dni) połączony z symulacją fizyczną (obwód godzina po godzinie z wiatrem, wilgotnością, paliwem, terenem i barierami),
-- **uczciwą weryfikację** — „Odtworzenie”: prognoza wydana tylko z danych dostępnych w chwili startu, a dopiero potem porównanie z tym, co satelity faktycznie zobaczyły.
-
-Silnik analityczny nazywa się **EquiFire** (katalog `equifire/`), aplikacja — **FireSpot** (`backend/` + `frontend/`).
+1. [What it is](#-what-it-is)
+2. [The problem: the 2012 data jump](#-the-problem-the-2012-data-jump)
+3. [What we built: the 8 challenge goals](#-what-we-built-the-8-challenge-goals)
+4. [Architecture](#-architecture)
+5. [Web app tour](#-web-app-tour)
+6. [Extra modules (Forecast tab)](#-extra-modules-forecast-tab)
+7. [Experiments with negative or weak results](#-experiments-with-negative-or-weak-results)
+8. [How long does a forecast take?](#-how-long-does-a-forecast-take)
+9. [Methods step by step](#-methods-step-by-step)
+10. [Results, honestly](#-results-honestly)
+11. [Quick start](#-quick-start)
+12. [Data and licences](#-data-and-licences)
+13. [API](#-api)
+14. [Repository layout](#-repository-layout)
+15. [Tests and demo](#-tests-and-demo)
+16. [Limitations](#-limitations)
+17. [Team, licence, credits](#-team-licence-credits)
 
 ---
 
-## 🛰️ Problem: skok w danych w 2012 roku
+## 🎯 What it is
 
-MODIS (satelity Terra od 2000 r. i Aqua od 2002 r.) ma piksel ≈ **1 km²**. VIIRS (Suomi NPP od 2012 r., NOAA-20 od 2018 r., NOAA-21 od 2023 r.) ma piksel ≈ **0,14 km²** (375 m). Ten sam pożar wygląda zupełnie inaczej:
+**FireSpot** is a tool for emergency services, researchers, land managers and firefighters. It combines:
+
+- **satellite data harmonization** — brings old MODIS (1 km, since 2000) and newer VIIRS (375 m, since 2012) measurements into one comparable 2000–2025 record,
+- **live monitoring** — fires of the last 24 h on a 2D map and a 3D globe, with satellite orbits,
+- **early warning** — compares current activity with the same week in 2008–2025 (z-score) and separates *routine burning* from *anomalies*,
+- **spread forecasts** — a machine-learning model (~5.5 km cells, 1–3 days) combined with a physics simulation (hour-by-hour perimeter with wind, moisture, fuel, terrain and barriers),
+- **honest validation** — "Replay": a forecast issued only from data available at its start time, compared afterwards with what satellites actually saw.
+
+The analytics engine is **EquiFire** (`equifire/`); the application is **FireSpot** (`backend/` + `frontend/`).
+
+---
+
+## 🛰️ The problem: the 2012 data jump
+
+MODIS (Terra since 2000, Aqua since 2002) has a pixel of about **1 km²**. VIIRS (Suomi NPP since 2012, NOAA-20 since 2018, NOAA-21 since 2023) has about **0.14 km²** (375 m). The same fire looks very different:
 
 | | MODIS | VIIRS |
 |---|---|---|
-| Piksel w nadirze | 1 km | 375 m |
-| Mały pożar | często niewidoczny | często widoczny |
-| Jeden duży front | 1 punkt | wiele punktów |
-| Moc promieniowania (FRP) | uśredniana z tłem | inna skala |
-| Krawędź pasa skanowania | piksel do 2,0 × 4,8 km (efekt „muszki”) | podobne zniekształcenie |
+| Pixel at nadir | 1 km | 375 m |
+| Small fire | often invisible | often visible |
+| One large front | 1 point | many points |
+| Fire radiative power (FRP) | averaged with background | different scale |
+| Swath edge | pixel up to 2.0 × 4.8 km ("bow-tie") | similar distortion |
 
-Skutek: po sklejeniu zapisów liczba wykryć **skacze w 2012 roku ×5,2**, a „trend” pożarów rośnie o **+13,8% rocznie** (liczba wykryć, 5 krajów) — głównie przez zmianę instrumentu, nie przez zmianę pożarów. Nasza harmonizacja sprowadza skok do **×1,16**, a trend do **−0,8%/rok (nieistotny statystycznie)**.
+Result: when records are simply concatenated, detections **jump ×5.2 in 2012** and the apparent trend is **+13.8 %/year** (detection count, 5 countries) — mostly an instrument change, not a change in fires. Our harmonization reduces the jump to **×1.16** and the trend to **−0.8 %/year (not significant)**.
 
-![Zapis 2000–2025: surowy vs zharmonizowany](docs/img/harmonization.png)
+![2000–2025 record: raw vs harmonized](docs/img/harmonization.png)
 
 ---
 
-## ✅ Co zbudowaliśmy — 8 celów wyzwania
+## ✅ What we built: the 8 challenge goals
 
-| # | Cel | Co zrobiliśmy | Gdzie w kodzie |
+| # | Goal | What we did | Where |
 |---|---|---|---|
-| 1 | Agregacja czasoprzestrzenna i kalibracja krzyżowa FRP | wspólna siatka 0,05°; model MODIS → ekwiwalent VIIRS (powierzchnia i FRP); rekonstrukcja VIIRS-owa dla lat 2000–2011 | `equifire/collect.py`, `equifire/harmonize.py`, `harmonize.py` |
-| 2 | Korekta efektu „muszki” | kąt skanowania z SGP4 + TLE (albo z rozmiaru piksela), promień grupowania zależny od odcisku piksela | `equifire/geometry.py`, `equifire/clusters.py`, `/geometry`, `/clusters` |
-| 3 | Wskaźnik anomalii w czasie rzeczywistym | strumienie FIRMS NRT vs. 18-letnie tło tego samego tygodnia; poziomy: obserwuj / ostrzeżenie / krytyczny | `backend/live.py`, `/live/*` |
-| 4 | Rutynowe wypalanie rolnicze vs anomalia | kalendarz regionu + siedem reguł dowodowych + uzasadnienie słowne | `classify.py`, `equifire/seasonal.py`, `/classify` |
-| 5 | Odliczanie do następnego przelotu satelity | SGP4 dla Terra, Aqua, Suomi NPP, NOAA-20, NOAA-21 | `backend/orbits.py`, `/overpass`, `/nextobs` |
-| 6 | Martwe strefy i maskowanie chmur | **częściowo:** rozróżnienie „brak pożaru” od „zbyt słaba obserwacja” z widocznością chmur (wskaźnik, nie dowód) | `backend/nextobs.py`, `/blindspots` |
-| 7 | Stożek rozprzestrzeniania z wiatrem i terenem | fizyka Rothermela z godzinową pogodą, paliwem z ESA WorldCover, nachyleniem z Copernicus DEM i barierami z OpenStreetMap + model ML | `backend/physics_spread.py`, `equifire/landscape.py`, `/simulate`, `/predict` |
-| 8 | Eksport CAP / GeoJSON | CAP 1.2 i GeoJSON dla prognoz i alertów na żywo | `backend/cap.py`, `/forecast.cap`, `/live/alerts.cap` |
+| 1 | Spatiotemporal aggregation and FRP cross-calibration | common 0.05° grid; MODIS → VIIRS-equivalent model (size and FRP); VIIRS-like reconstruction for 2000–2011 | `equifire/collect.py`, `equifire/harmonize.py`, `harmonize.py` |
+| 2 | Bow-tie correction | scan angle from SGP4 + TLE (or from pixel size), clustering radius that depends on pixel footprint | `equifire/geometry.py`, `equifire/clusters.py`, `/geometry`, `/clusters` |
+| 3 | Real-time anomaly index | FIRMS NRT feeds vs. an 18-year same-week baseline; levels watch / warning / critical | `backend/live.py`, `/live/*` |
+| 4 | Routine agricultural burning vs anomaly | regional calendar + seven evidence rules + plain-language reason | `classify.py`, `equifire/seasonal.py`, `/classify` |
+| 5 | Countdown to next satellite pass | SGP4 for Terra, Aqua, Suomi NPP, NOAA-20, NOAA-21 | `backend/orbits.py`, `/overpass`, `/nextobs` |
+| 6 | Blind spots and cloud masking | **partial:** separates "no fire" from "observation too weak" using cloud visibility (an indicator, not proof) | `backend/nextobs.py`, `/blindspots` |
+| 7 | Spread cone with wind and terrain | Rothermel physics with hourly weather, ESA WorldCover fuel, Copernicus DEM slope, OpenStreetMap barriers + ML model | `backend/physics_spread.py`, `equifire/landscape.py`, `/simulate`, `/predict` |
+| 8 | CAP / GeoJSON export | CAP 1.2 and GeoJSON for forecasts and live alerts | `backend/cap.py`, `/forecast.cap`, `/live/alerts.cap` |
 
-**Dodatki ponad wymagania:** historyczne odtworzenie z odkryciem wyniku, scenariusze pogodowe, szacowana ekspozycja obiektów, karta zdarzenia do wydruku, przewodnik krok po kroku w aplikacji, interfejs po polsku i angielsku, motyw ciemny/jasny, układ mobilny.
+**Extras:** historical replay with result reveal, weather scenarios, estimated asset exposure, printable event brief, in-app step-by-step guide, Polish and English UI, dark/light theme, mobile layout.
 
 ---
 
-## 🧩 Jak to działa (architektura)
+## 🧩 Architecture
 
 ```mermaid
 flowchart LR
-    subgraph SAT["🛰️ Satelity"]
+    subgraph SAT["🛰️ Satellites"]
         T["Terra / Aqua<br/>MODIS 1 km"]
         V["Suomi NPP / NOAA-20 / NOAA-21<br/>VIIRS 375 m"]
     end
-    subgraph DATA["📥 Dane (bez klucza API)"]
-        A["FIRMS — archiwum 2000–2025<br/>pliki CSV per kraj"]
-        N["FIRMS NRT — ostatnie 24 h / 7 dni"]
-        W["Open-Meteo — pogoda godzinowa"]
-        L["Krajobraz: ESA WorldCover · Copernicus DEM ·<br/>OpenStreetMap · Sentinel-2"]
-        O["CelesTrak — orbity (TLE)"]
+    subgraph DATA["📥 Data (no API key)"]
+        A["FIRMS archive 2000–2025<br/>per-country CSV"]
+        N["FIRMS NRT — last 24 h / 7 d"]
+        W["Open-Meteo — hourly weather"]
+        L["Landscape: ESA WorldCover · Copernicus DEM ·<br/>OpenStreetMap · Sentinel-2"]
+        O["CelesTrak — orbits (TLE)"]
     end
-    subgraph CORE["⚙️ Silnik EquiFire"]
-        G["Siatka 0,05° (~5,5 km)<br/>indeks mmap"]
-        H["Harmonizacja<br/>MODIS → VIIRS"]
-        B["Korekta „muszki”<br/>SGP4 + klastry"]
-        M["Model ML<br/>rozprzestrzenianie 1–3 dni"]
-        P["Symulacja fizyczna<br/>Rothermel + pogoda + teren"]
-        E["Mieszanka ML + fizyka"]
-        Z["Z-score + klasyfikator<br/>rutyna vs anomalia"]
+    subgraph CORE["⚙️ EquiFire engine"]
+        G["0.05° grid (~5.5 km)<br/>mmap index"]
+        H["Harmonization<br/>MODIS → VIIRS"]
+        B["Bow-tie fix<br/>SGP4 + clusters"]
+        M["ML model<br/>spread 1–3 days"]
+        P["Physics simulation<br/>Rothermel + weather + terrain"]
+        E["ML + physics blend"]
+        Z["Z-score + classifier<br/>routine vs anomaly"]
     end
-    subgraph APP["🌐 Aplikacja"]
+    subgraph APP["🌐 App"]
         API["FastAPI<br/>/predict /simulate /live /stats …"]
-        UI["Mapa 2D + globus 3D<br/>PL / EN · ciemny / jasny · mobile"]
+        UI["2D map + 3D globe<br/>PL / EN · dark / light · mobile"]
     end
     T --> A
     V --> A
@@ -151,289 +152,293 @@ flowchart LR
     API --> UI
 ```
 
-**Przepływ w skrócie**
+**Flow in short**
 
-1. **Pobranie** — publiczne pliki CSV FIRMS (po kraju i roku) oraz strumienie NRT. Żaden klucz ani konto nie są potrzebne.
-2. **Agregacja** — każde wykrycie trafia do komórki siatki 0,05° (~5,5 km). Jeden wiersz = jeden przelot satelity nad jedną komórką (liczba wykryć, FRP, odcisk piksela, jasność, pewność, czas). Zbiór (ponad 100 mln komórko-dni) jest indeksowany w plikach mapowanych w pamięci (`np.memmap`), więc działa na zwykłym laptopie.
-3. **Harmonizacja** — modele uczą się na parach jednoczesnych obserwacji MODIS i VIIRS (±30 min, ta sama komórka) i przeliczają MODIS na ekwiwalent VIIRS.
-4. **Modele** — spread ML, symulacja fizyczna i ich mieszanka, alerty 1 km, klasyfikator rutyna/anomalia.
-5. **Obsługa** — FastAPI serwuje API i statyczny frontend na jednym porcie.
+1. **Download** — public FIRMS CSV files (per country and year) and NRT feeds. No key or account needed.
+2. **Aggregate** — every detection goes into a 0.05° cell (~5.5 km). One row = one satellite pass over one cell (count, FRP, pixel footprint, brightness, confidence, time). The data set (over 100 M cell-days) is indexed in memory-mapped files, so it runs on an ordinary laptop.
+3. **Harmonize** — models learn from simultaneous MODIS and VIIRS observations (±30 min, same cell) and convert MODIS to a VIIRS-equivalent.
+4. **Models** — ML spread, physics simulation and their blend, 1 km alerts, routine/anomaly classifier.
+5. **Serve** — FastAPI serves the API and the static frontend on one port.
 
 ---
 
-## 🖥️ Aplikacja webowa — przegląd
+## 🖥️ Web app tour
 
-Aplikacja nie wymaga budowania (czysty HTML/CSS/JS: Leaflet + globe.gl). Domyślnie po angielsku, przełącznik **EN | PL**, ciemny motyw w stylu VS Code (jasny dostępny), pełny układ mobilny z dolnym panelem.
+No build step (plain HTML/CSS/JS: Leaflet + globe.gl). English by default with a **PL | EN** switch, a VS Code-style dark theme (light available) and a full mobile layout with a bottom sheet.
 
-| Monitoring | Przewodnik „? Zapoznaj się” |
+| Monitor | "?" guided tour |
 |---|---|
-| ![Monitoring](docs/img/monitor.png) | ![Przewodnik](docs/img/guide.png) |
-| Obszar do 25 000 km², detekcje z 24 h, wiek obserwacji, orbity satelitów, radar opadów i wiatr | 30-krokowa wycieczka po wszystkich ekranach i funkcjach z podświetleniem elementów |
+| ![Monitor](docs/img/monitor.png) | ![Tour](docs/img/guide.png) |
+| Area up to 25 000 km², 24 h detections, observation age, satellite orbits, rain radar and wind | 30-step walk-through of every screen and feature with highlighted elements |
 
-| Odtworzenie (uczciwa weryfikacja) | Historia i zapis 25-letni |
+| Replay (honest validation) | History and 25-year record |
 |---|---|
-| ![Odtworzenie](docs/img/replay.png) | ![Historia](docs/img/history.png) |
-| najpierw prognoza z danych do chwili startu, potem „Pokaż, co się wydarzyło” | kalendarz pożarów, porównanie z innymi latami, zapis zharmonizowany |
+| ![Replay](docs/img/replay.png) | ![History](docs/img/history.png) |
+| forecast first from data up to the start time, then "Show what happened" | fire calendar, year-vs-year comparison, harmonized record |
 
-| Alerty | Globus 3D |
+| Alerts | 3D globe |
 |---|---|
-| ![Alerty](docs/img/alerts.png) | ![Globus](docs/img/globe.png) |
-| regiony ponad normą z tego samego tygodnia, eksport CAP 1.2 / GeoJSON | pięć satelitów z orbitami i punkty pożarów |
+| ![Alerts](docs/img/alerts.png) | ![Globe](docs/img/globe.png) |
+| regions above the same-week norm, CAP 1.2 / GeoJSON export | five satellites with orbits and fire points |
 
-| Mobile — Monitoring | Mobile — Odtworzenie |
+| Mobile — Monitor | Mobile — Replay |
 |---|---|
 | <img src="docs/img/mobile-monitor.png" width="260"> | <img src="docs/img/mobile-replay.png" width="260"> |
 
-**Zakładki:** *Monitoring* (bieżące detekcje) · *Prognoza* (ML + fizyka, odtwarzacz godzinowy, dodatki) · *Historia* (porównania wieloletnie, kalendarz, zapis 25-letni) · *Alerty* (anomalie na żywo) · *Odtworzenie* (weryfikacja prognoz).
+**Tabs:** *Monitor* (current detections) · *Forecast* (ML + physics, hourly player, extras) · *History* (multi-year comparisons, calendar, 25-year record) · *Alerts* (live anomalies) · *Replay* (forecast verification).
 
-**Dodatki w zakładce Prognoza:** do następnego przelotu (kiedy satelita znów zobaczy pożar i czy chmury go zasłonią), martwe strefy, scenariusze pogodowe („co jeśli wiatr będzie silniejszy / spadnie deszcz” — oznaczone jako hipotetyczne), szacowana ekspozycja obiektów (osady, drogi, linie energetyczne, szpitale, szkoły — **bez wartości pieniężnych**) i karta zdarzenia do wydruku.
-
----
-
-## 🧰 Moduły dodatkowe (zakładka Prognoza)
-
-| Moduł | Co robi | Czego **nie** robi |
-|---|---|---|
-| 🛸 **Trasa drona rozpoznawczego** (`backend/drone.py`) | z gotowej prognozy buduje trasę wokół przewidywanego obrysu pożaru (domyślnie za 2 h): większy odstęp po stronie zawietrznej, start od nawietrznej, zawis z kamerą na punktach zapłonu, limit czasu lotu. Eksport GPX, KML, CSV (Litchi), GeoJSON. | nie modeluje prądów wstępujących ani turbulencji, nie zna przestrzeni powietrznej; **to pomoc w planowaniu, nie plan lotu**. Brak natywnego pliku DJI. |
-| 💶 **Licznik CO₂ i wartości** (`backend/carbon.py`) | FRP → biomasa (Wooster 2005: 0,368 kg/MJ) → CO₂ (współczynniki wg biomu) → wartość po **założonej** cenie (domyślnie 70 €/t). Tryb „na żywo” (FIRMS, ostatnie 24 h) i „dla prognozy” (podąża za suwakiem). | cena nie jest pobierana na żywo (brak darmowego źródła bez klucza); to **nie** szkoda ani wartość ubezpieczeniowa; dokładność rzędu współczynnika 2–3. |
-| 📡 **Direct Broadcast** (`backend/dbnet.py`) | z orbit (SGP4) liczy, czy stacja odbiorcza (Fairbanks, Svalbard, White Sands, McMurdo, Greenbelt) ma satelitę nad horyzontem w chwili obserwacji pożaru, kiedy satelita następnie spotka stację, odliczanie do następnej obserwacji; stacje i łącza na globusie 3D. | nie mamy odbiornika X-band i nie przetwarzamy L0/L1/L2; **nie twierdzimy**, że alert jest szybszy niż w FIRMS (podajemy tylko opublikowane „ok. 3 h”). Lista stacji jest przybliżona. |
-| ☀️ **Geometria Słońce–satelita** (`backend/dbnet.py`, `/illumination`) | kąty Słońca i satelity w chwili przelotu: zenit, azymut względny, kąt rozpraszania, kąt odblasku (sun glint) i ryzyko fałszywych alarmów. | **nie stosujemy** korekty BRDF (MCD43) ani stałej poprawki procentowej; detekcja pożarów opiera się na pasmach termicznych. |
-| 🎲 **Monte Carlo** (`backend/monte_carlo.py`) | zespół przebiegów fizyki z zaburzonym wiatrem, wilgotnością i tempem; izolinie **częstości w zespole** (20/50/80/95 %) | częstość w zespole to **nie** szansa realnego pożaru: brak niezależnej kalibracji; zakresy zaburzeń są założone, nie z operacyjnego zespołu pogodowego |
-| 🛰️ **Nowcasting następnej obserwacji** (`backend/nowcast.py`, #8) | ekstrapoluje czoło ognia do okna przelotu z `nextobs` i szacuje, co satelita zobaczy | nie jest prognozą trafności; opiera się na prognozie fizycznej i modelowanym zachmurzeniu |
-| 🧯 **Firebreak sandbox** (`backend/firebreak.py`) | „co jeśli” dla pasa przeciwpożarowego, zrzutu lub wypalania; **heurystyczny wskaźnik utrzymania linii** | wskaźnik **nie** jest prawdopodobieństwem: nieskalibrowany i niezwalidowany na akcjach gaśniczych; nie plan operacyjny |
-| 🚨 **Ranking priorytetów** (`backend/fire_priority.py`, #20) | lista pożarów wg wag (ekspozycja, tempo, FRP, suchość paliwa), poziomy P1–P4 | wagi są założone; to pomoc w triage, nie decyzja |
-| 🌿 **Analiza błędów wg biomu** (`backend/biome_errors.py`, #27) | tabela błędów odtworzeń (FP/FN/IoU) wg biomu | 6 zdarzeń; bez nauki na teście; liczby zależą od dostępnych zapisanych replayów |
-| 📄 **PDF dla każdego widoku** (`backend/analysis_reports.py`, `POST /reports/pdf`) | raport istniejącego wyniku z widoku, bez nowej symulacji | nie liczy niczego od nowa |
-| 🔗 **Tymczasowy link do analizy** (`backend/shared_analysis.py`, #24) | krótki kod z ograniczonym czasem życia, po wygaśnięciu „link wygasł” | nie przechowuje danych w adresie |
-| 📲 **Telegram** (`backend/telegram_alerts.py`, #23) | powiadomienia; token i czat z `.env` | nic nie wysyła bez zgłoszonego obszaru i kliknięcia; bez tokenu pokazuje instrukcję; sekretów nie loguje |
-| 💬 **Wyjaśnienia „dlaczego tak”** (`frontend/ui-explanations.js`, #22) | regułowe podsumowanie wejść, modelu i selekcji komórek, deterministyczne | bez atrybucji przyczynowej; nie zmienia wyniku |
-| ➕ **Extra data** (`frontend/ui-extra-data.js`) | zwijana sekcja danych pomocniczych: **#9** mapa niezgodności rekonstrukcji z MODIS vs prawdziwy VIIRS (kafelki 1°, 2022–2025, 5 krajów); **#10** niezależna spalona powierzchnia EFFIS; **#13** maska stałych źródeł ciepła; **#15** wskaźnik jakości obserwacji | **#10 tylko Europa i Morze Śródziemne**, poza nią „brak danych”; wskaźnik jakości to nie przedział ufności; dane pomocnicze nie wchodzą do wyników prognozy |
-| ⏱️ **Opóźnienie wykrycia w naszym pollerze** (`backend/latency.py`, #17) | czas od obserwacji do pierwszego zobaczenia detekcji w publicznym strumieniu FIRMS, odpytywanie co 5 min | to **nie** wewnętrzny czas FIRMS ani opóźnienie Direct Broadcast; rozdzielczość 5 min; detekcje obecne przy pierwszym odpytaniu pominięte |
-| 📏 **Flaga zakresu modelu** (`equifire/scope_flag.py`, `/scope/check`, #33) | czy przypadek mieści się w zakresie przypadków treningowych (rozmiar, historia 30/365 dni, ilość danych w kafelku 5°) | to flaga zakresu, **nie** pewność; brak dowodu, że przewiduje błąd (patrz niżej) |
-| 🎚️ **Suwak przed / po harmonizacji** (`frontend/ui-harmonize-compare.js`, #11) | w Historii kurtyna: surowe sklejenie vs zapis zharmonizowany, skok 2011→2012 ×5,24 → ×1,16 | to wykres istniejących danych, bez nowych obliczeń |
-| 📐 **Diagnostyka kalibracji** (`backend/risk_diagnostics.py`, `/risk/diagnostics`, #1) | wykres rzetelności i ECE/Brier dziennego ryzyka | kandydat badawczy: poprawa trafności **nie wykazana** (przedziały różnicy Brier obejmują zero) |
-| 🌫️ **Ocena w masce obserwacji** (zakładka Odtworzenie, #2) | po „Reveal what happened” pełna i maskowana ocena obok siebie | maska = modelowane zachmurzenie ERA5, nie maska pikseli satelity; przy pełnej obserwowalności obie miary są równe |
-
-## 🔬 Metody krok po kroku
-
-### 1. Siatka i agregacja (`equifire/collect.py`)
-Wspólna siatka równokątna 0,05° (`gx = ⌊(lon+180)/0,05⌋`, `gy = ⌊(lat+90)/0,05⌋`). Każde wykrycie typu 0 (przypuszczalny pożar roślinności) trafia do komórki. Wiersze agregują się po `(dzień, komórka, satelita, dzień/noc)`. Pliki Parquet i indeksy `.npy` są mapowane w pamięci, więc kilka programów dzieli jedną kopię danych.
-
-### 2. Harmonizacja MODIS → VIIRS (`equifire/harmonize.py`, `equifire/datasets.py`)
-- **Pary uczące:** jednoczesne obserwacje MODIS i VIIRS (±30 min, ta sama komórka); VIIRS jest „prawdą”. Liczba par nie jest zapisana w raportach, więc jej nie podajemy.
-- **Modele wielkości i FRP:** regresja gradientowa; cechy to m.in. liczba pikseli, suma i maksimum FRP, kąty skanu, jasność, pewność, sąsiedztwo, pora roku.
-- **Rekonstrukcja archiwum 2000–2011:** klasyfikator „czy VIIRS zobaczyłby ogień w tej komórce” (kandydaci: komórki w odległości ≤ 2 od pożaru MODIS) + regresje liczby wykryć, FRP i powierzchni. Uczone na 2012–2019, dobór progu na 2020, test na 2021–2025.
-- **Zapis 25-letni:** surowy MODIS, surowy VIIRS (S-NPP i NOAA-20 osobno) i zapis zharmonizowany (dla lat 2012+ tylko S-NPP, by drugi satelita nie dodawał sztucznego skoku w 2018 r.).
-
-### 3. Korekta efektu „muszki” (`equifire/geometry.py`, `equifire/clusters.py`)
-Piksel rośnie od 1 km w nadirze do ok. 2,0 × 4,8 km na krawędzi pasa. Kąt skanowania liczymy z propagatora **SGP4** (dla świeżych danych) albo z rozmiaru piksela zapisanego w FIRMS (dla archiwum, bo dzisiejsze TLE nie opisują starych dat). Dwa wykrycia z jednego przelotu należą do tego samego pożaru, jeśli mieszczą się w elipsie o osiach zależnych od odcisku piksela (współczynnik sąsiedztwa 1,5). Algorytm: `cKDTree` + składowe spójne.
-
-### 4. Model ML rozprzestrzeniania (`equifire/direct.py`)
-**Bezpośredni model wielohoryzontowy:** zamiast symulować dzień po dniu (błędy się kumulują), jeden model odpowiada wprost: *„czy komórka zapali się w ciągu *k* dni?”*, używając wyłącznie informacji z dnia startu. Okno 41 × 41 komórek (~225 km), kilkadziesiąt cech: odległość od frontu, historia spalania (do 365 dni), pozycje wykryć wewnątrz komórki, kształt i tempo wzrostu pożaru, kierunek wiatru względem frontu, wilgotność, temperatura, opady. Wybór komórek dla każdego horyzontu optymalizowany pod nakładanie (IoU). Trening bez wycieku danych: model dla roku *Y* uczy się wyłącznie na latach wcześniejszych.
-
-### 5. Symulacja fizyczna (`backend/physics_spread.py`, `equifire/landscape.py`)
-Tempo rozprzestrzeniania wg **Rothermela (1972)** z poprawkami Albiniego, modele paliw Andersona, wilgotność paliw wg Simarda, wiatr na wysokości płomienia, nachylenie, eliptyczny kształt frontu (Anderson 1983), pożar koronowy dla lasów (Van Wagner). Wzrost frontu liczony metodą minimalnego czasu dojścia na siatce 250 m. Dane wejściowe (wszystkie bez klucza): godzinowa pogoda z Open-Meteo na siatce 5 × 5 punktów, paliwo z ESA WorldCover, teren z Copernicus DEM, bariery (drogi, rzeki, jeziora, zabudowa) z OpenStreetMap, wilgotność roślinności z Sentinel-2, wskaźnik FWI. Opcjonalna kalibracja tempa do niedawnego wzrostu danego pożaru.
-
-### 6. Mieszanka ML + fizyka (`backend/ensemble.py`)
-Mały model „blender” dostaje prawdopodobieństwo z ML i cechy z fizyki dla każdej komórki i dnia. **Uwaga:** w testach mieszanka nie dała mierzalnej poprawy względem samego ML (patrz wyniki). Zostawiamy ją, bo ją narzuca zadanie (prognoza musi używać obu składników), ale **nie twierdzimy, że poprawia trafność**.
-
-### 7. Alerty i rutyna vs anomalia (`backend/live.py`, `equifire/seasonal.py`)
-Aktywność z ostatnich 7 dni (NOAA-20) porównujemy ze średnią tego samego tygodnia w latach 2008–2025 dla regionu 1° lub 0,25°: `z = (obs − średnia) / max(odch., 0,3·średnia, √średnia+1)`. Poziomy: obserwuj `z ≥ 2`, ostrzeżenie `z ≥ 3`, krytyczny `z ≥ 5`, z flagą „poza sezonem”. Klasyfikator rutyna/anomalia łączy: częstość sezonową, z-score, powtarzalność tych samych pól co rok, skok jednodniowy, moc na detekcję, rozmiar i trwałość pożaru.
-
-### 8. Odtworzenie bez wycieku (`backend/replay.py`)
-Prognoza dostaje kopię indeksu pożarów **z usuniętą całą przyszłością**; testy sprawdzają, że wynik jest identyczny niezależnie od tego, czy przyszłość istnieje. Dopiero potem liczone jest porównanie: trafienia, chybienia, fałszywe alarmy — ściśle (ta sama komórka) i z tolerancją 5 km. Komórki, których satelita nie mógł zobaczyć (chmury, brak przelotu), są oznaczone osobno.
+**Forecast extras:** next satellite pass (when a satellite sees the fire again and whether clouds hide it), blind spots, weather scenarios ("what if wind is stronger / rain falls" — labelled hypothetical), estimated asset exposure (settlements, roads, power lines, hospitals, schools — **no monetary values**) and a printable event brief.
 
 ---
 
-## 📊 Wyniki — uczciwie
+## 🧰 Extra modules (Forecast tab)
 
-Wszystkie liczby: **nieznane wcześniej pożary**, test „walk-forward” (model dla roku *Y* trenowany tylko na latach < *Y*), 100 pożarów rocznie. Źródła: `reports/`, szczegóły i ograniczenia w [`docs/MODEL_CARD.md`](docs/MODEL_CARD.md).
-
-### Harmonizacja (zadanie główne)
-
-| Miara | Surowy zapis (sklejony) | Zharmonizowany |
+| Module | What it does | What it does **not** do |
 |---|---|---|
-| Skok liczby wykryć 2012 / 2011 (5 krajów) | ×5,24 | **×1,16** |
-| Pozorny trend liczby wykryć 2003–2025 | +13,8 %/rok | **−0,8 %/rok (nieistotny)** |
-| Sumy wykryć vs prawdziwy VIIRS (lata testowe 2021–2025) | MODIS widzi 0,11× | **1,00× (korelacja roczna 0,99)** |
-| Błąd wielkości pożaru po przeliczeniu MODIS → VIIRS | surowy MODIS | **−69 %** (−24 % vs prosta korekta liniowa) |
-| Błąd FRP | surowy MODIS | **−18 %** |
-| Nakładanie komórek (IoU) | 0,177 | **0,248** |
+| 🛸 **Drone recon route** (`backend/drone.py`) | builds a route around the forecast fire footprint (default +2 h): larger standoff on the downwind side, upwind launch, hover points aiming the camera at ignition points, flight-time budget. Export GPX, KML, CSV (Litchi), GeoJSON. | no thermal-updraft or turbulence model, no airspace data; **a planning aid, not a flight plan**. No native DJI file. |
+| 💶 **CO₂ and value ticker** (`backend/carbon.py`) | FRP → biomass (Wooster 2005: 0.368 kg/MJ) → CO₂ (biome emission factors) → value at an **assumed** price (default €70/t). Live mode (FIRMS, last 24 h) and forecast mode (follows the slider). | the price is not live (no keyless free source); **not** damage or insured loss; accuracy about a factor 2–3. |
+| 📡 **Direct Broadcast** (`backend/dbnet.py`) | from orbits (SGP4) computes whether a receiving station (Fairbanks, Svalbard, White Sands, McMurdo, Greenbelt) has the satellite above its horizon when it observes the fire, when the satellite next meets a station, a countdown to the next observation; stations and links on the 3D globe. | we have no X-band receiver and do not process L0/L1/L2; **we do not claim** our alert is faster than FIRMS (only the published "about 3 h"). Station list is approximate. |
+| ☀️ **Sun–satellite geometry** (`backend/dbnet.py`, `/illumination`) | sun and satellite angles at each pass: zenith, relative azimuth, scattering angle, sun-glint angle and false-alarm risk tier. | **no** BRDF (MCD43) correction and no fixed percentage; fire detection relies on thermal bands. |
+| 🎲 **Monte Carlo ensemble** (`backend/monte_carlo.py`) | 30–50 physics runs with perturbed wind, humidity and spread rate; contours of how often a cell burned in the ensemble (20/50/80/95 %). | the value is an **ensemble frequency of simulated runs, not a calibrated probability** of a real fire. |
+| 🛰️ **Nowcast of the next observation** (`backend/nowcast.py`) | extrapolates the front to the next satellite pass and estimates detectable pixels and FRP, with bow-tie geometry and cloud visibility. | an estimate from the simulation; it does not know whether the satellite will really detect the fire. |
+| 🧯 **Firebreak sandbox** (`backend/firebreak.py`) | what-if check of a drawn line or retardant drop: flame length (Byram), critical width, spotting distance, **heuristic holding score**. | the score is **not a calibrated probability** and not validated against suppression outcomes; not an incident action plan. |
+| 🚨 **Priority ranking** (`backend/fire_priority.py`) | ranks fires P1–P4 from settlement exposure, spread rate, FRP and fuel dryness. | a triage aid with fixed weights, not a validated dispatch model. |
+| 🌿 **Error analysis by biome** (`backend/biome_errors.py`) | misses, false alarms and IoU per biome from the saved replays (`/replay/biome-errors`). | six saved replays only; small sample, no learning from the test. |
+| 📄 **PDF export of every view** (`backend/analysis_reports.py`, `/reports/pdf`) | exports the result already on screen (monitor, forecast, history, alerts, replay and the extras) without a new simulation. | not a new analysis; the PDF shows what the view showed. |
+| 🔗 **Temporary share link** (`backend/shared_analysis.py`, `/share`) | short code with an expiry that reopens the same analysis state. | the link expires; nothing permanent is stored. |
+| ✈️ **Telegram alerts** (`backend/telegram_alerts.py`) | optional alerts for an area the user subscribes to. Token and chat id come from `.env` (`TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`). | **nothing is sent unless the user asks**; without a token the UI only shows setup instructions. |
+| 💬 **Explanations** (`frontend/ui-explanations.js`) | rule-based, deterministic summary of inputs, model and selected cells. | deterministic, no causal claim. |
+| 🗂️ **Extra data** (Forecast tab, collapsed section) | auxiliary panels kept apart from the forecast score: **MODIS vs VIIRS disagreement map** (`/extra/disagreement`, test years 2022–2025, 5 countries), **independent burned area from EFFIS** (`/extra/effis`, **Europe and the Mediterranean only**), **static heat-source mask** and **observation-quality indicator** (`/extra-sq/*`). | not part of any forecast result; the quality indicator is not a confidence interval; EFFIS shows no data outside Europe. |
+| ⏱️ **Detection latency in our poller** (`backend/latency.py`, `/latency/stats`) | time from satellite observation to the moment our poller first sees the detection in the FIRMS feed (resolution: one 5-minute poll). | not FIRMS' internal processing time and not a direct-broadcast latency. |
+| 📏 **Model scope flag** (`/scope/check`) | tells whether a case resembles the cases the spread model was trained on (size, recent burn history, training data nearby). | a range flag, **not a confidence**; see the negative results below. |
+| 🎚️ **Before / after slider** (History tab) | raw splice vs harmonized record in one chart (step 2011→2012: ×5.24 raw, ×1.16 harmonized). | uses the same series as the History charts. |
+| 📈 **Calibration diagnostics** (`/risk/diagnostics`) | research candidate: reliability chart, ECE and Brier before/after on 51 later cases. | **no significant Brier gain** (all 95 % intervals include zero); not promoted to production. |
+| 🔭 **Masked evaluation** (Replay tab) | the replay score with and without the observation mask, side by side. | the mask is modelled ERA5 cloud cover, not a satellite pixel mask. |
 
-> Uwaga: skok liczby *komórko-dni* nadal wynosi ×1,5 (×1,12 po kalibracji do lat nakładania). Odtworzenie znajduje ok. 36 % komórek, które widziałby VIIRS, więc sumy komórek są obciążone regionalnie (0,5–1,5×). Najczystsze miary to **liczba wykryć** i **FRP**. Pełny zapis 2000–2025 mamy dla 5 krajów.
+## 🔬 Experiments with negative or weak results
 
-### Prognoza rozprzestrzeniania (ML)
+We report these instead of hiding them. None of them is wired into the forecast.
 
-| Test (100 pożarów / rok) | Dzień 1, w granicach 5 km | Dzień 3, w granicach 5 km | Dzień 3, dokładna komórka |
-|---|---|---|---|
-| 2024 — tylko ML | 58,9 % | 75,9 % | 30,8 % |
-| 2025 — tylko ML | 57,1 % | 73,4 % | 28,5 % |
-| 2024 — ML + fizyka | 58,7 % | 76,1 % | 30,7 % |
-| 2025 — ML + fizyka | 56,8 % | 73,5 % | 28,3 % |
-| fizyka sama (starsza wersja, bez krajobrazu) | ~22 % | 34–38 % | 10–12 % |
-
-- **Cel 70 % dla dnia 1 nie został osiągnięty** (jest ok. 57–59 %).
-- **Mieszanka ML + fizyka nie poprawia wyniku** (różnice ±0,3 pkt mieszczą się w szumie).
-- Dzień 1 jest trudniejszy, bo cele są małe (często 1–5 komórek), a tylko ok. 29 % płonących komórek jest ponownie wykrywanych następnego dnia (chmury, dym, czas przelotu).
-
-### Pozostałe moduły
-
-| Moduł | Wynik |
+| Idea | Result (source) |
 |---|---|
-| Symulacja fizyczna (20 pożarów) | bez warstw krajobrazu zawyża powierzchnię (typowo 3–6×, w najgorszym teście do ~19×); warstwy krajobrazu (paliwo, nachylenie, bariery) zbliżają medianę do ≈ 0,5–1,8×, ale **ta wersja nie ma pełnej walidacji**; **tylko narzędzie scenariuszowe** |
-| Alerty 1 km (test 2023–2025) | precyzja 63 % (dzień 1) i 66 % (3 dni); czułość tylko 9 % i 15 % |
-| Rutyna vs anomalia | 10/12 na niezależnych zdarzeniach (21/22 na zbiorze strojenia — optymistyczne) |
-| Efekt „muszki” (brzeg pasa) | klastrów MODIS na jeden pożar VIIRS: 1,339 → **1,007** (kosztem scalania sąsiednich pożarów) |
-| Odtworzenie, 6 zdarzeń | dzień 3 w granicach 5 km: 0,71–0,93; dzień 1 powyżej 0,70 tylko w 2 z 6 |
-| Uczenie z własnych prognoz | zmiana trafności ok. +0,1 pkt — bez znaczenia |
+| Geostationary GOES hot spots to fill gaps between VIIRS passes | on 15 fires from 2024 the day-0 VIIRS footprint already covers 55.3 % of new day-1 cells; GOES adds only **+2.5 points**, and 7 of 19 GOES-only cells (37 %) were confirmed (`reports/goes_feasibility.json`) |
+| "Explosive growth" early-warning classifier | test 2024 (1000 cases): AUC **0.68** (fire size alone 0.44), precision **17 %** at recall **15 %**, base rate 6.1 % (`reports/explosive_growth.json`) |
+| Sub-pixel fire fraction from VIIRS I4 | total fire area changes **about 26×** (4.4 to 113 km²) with the assumed fire temperature (1200 to 600 K); absolute area is not recoverable from FIRMS fields alone (`reports/subpixel_fire_fraction.json`) |
+| Model scope flag | 77 % of 60 test cases were flagged outside the range; day-1 within 5 km was 0.536 outside vs 0.580 inside (n = 14), day 3 the other way round (0.761 vs 0.630): **no evidence the flag predicts error** (`reports/scope_flag.json`) |
+| Calibrated daily probabilities | ECE improves, **Brier gain is not significant** (95 % intervals include zero) (`reports/DAILY_RISK_CALIBRATION.md`) |
+| ML + physics blend vs ML alone | no measurable gain (e.g. 2024 day 1: 58.7 % vs 58.9 %) |
+
+## ⏱️ How long does a forecast take?
+
+Full ML + physics result (`/predict/simulate`, 24 h, one machine shared with other work, small sample, `reports/ml_physics_timing.json`):
+
+- first call: saved incidents **p50 5.5 s** (max 14.3 s), fresh areas inside the 5 processed countries **p50 13.7 s** (max 22.7 s);
+- repeated call with warm disk caches: p50 about 2.5–3 s;
+- a **true cold start for a brand-new place** (landscape, weather and OpenStreetMap download) was not measured here and can take **2–3 minutes**;
+- one saved incident (Kalimantan, ML only) returns **HTTP 503** because no ML + physics blender was trained before 2023.
+
+## 🔬 Methods step by step
+
+### 1. Grid and aggregation (`equifire/collect.py`)
+Common equirectangular 0.05° grid (`gx = ⌊(lon+180)/0.05⌋`, `gy = ⌊(lat+90)/0.05⌋`). Every type-0 detection (presumed vegetation fire) lands in a cell. Rows aggregate by `(day, cell, satellite, day/night)`. Parquet files and `.npy` indexes are memory-mapped so several programs share one copy of the data.
+
+### 2. MODIS → VIIRS harmonization (`equifire/harmonize.py`, `equifire/datasets.py`)
+- **Training pairs:** simultaneous MODIS and VIIRS observations (±30 min, same cell); VIIRS is "truth". The number of pairs is not recorded in our reports, so we do not quote it.
+- **Size and FRP models:** gradient-boosted regression; features include pixel counts, sum and max FRP, scan angles, brightness, confidence, neighbourhood, season.
+- **Reconstructing 2000–2011:** a classifier "would VIIRS have seen fire in this cell" (candidates: cells within 2 of a MODIS fire) plus regressions for detection count, FRP and area. Trained on 2012–2019, threshold chosen on 2020, tested on 2021–2025.
+- **25-year record:** raw MODIS, raw VIIRS (S-NPP and NOAA-20 separately) and a harmonized record (S-NPP only for 2012+, so a second satellite does not add a fake 2018 step).
+
+### 3. Bow-tie correction (`equifire/geometry.py`, `equifire/clusters.py`)
+Pixels grow from 1 km at nadir to about 2.0 × 4.8 km at the swath edge. Scan angle comes from the **SGP4** propagator (fresh data) or from the pixel size stored in FIRMS (archive, since today's TLEs do not describe old dates). Two detections from one pass belong to the same fire if they fall inside an ellipse scaled by pixel footprint (neighbour factor 1.5). Algorithm: `cKDTree` + connected components.
+
+### 4. ML spread model (`equifire/direct.py`)
+**Direct multi-horizon model:** instead of simulating day by day (errors accumulate), one model answers *"will this cell burn within k days?"* using only information from the start day. 41 × 41 cell window (~225 km) and dozens of features: distance to front, burn history (up to 365 days), sub-cell detection positions, fire shape and growth, wind direction relative to the front, humidity, temperature, rain. Cell selection per horizon is tuned for overlap (IoU). Training avoids leakage: the model for year *Y* learns only from earlier years.
+
+### 5. Physics simulation (`backend/physics_spread.py`, `equifire/landscape.py`)
+Spread rate per **Rothermel (1972)** with Albini corrections, Anderson fuel models, Simard fuel moisture, flame-height wind, slope, elliptical front shape (Anderson 1983), crown fire for forests (Van Wagner). Front growth uses minimum-travel-time on a 250 m grid. Inputs (all keyless): hourly Open-Meteo weather on a 5 × 5 point grid, ESA WorldCover fuel, Copernicus DEM terrain, barriers (roads, rivers, lakes, built-up) from OpenStreetMap, vegetation dryness from Sentinel-2, FWI. Optional calibration of spread rate to the fire's recent growth.
+
+### 6. ML + physics blend (`backend/ensemble.py`)
+A small blender takes the ML probability and physics features per cell and day. **Note:** in tests the blend gave no measurable gain over ML alone (see results). We keep it because the task requires a forecast using both, but we **do not claim it improves accuracy**.
+
+### 7. Alerts and routine vs anomaly (`backend/live.py`, `equifire/seasonal.py`)
+Last-7-day activity (NOAA-20) is compared with the mean of the same week in 2008–2025 for a 1° or 0.25° region: `z = (obs − mean) / max(sd, 0.3·mean, √mean+1)`. Levels: watch `z ≥ 2`, warning `z ≥ 3`, critical `z ≥ 5`, with an "off-season" flag. The routine/anomaly classifier combines: seasonal frequency, z-score, same-field recurrence across years, one-day spike, power per detection, cluster size and persistence.
+
+### 8. Leak-free replay (`backend/replay.py`)
+The forecast receives a copy of the fire index **with the whole future removed**; tests check the output is identical whether or not the future exists. Only then is the comparison computed: hits, misses, false alarms — strict (same cell) and within 5 km. Cells the satellite could not see (clouds, no pass) are marked separately.
 
 ---
 
-## 🧪 Eksperymenty z wynikiem negatywnym lub słabym
+## 📊 Results, honestly
 
-Wszystkie wyniki są w `reports/`; nie wpinaliśmy ich do aplikacji jako działających funkcji.
+All figures: **previously unseen fires**, walk-forward test (model for year *Y* trained only on years < *Y*), 100 fires per year. Sources: `reports/`; details and limits in [`docs/MODEL_CARD.md`](docs/MODEL_CARD.md).
 
-| Pomysł | Wynik | Raport |
+### Harmonization (main task)
+
+| Measure | Raw (concatenated) | Harmonized |
 |---|---|---|
-| Geostacjonarne GOES jako dodatkowe obserwacje (15 pożarów 2024, Ameryki) | sam ślad VIIRS z dnia 0 pokrywa 55,3 % nowych komórek dnia 1; GOES dokłada tylko **+2,5 pkt**; z 19 komórek tylko-GOES 7 (37 %) potwierdził VIIRS | `reports/goes_feasibility.json` |
-| Model „eksplozywnego wzrostu” (test 2024, 1000 przypadków) | stopa bazowa 6,1 %; AUC modelu **0,68** (sam rozmiar pożaru 0,44); precyzja **17 %** przy czułości **15 %** | `reports/explosive_growth.json` |
-| Frakcja ognia z kanałów MIR/TIR VIIRS (Australia 2024) | łączna powierzchnia ognia zależy od założonej temperatury ognia **×26** (4,4 do 113 km² dla 1200–600 K): powierzchni bezwzględnej nie da się odzyskać z pól FIRMS | `reports/subpixel_fire_fraction.json` |
-| Flaga zakresu modelu (60 przypadków 2024) | 77 % oznaczonych „poza zakresem”; dzień 1 w 5 km 0,536 vs 0,580 w zakresie, dzień 3 odwrotnie (0,761 vs 0,630): **brak dowodu**, że flaga przewiduje błąd | `reports/scope_flag.json` |
-| Kalibracja prawdopodobieństw dziennego ryzyka | ECE spada, ale wszystkie przedziały różnicy Brier obejmują zero: poprawa trafności nie wykazana | `reports/DAILY_RISK_CALIBRATION.md` |
-| Mieszanka ML + fizyka | brak mierzalnego zysku względem samego ML (patrz wyniki powyżej) | `reports/ensemble_ab_*.json` |
+| Detections step 2012 / 2011 (5 countries) | ×5.24 | **×1.16** |
+| Apparent trend in detection count 2003–2025 | +13.8 %/yr | **−0.8 %/yr (not significant)** |
+| Detection totals vs real VIIRS (test years 2021–2025) | MODIS sees 0.11× | **1.00× (yearly correlation 0.99)** |
+| Fire-size error after MODIS → VIIRS conversion | raw MODIS | **−69 %** (−24 % vs a simple linear correction) |
+| FRP error | raw MODIS | **−18 %** |
+| Cell overlap (IoU) | 0.177 | **0.248** |
 
-### Czas pełnego wyniku ML + fizyka
+> Note: the *cell-day* jump is still ×1.5 (×1.12 after calibration to overlap years). The reconstruction finds about 36 % of the cells VIIRS would have seen, so cell totals are regionally biased (0.5–1.5×). The cleanest measures are **detection count** and **FRP**. The full 2000–2025 record covers 5 countries.
 
-Pomiar na jednej maszynie, małą próbą (`reports/ml_physics_timing.json`): pierwsze wywołanie **p50 5,5 s** dla zapisanych zdarzeń i **p50 13,7 s** (maks. 22,7 s) dla świeżych obszarów z 5 przetworzonych krajów; drugie wywołanie przy ciepłych dyskach p50 2,5–3,0 s. Prawdziwy zimny start zupełnie nowego miejsca (pobranie krajobrazu i pogody) nie został zmierzony i może trwać 2–3 min. Dla Kalimantanu (tylko ML) wynik zwraca 503: brak blendera ML + fizyka wytrenowanego przed 2023.
+### Spread forecast (ML)
+
+| Test (100 fires / year) | Day 1, within 5 km | Day 3, within 5 km | Day 3, exact cell |
+|---|---|---|---|
+| 2024 — ML only | 58.9 % | 75.9 % | 30.8 % |
+| 2025 — ML only | 57.1 % | 73.4 % | 28.5 % |
+| 2024 — ML + physics | 58.7 % | 76.1 % | 30.7 % |
+| 2025 — ML + physics | 56.8 % | 73.5 % | 28.3 % |
+| physics alone (older version, no landscape) | ~22 % | 34–38 % | 10–12 % |
+
+- **The 70 % day-1 target was not reached** (about 57–59 %).
+- **The ML + physics blend does not improve the result** (±0.3 pt differences are within noise).
+- Day 1 is harder because targets are small (often 1–5 cells) and only about 29 % of burning cells are detected again the next day (clouds, smoke, pass timing).
+
+### Other modules
+
+| Module | Result |
+|---|---|
+| Physics simulation (20 fires) | without landscape layers it over-predicts area (typically 3–6×, up to ~19× in the worst test); landscape layers (fuel, slope, barriers) bring the median to ≈ 0.5–1.8×, but **this version is not fully validated**; **scenario tool only** |
+| 1 km alerts (test 2023–2025) | precision 63 % (day 1) and 66 % (3 days); recall only 9 % and 15 % |
+| Routine vs anomaly | 10/12 on independent events (21/22 on the tuning set — optimistic) |
+| Bow-tie (swath edge) | MODIS clusters per VIIRS fire: 1.339 → **1.007** (at the cost of merging neighbouring fires) |
+| Replay, 6 incidents | day 3 within 5 km: 0.71–0.93; day 1 above 0.70 in only 2 of 6 |
+| Learning from own forecasts | accuracy change ≈ +0.1 pt — negligible |
 
 ---
 
-## 🚀 Szybki start
+## 🚀 Quick start
 
-**Modele są już wytrenowane** (`models/`), więc niczego nie trzeba trenować.
+**Models are already trained** (`models/`), nothing to train.
 
 ```bash
-# 1. środowisko (Python 3.11+; testowane na 3.14)
+# 1. environment (Python 3.11+; tested on 3.14)
 python -m venv .venv
 source .venv/bin/activate            # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 
-# 2. dane NASA FIRMS (publiczne; bez klucza i konta)
-python download_data.py                      # Brazylia, Australia, Indie, USA, Kanada · 2000–2025 · ok. 10 GB
-python download_data.py --years 2018 2025    # mały test (ok. 1–2 GB)
+# 2. NASA FIRMS data (public; no key or account)
+python download_data.py                      # Brazil, Australia, India, USA, Canada · 2000–2025 · ~10 GB
+python download_data.py --years 2018 2025    # small test (~1–2 GB)
 python download_data.py --countries Poland Germany --years 2020 2025
-python download_data.py --all                # wszystkie kraje z listy (238, ok. 43 GB)
-python download_data.py --tle                # odśwież orbity satelitów
+python download_data.py --all                # every country on the list (238, ~43 GB)
+python download_data.py --tle                # refresh satellite orbits
 
-# 3. uruchom (strona i API na jednym porcie)
+# 3. run (site and API on one port)
 python -m uvicorn backend.app:app --host 0.0.0.0 --port 8080
-# otwórz http://localhost:8080        dokumentacja API: http://localhost:8080/docs
+# open http://localhost:8080        API docs: http://localhost:8080/docs
 ```
 
-**Bez pobierania danych działa:** zakładka *Odtworzenie* (6 zapisanych zdarzeń), strona, dokumentacja, wykresy zapisu 25-letniego. **Wymaga danych:** archiwalne funkcje (Historia, `/forecast`, `/predict`, `/classify`, `/stats`). **Funkcje „na żywo”** (detekcje, alerty) potrzebują internetu.
+**Works without downloading data:** the *Replay* tab (6 saved incidents), the site, the docs, the 25-year record charts. **Needs data:** archive features (History, `/forecast`, `/predict`, `/classify`, `/stats`). **Live features** (detections, alerts) need internet.
 
-**Tryb lekki** (bez archiwum, ok. 0,7 GB RAM): `EQUIFIRE_LITE=1 python -m uvicorn backend.app:app --port 8080`.
+**Lite mode** (no archive, ~0.7 GB RAM): `EQUIFIRE_LITE=1 python -m uvicorn backend.app:app --port 8080`.
 
-Pierwsze uruchomienie z danymi buduje pamięć podręczną (kilka minut). Pobieranie jest wznawialne: uruchom ponownie, by kontynuować.
+The first run with data builds caches (a few minutes). Downloads are resumable: run again to continue.
 
 <details>
-<summary><b>Trening od zera (opcjonalnie, godziny i ≥ 10 GB RAM)</b></summary>
+<summary><b>Training from scratch (optional, hours and ≥ 10 GB RAM)</b></summary>
 
 ```bash
-python main.py                                 # zbiór → modele wielkości i rozprzestrzeniania
-python main.py direct --use-gpu --direct-cases 5000   # model bezpośredni (GPU NVIDIA, XGBoost CUDA)
-python forecast.py --walk-forward --runs 100 --days 3 # test walk-forward
-python harmonize.py train && python harmonize.py eval  # rekonstrukcja MODIS → VIIRS
+python main.py                                 # dataset → size and spread models
+python main.py direct --use-gpu --direct-cases 5000   # direct model (NVIDIA GPU, XGBoost CUDA)
+python forecast.py --walk-forward --runs 100 --days 3 # walk-forward test
+python harmonize.py train && python harmonize.py eval  # MODIS → VIIRS reconstruction
 ```
 </details>
 
 ---
 
-## 📚 Dane i licencje
+## 📚 Data and licences
 
-Wszystkie źródła są **darmowe i bez klucza/konta**. Pełna lista z licencjami i tekstami atrybucji: [`docs/DATA_SOURCES_AND_LICENSES.md`](docs/DATA_SOURCES_AND_LICENSES.md).
+All sources are **free and need no key or account**. Full list with licences and attribution text: [`docs/DATA_SOURCES_AND_LICENSES.md`](docs/DATA_SOURCES_AND_LICENSES.md).
 
-| Dane | Źródło |
+| Data | Source |
 |---|---|
-| Detekcje pożarów (archiwum i NRT) | NASA FIRMS — MODIS, VIIRS S-NPP / NOAA-20 / NOAA-21 |
-| Pogoda | Open-Meteo (ERA5 i prognozy) — CC BY 4.0 |
-| Pokrycie terenu / paliwo | ESA WorldCover 2021 — CC BY 4.0 |
-| Teren | Copernicus DEM GLO-30 |
-| Bariery i obiekty | OpenStreetMap (ODbL) przez Overpass API |
-| Wilgotność roślinności | Sentinel-2 L2A (Earth Search) |
-| Orbity | CelesTrak (TLE) |
-| Szybkie zdjęcia geostacjonarne (Ameryki) | NOAA GOES (AWS) |
-| Radar opadów | RainViewer |
-| Ludność (szacunek) | Meta/CIESIN HRSL |
+| Fire detections (archive and NRT) | NASA FIRMS — MODIS, VIIRS S-NPP / NOAA-20 / NOAA-21 |
+| Weather | Open-Meteo (ERA5 and forecasts) — CC BY 4.0 |
+| Land cover / fuel | ESA WorldCover 2021 — CC BY 4.0 |
+| Terrain | Copernicus DEM GLO-30 |
+| Barriers and assets | OpenStreetMap (ODbL) via Overpass API |
+| Vegetation dryness | Sentinel-2 L2A (Earth Search) |
+| Orbits | CelesTrak (TLE) |
+| Fast geostationary imagery (Americas) | NOAA GOES (AWS) |
+| Rain radar | RainViewer |
+| Population (estimate) | Meta/CIESIN HRSL |
 
 ---
 
 ## 🔌 API
 
-Interaktywna dokumentacja: `/docs`. Najważniejsze punkty końcowe:
+Interactive docs at `/docs`. Main endpoints:
 
-| Grupa | Endpointy |
+| Group | Endpoints |
 |---|---|
-| Stan | `/health`, `/prewarm/status` |
-| Detekcje | `/live/fires`, `/fires`, `/stats`, `/harmonized/series` |
-| Alerty | `/live/alerts`, `/live/alerts.cap`, `/live/summary`, `/classify`, `/anomaly` |
-| Prognoza | `/predict`, `/predict/simulate`, `/simulate`, `/simulate/weather`, `/forecast`, `/forecast.cap` |
-| Analiza zdarzenia | `/nextobs`, `/blindspots`, `/scenarios`, `/exposure`, `/brief` (+ `.html` `.json` `.pdf`) |
-| Weryfikacja | `/replay/incidents`, `/replay/run` |
-| Satelity i geometria | `/overpass`, `/geometry`, `/clusters`, `/dbnet/live`, `/dbnet/race`, `/illumination` |
-| Dron i węgiel | `/drone/mission`, `/carbon/live`, `/carbon/forecast` |
-| Prognoza: zespół i scenariusze | `/montecarlo/presets`, `/montecarlo/run`, `/nowcast/pass`, `/firebreak/presets`, `/firebreak/evaluate`, `/priority/presets`, `/priority/rank` |
-| Diagnostyka i zakres | `/risk/diagnostics`, `/risk/calibrate`, `/scope/check`, `/latency/stats`, `/replay/biome-errors`, `/replay/biome-errors/summary` |
-| Extra data | `/extra/disagreement`, `/extra/effis`, `/extra-sq/static-sources`, `/extra-sq/quality-index` |
-| Raporty, udostępnianie, powiadomienia | `/reports/pdf`, `/share`, `/share/{share_id}`, `/telegram/config`, `/telegram/send` |
+| Status | `/health`, `/prewarm/status` |
+| Detections | `/live/fires`, `/fires`, `/stats`, `/harmonized/series` |
+| Alerts | `/live/alerts`, `/live/alerts.cap`, `/live/summary`, `/classify`, `/anomaly` |
+| Forecast | `/predict`, `/predict/simulate`, `/simulate`, `/simulate/weather`, `/forecast`, `/forecast.cap` |
+| Event analysis | `/nextobs`, `/blindspots`, `/scenarios`, `/exposure`, `/brief` (+ `.html` `.json` `.pdf`) |
+| Verification | `/replay/incidents`, `/replay/run` |
+| Satellites and geometry | `/overpass`, `/geometry`, `/clusters`, `/dbnet/live`, `/dbnet/race`, `/illumination` |
+| Drone and carbon | `/drone/mission`, `/carbon/live`, `/carbon/forecast` |
+| Ensemble, nowcast, firebreak | `/montecarlo/run`, `/montecarlo/presets`, `/nowcast/pass`, `/firebreak/evaluate`, `/firebreak/presets` |
+| Priority and biome errors | `/priority/rank`, `/priority/presets`, `/replay/biome-errors`, `/replay/biome-errors/summary` |
+| Extra data | `/extra/disagreement`, `/extra/effis`, `/extra-sq/quality-index`, `/extra-sq/static-sources` |
+| Diagnostics | `/risk/diagnostics`, `/risk/calibrate`, `/scope/check`, `/latency/stats` |
+| Export and sharing | `/reports/pdf`, `/share`, `/share/{share_id}`, `/telegram/config`, `/telegram/send` |
 
 ---
 
-## 🗂️ Struktura repozytorium
+## 🗂️ Repository layout
 
-| Ścieżka | Zawartość |
+| Path | Contents |
 |---|---|
-| `backend/` | aplikacja FastAPI, alerty, statystyki, symulator fizyczny, mieszanka ML + fizyka, eksport CAP, odtworzenia, ekspozycja, testy |
-| `frontend/` | aplikacja webowa (Leaflet, globe.gl), bez budowania; tłumaczenia `i18n-*.js`, motyw, układ mobilny, przewodnik |
-| `equifire/` | biblioteka: agregacja, indeks pożarów, model bezpośredni, harmonizacja, kalendarz sezonowy, geometria, klastry, krajobraz, pogoda |
-| `models/` | **wytrenowane modele** (≈ 150 MB; największy `spread_direct.json` ma 76 MB) |
-| `cache/replay/`, `cache/demo/`, `data/incidents.json` | zapisane odtworzenia i demo działające offline |
-| `reports/` | zmierzone wyniki (JSON/CSV/wykresy), z których pochodzą liczby w tym pliku |
-| `docs/` | **Master Guide (PDF)**, karta modelu, licencje, skrypt demo, diagram architektury, zrzuty ekranu |
-| `scripts/` | przygotowanie demo, szeregi zharmonizowane, testy pomocnicze |
-| `tests/` | testy jednostkowe |
-| `main.py`, `forecast.py`, `walk_forward.py`, `harmonize.py`, `classify.py`, `bowtie.py`, `alerts1km.py` | trening i ewaluacja |
-| `download_data.py`, `download_country.py` | pobieranie danych |
+| `backend/` | FastAPI app, alerts, stats, physics simulator, ML + physics blend, CAP export, replays, exposure, tests |
+| `frontend/` | web app (Leaflet, globe.gl), no build; `i18n-*.js` translations, theme, mobile layout, guide |
+| `equifire/` | library: aggregation, fire index, direct model, harmonization, seasonal calendar, geometry, clusters, landscape, weather |
+| `models/` | **trained models** (≈ 150 MB; largest `spread_direct.json` is 76 MB) |
+| `cache/replay/`, `cache/demo/`, `data/incidents.json` | saved replays and demo data that work offline |
+| `reports/` | measured results (JSON/CSV/charts) behind the numbers in this file |
+| `docs/` | **Master Guide (PDF)**, model card, licences, demo script, architecture diagram, screenshots |
+| `scripts/` | demo preparation, harmonized series, helper tests |
+| `tests/` | unit tests |
+| `main.py`, `forecast.py`, `walk_forward.py`, `harmonize.py`, `classify.py`, `bowtie.py`, `alerts1km.py` | training and evaluation |
+| `download_data.py`, `download_country.py` | data download |
 
 ---
 
-## 🧪 Testy i demo
+## 🧪 Tests and demo
 
 ```bash
-python -m pytest backend -q            # API, statystyki, alerty, geometria, odtworzenia, ekspozycja
-python -m unittest discover -s tests -q # fizyka, ensemble, krajobraz, pogoda
-python scripts/demo_cache.py           # rozgrzewka demo: Flin Flon, Manitoba, 2025-05-28
+python -m pytest backend -q             # API, stats, alerts, geometry, replays, exposure
+python -m unittest discover -s tests -q # physics, ensemble, landscape, weather
+python scripts/demo_cache.py            # demo warm-up: Flin Flon, Manitoba, 2025-05-28
 ```
 
-Scenariusz 3–5-minutowej prezentacji z prawdziwymi liczbami: [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md). Testy sieciowe są opcjonalne (`NET=1`, `EQUIFIRE_SLOW=1`).
+A 3–5 minute presentation script with real numbers: [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md). Network tests are optional (`NET=1`, `EQUIFIRE_SLOW=1`).
 
 ---
 
-## ⚠️ Ograniczenia
+## ⚠️ Limitations
 
-- Prawdą dla ewaluacji są **detekcje VIIRS**, które nie widzą pożarów pod chmurami i dymem. *Brak detekcji nie oznacza braku pożaru.*
-- Prognozy są **niekalibrowane**; ML + fizyka **nie** poprawia wyniku ML.
-- Symulacja fizyczna była sprawdzona na 20 pożarach; służy do scenariuszy, nie do dokładnych prognoz.
-- Backtesty używają **zaobserwowanej** pogody (reanaliza), nie prognoz pogody.
-- Zapis 25-letni i tło alertów w pełni obejmują 5 krajów (Brazylia, Australia, Indie, USA, Kanada); w innych krajach alerty pokazują „brak tła”.
-- Rekonstrukcja odzyskuje ok. 36 % komórek VIIRS: dobra dla sum wykryć i FRP, słabsza dla pojedynczych komórek.
-- Eksponowane obiekty (OpenStreetMap) są szacunkiem; kompletność map bywa niska. Narzędzie **nie podaje strat pieniężnych**.
-- Satelita Suomi NPP przestał dostarczać nowe dane NRT; alerty na żywo korzystają z NOAA-20/21 i MODIS.
+- Ground truth for evaluation is **VIIRS detections**, which cannot see fires under cloud or smoke. *No detection does not mean no fire.*
+- Forecasts are **uncalibrated**; ML + physics does **not** beat ML alone.
+- The physics simulation was checked on 20 fires; use it for scenarios, not precise forecasts.
+- Backtests use **observed** weather (reanalysis), not weather forecasts.
+- The 25-year record and the alert baseline fully cover 5 countries (Brazil, Australia, India, USA, Canada); elsewhere alerts show "no baseline".
+- The reconstruction recovers about 36 % of VIIRS cells: good for detection totals and FRP, weaker for single cells.
+- Exposed assets (OpenStreetMap) are an estimate; map completeness varies. The tool does **not** give monetary losses.
+- Suomi NPP no longer delivers new NRT data; live alerts use NOAA-20/21 and MODIS.
 
 ---
 
-## 👥 Zespół, licencja, podziękowania
+## 👥 Team, licence, credits
 
-- **Zespół:** *(uzupełnij imiona i role)*
-- **Licencja:** *(uzupełnij, np. MIT lub Apache-2.0)*
-- **Podziękowania:** NASA (FIRMS, LANCE), ESA (WorldCover, Sentinel-2), Copernicus, NOAA, Open-Meteo, OpenStreetMap i jego autorzy, CelesTrak, RainViewer, Meta/CIESIN — oraz organizatorzy NASA Space Apps Challenge.
+- **Team:** *(add names and roles)*
+- **Licence:** *(add, e.g. MIT or Apache-2.0)*
+- **Credits:** NASA (FIRMS, LANCE), ESA (WorldCover, Sentinel-2), Copernicus, NOAA, Open-Meteo, OpenStreetMap contributors, CelesTrak, RainViewer, Meta/CIESIN — and the NASA Space Apps Challenge organizers.
