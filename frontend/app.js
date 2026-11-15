@@ -2398,7 +2398,7 @@
       el.btnForecast.disabled = true;
       syncService(`Running ML + physics for ${q.hours} h in ${q.step_min}-minute steps…`);
       $("sim-result").hidden = false;
-      $("sim-msg").textContent = "Calculating combined daily guidance and hourly spread…";
+      $("sim-msg").textContent = "Calculating combined daily guidance and hourly spread… This usually takes about 50 seconds, but can take up to 3 minutes in harder cases.";
       $("sim-est").innerHTML = "";
       $("sim-kpis").hidden = true;
       $("sim-downloads").hidden = true;

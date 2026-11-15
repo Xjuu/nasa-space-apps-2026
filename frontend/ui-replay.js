@@ -181,7 +181,7 @@
       } catch (e) {
         if (seq !== st.seq) return;
         if (!/no saved replay|404|not found/i.test(e.message || "") && v !== "custom") throw e;
-        setStatus("Not saved. Computing, up to 1 min…");
+        setStatus("Not saved. Computing: usually about 50 seconds, up to 3 minutes in harder cases…");
         d = await getJSON("/replay/run", params);
       }
       if (seq !== st.seq) return;
