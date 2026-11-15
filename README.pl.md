@@ -434,6 +434,6 @@ Scenariusz 3–5-minutowej prezentacji z prawdziwymi liczbami: [`docs/DEMO_SCRIP
 
 ## 👥 Zespół, licencja, podziękowania
 
-- **Zespół:** *(uzupełnij imiona i role)*
+- **Zespół:** [Xjuu](https://github.com/Xjuu), [Matagon2115](https://github.com/Matagon2115)
 - **Licencja:** *(uzupełnij, np. MIT lub Apache-2.0)*
 - **Podziękowania:** NASA (FIRMS, LANCE), ESA (WorldCover, Sentinel-2), Copernicus, NOAA, Open-Meteo, OpenStreetMap i jego autorzy, CelesTrak, RainViewer, Meta/CIESIN — oraz organizatorzy NASA Space Apps Challenge.

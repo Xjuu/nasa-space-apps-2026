@@ -439,6 +439,6 @@ A 3–5 minute presentation script with real numbers: [`docs/DEMO_SCRIPT.md`](do
 
 ## 👥 Team, licence, credits
 
-- **Team:** *(add names and roles)*
+- **Team:** [Xjuu](https://github.com/Xjuu), [Matagon2115](https://github.com/Matagon2115)
 - **Licence:** *(add, e.g. MIT or Apache-2.0)*
 - **Credits:** NASA (FIRMS, LANCE), ESA (WorldCover, Sentinel-2), Copernicus, NOAA, Open-Meteo, OpenStreetMap contributors, CelesTrak, RainViewer, Meta/CIESIN — and the NASA Space Apps Challenge organizers.

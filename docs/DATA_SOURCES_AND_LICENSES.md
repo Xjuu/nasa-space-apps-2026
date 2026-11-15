@@ -66,3 +66,5 @@ Machine-friendly fragments for the Leaflet attribution control:
 
 ## Vendored frontend libraries (served locally so the app works offline)
 - `frontend/vendor/lucide.min.js`: Lucide icons v0.344.0, ISC licence (copied from unpkg.com/lucide@0.344.0 on 2026-11-15; the file header carries the licence).
+
+| Inter typeface (self-hosted in `frontend/vendor/fonts/`) | Inter Project Authors, SIL Open Font License 1.1 (`frontend/vendor/fonts/Inter-OFL.txt`) | Used for the interface text; served from this site, no request to Google. |
