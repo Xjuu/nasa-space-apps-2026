@@ -1,0 +1,32 @@
+/* PL | EN language switch (injected by i18n.js into #workspace-header, next to #theme-toggle) and
+   small layout safety nets for longer Polish strings. Uses the shared colour tokens so both themes work. */
+.lang-switch{display:inline-flex;flex:none;border:1px solid var(--border-strong,#c8ccd0);border-radius:var(--radius-sm,6px);overflow:hidden;background:transparent}
+.lang-switch button{min-width:38px;min-height:34px;padding:0 8px;border:0;background:transparent;color:var(--muted,#5b6670);font:600 12px/1 inherit;font-family:inherit;letter-spacing:.04em;cursor:pointer}
+.lang-switch button + button{border-left:1px solid var(--border-strong,#c8ccd0)}
+.lang-switch button:hover{background:var(--surface-2,rgba(128,128,128,.14));color:var(--ink,#111)}
+.lang-switch button[aria-pressed="true"]{background:var(--primary,#145c64);color:#fff;cursor:default}
+html[data-theme="dark"] .lang-switch{border-color:#3c3c3c}
+html[data-theme="dark"] .lang-switch button{color:#9d9d9d}
+html[data-theme="dark"] .lang-switch button + button{border-left-color:#3c3c3c}
+html[data-theme="dark"] .lang-switch button:hover{background:#2a2d2e;color:#e6e6e6}
+html[data-theme="dark"] .lang-switch button[aria-pressed="true"]{background:#0e639c;color:#fff}
+.lang-switch button:focus-visible{outline:2px solid var(--primary,#3794ff);outline-offset:-2px}
+@media(max-width:800px){.lang-switch button{min-width:44px;min-height:44px}}
+
+/* Polish strings are longer: let labels/buttons wrap instead of overflowing */
+html[lang="pl"] .tool-btn,html[lang="pl"] .btn-primary,html[lang="pl"] .btn-download,html[lang="pl"] .seg-btn{white-space:normal;text-align:center;line-height:1.25}
+html[lang="pl"] .input-field>span,html[lang="pl"] .stat-lbl,html[lang="pl"] .kpi-lbl,html[lang="pl"] .legend>span,html[lang="pl"] .map-legend>span{overflow-wrap:anywhere}
+html[lang="pl"] #panel,html[lang="pl"] #panel p,html[lang="pl"] #panel li,html[lang="pl"] #panel summary{overflow-wrap:break-word}
+
+/* long Polish option labels: give the two long selects a full row so the selected text is not clipped */
+.form-grid .input-field:has(#sim-ignition),.form-grid .input-field:has(#sim-fuel){grid-column:1/-1}
+@media(max-width:800px){html[lang="pl"] .rp-table th,html[lang="pl"] .rp-table td{padding-left:6px;padding-right:6px}}
+
+@media(max-width:800px){
+  .mode-tabs .mode-tab{flex:1 1 0;min-width:0;padding-left:4px;padding-right:4px;font-size:12px;gap:4px}
+}
+
+@media(max-width:360px){
+  html[lang] .mode-tabs .mode-tab{font-size:11px;padding-left:2px;padding-right:2px;white-space:normal;line-height:1.2}
+  .mode-tabs .mode-tab span{min-width:0;overflow-wrap:anywhere}
+}

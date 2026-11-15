@@ -1,0 +1,67 @@
+{
+ "year": 2024,
+ "n": 100,
+ "a": "_ab_v3_cpu",
+ "b": "_ab_v3_modisera",
+ "_ab_v3_cpu": {
+  "tol_d1": 0.5612549637593999,
+  "tol_d3": 0.7508275088711152,
+  "iou_d1": 0.21359492977355965,
+  "iou_d3": 0.316820876497977,
+  "modis_era": null
+ },
+ "_ab_v3_modisera": {
+  "tol_d1": 0.5677541374084849,
+  "tol_d3": 0.7552972062911938,
+  "iou_d1": 0.2151066383438723,
+  "iou_d3": 0.3167902668485101,
+  "modis_era": {
+   "years": [
+    2008,
+    2009,
+    2010,
+    2011
+   ],
+   "source": "reconstructed MODIS to VIIRS-equivalent",
+   "teacher_fit_and_validation_years": [
+    2012,
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020
+   ],
+   "day_night": "unknown; legacy both-pass encoding",
+   "note": "Synthetic training labels; not additional observed VIIRS fires.",
+   "cases": 400,
+   "rows": 562360,
+   "weight": 0.5,
+   "validation": "real VIIRS only; reconstructed outcomes are training targets, not ground truth"
+  }
+ },
+ "b_minus_a_points_ci": {
+  "tol_d1": [
+   0.65,
+   -0.14,
+   1.52
+  ],
+  "tol_d3": [
+   0.45,
+   -0.29,
+   1.13
+  ],
+  "iou_d1": [
+   0.15,
+   -0.34,
+   0.64
+  ],
+  "iou_d3": [
+   -0.0,
+   -0.54,
+   0.43
+  ]
+ }
+}

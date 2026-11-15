@@ -1,0 +1,24 @@
+pandas
+numpy
+scikit-learn
+pyarrow
+joblib
+xgboost
+
+netCDF4
+skyfield
+requests
+fastapi
+uvicorn
+sgp4
+
+rasterio
+
+# added for README setup (all are imported by backend/, equifire/ or tests/)
+scipy
+shapely
+pyproj
+matplotlib
+httpx
+xarray
+pytest

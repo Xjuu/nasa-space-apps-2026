@@ -1,0 +1,98 @@
+{
+  "size": {
+    "area": {
+      "unit": "km2",
+      "test_pairs": 410793,
+      "metrics": {
+        "raw MODIS": {
+          "MAE": 3.107224941253662,
+          "median_abs_err": 1.612800121307373,
+          "within_50pct": 0.193825113865134
+        },
+        "linear calibration": {
+          "MAE": 1.3517544269561768,
+          "median_abs_err": 0.7035374641418457,
+          "within_50pct": 0.33969663553176416
+        },
+        "ML model": {
+          "MAE": 0.9550941586494446,
+          "median_abs_err": 0.41622593998908997,
+          "within_50pct": 0.5183997779903747
+        }
+      },
+      "improvement_vs_raw_pct": 69.26214945146212,
+      "improvement_vs_linear_pct": 29.34410721331351
+    },
+    "frp": {
+      "unit": "MW",
+      "test_pairs": 410793,
+      "metrics": {
+        "raw MODIS": {
+          "MAE": 114.60883331298828,
+          "median_abs_err": 21.94000244140625,
+          "within_50pct": 0.4327605387628319
+        },
+        "linear calibration": {
+          "MAE": 114.20516204833984,
+          "median_abs_err": 49.79243469238281,
+          "within_50pct": 0.2695323435404206
+        },
+        "ML model": {
+          "MAE": 91.78944396972656,
+          "median_abs_err": 18.71533966064453,
+          "within_50pct": 0.4729803088173362
+        }
+      },
+      "improvement_vs_raw_pct": 19.910672400742136,
+      "improvement_vs_linear_pct": 19.62758747203155
+    }
+  },
+  "spread": {
+    "baseline_rule": "score = nbr_n",
+    "test_cells": 97634,
+    "positive_rate": 0.046059774258967165,
+    "metrics": {
+      "baseline": {
+        "ROC_AUC": 0.644235528769039,
+        "avg_precision": 0.09781525310966381,
+        "F1": 0.19360317011038777
+      },
+      "ML model": {
+        "ROC_AUC": 0.7781848433675845,
+        "avg_precision": 0.17021377102819032,
+        "F1": 0.24089155593656236
+      }
+    },
+    "improvement_pct": {
+      "ROC_AUC": 20.791978805404707,
+      "avg_precision": 74.01557079994285,
+      "F1": 24.425419170157138
+    },
+    "features": [
+      "nbr_n",
+      "nbr_frp_sum",
+      "nbr_frp_max",
+      "nbr_det",
+      "nbr_area",
+      "nbr_prev_frac",
+      "push_x",
+      "push_y",
+      "ring2_active",
+      "burnt_last7",
+      "lat",
+      "lon",
+      "doy_sin",
+      "doy_cos",
+      "wind_speed",
+      "temp_max",
+      "rh_min",
+      "precip",
+      "wind_align",
+      "wind_push"
+    ],
+    "baseline_col": "nbr_n",
+    "threshold_ml": 0.11476478725671768,
+    "threshold_baseline": 3.0,
+    "test_from_year": 2023
+  }
+}

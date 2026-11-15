@@ -1,0 +1,3692 @@
+{
+ "protocol": "Validation v2 of the physics simulator: calibration (data assimilation) on vs off.\n\n    PYTHONPATH=. .venv/bin/python -m backend.physics_validate_v2\n\nFires: (a) the SAME 10 fires as reports/physics_validation.json (same fixed rule, seed 2026);\n       (b) 10 NEW fires, same rule, seed 7, excluding fires of set (a). Nothing is tuned on set (b).\nThe selection rule picks NEW fires (no VIIRS detection within ~15 km in the 3 days before day 0), so at the\noriginal start S0 (end of day 0) a fire has no growth history and calibration cannot run. Protocols:\n  S0: start = end of day 0, ignition = day-0 detections (as v1; calibration impossible -> off only)\n  S1: start = S0 + 24 h, ignition = all of the fire's detections up to S1; calibration window = (S0, S1] (1 day)\n  S2: start = S0 + 48 h, ignition = detections up to S2; calibration window = (S0, S2] (2 days)\nCalibration only sees detections with t <= start (no leakage). Forecast is scored on the 3 days after start.\nObserved new area (day k) = unique 375 m VIIRS pixels detected in (start, start + k d] within 0.4 deg that were\nnot detected before start (active-fire proxy, as v1). hit = % of those pixels inside the simulated area (+1 cell).\nTerrain for all runs of a fire comes from one dem_sampler fetch (two 11 x 11 Open-Meteo elevation samples), and\none archive weather fetch covers all runs of a fire, so on/off runs differ ONLY by the multiplier m.\n",
+ "sets": {
+  "original_10": {
+   "seed": 2026,
+   "n_fires": 10,
+   "summary": {
+    "S0_off_day1": {
+     "n": 10,
+     "median_ratio_sim_obs": 2.04,
+     "within_factor_2_pct": 20.0,
+     "median_abs_log2_ratio": 2.34,
+     "median_hit_pct": 12.1
+    },
+    "S0_off_day2": {
+     "n": 10,
+     "median_ratio_sim_obs": 1.4,
+     "within_factor_2_pct": 20.0,
+     "median_abs_log2_ratio": 2.36,
+     "median_hit_pct": 24.1
+    },
+    "S0_off_day3": {
+     "n": 10,
+     "median_ratio_sim_obs": 3.24,
+     "within_factor_2_pct": 20.0,
+     "median_abs_log2_ratio": 2.37,
+     "median_hit_pct": 22.6
+    },
+    "S1_off_day1": {
+     "n": 9,
+     "median_ratio_sim_obs": 2.51,
+     "within_factor_2_pct": 0.0,
+     "median_abs_log2_ratio": 1.33,
+     "median_hit_pct": 41.4
+    },
+    "S1_off_day2": {
+     "n": 9,
+     "median_ratio_sim_obs": 3.09,
+     "within_factor_2_pct": 22.0,
+     "median_abs_log2_ratio": 1.63,
+     "median_hit_pct": 44.6
+    },
+    "S1_off_day3": {
+     "n": 9,
+     "median_ratio_sim_obs": 3.44,
+     "within_factor_2_pct": 22.0,
+     "median_abs_log2_ratio": 1.78,
+     "median_hit_pct": 55.4
+    },
+    "S1_on_day1": {
+     "n": 8,
+     "median_ratio_sim_obs": 2.72,
+     "within_factor_2_pct": 50.0,
+     "median_abs_log2_ratio": 1.28,
+     "median_hit_pct": 42.2
+    },
+    "S1_on_day2": {
+     "n": 8,
+     "median_ratio_sim_obs": 3.27,
+     "within_factor_2_pct": 38.0,
+     "median_abs_log2_ratio": 1.66,
+     "median_hit_pct": 54.5
+    },
+    "S1_on_day3": {
+     "n": 9,
+     "median_ratio_sim_obs": 3.1,
+     "within_factor_2_pct": 33.0,
+     "median_abs_log2_ratio": 1.63,
+     "median_hit_pct": 55.1
+    },
+    "S2_off_day1": {
+     "n": 8,
+     "median_ratio_sim_obs": 10.97,
+     "within_factor_2_pct": 12.0,
+     "median_abs_log2_ratio": 3.34,
+     "median_hit_pct": 63.2
+    },
+    "S2_off_day2": {
+     "n": 9,
+     "median_ratio_sim_obs": 9.1,
+     "within_factor_2_pct": 0.0,
+     "median_abs_log2_ratio": 3.19,
+     "median_hit_pct": 31.2
+    },
+    "S2_off_day3": {
+     "n": 9,
+     "median_ratio_sim_obs": 10.67,
+     "within_factor_2_pct": 0.0,
+     "median_abs_log2_ratio": 3.42,
+     "median_hit_pct": 31.2
+    },
+    "S2_on_day1": {
+     "n": 8,
+     "median_ratio_sim_obs": 6.53,
+     "within_factor_2_pct": 12.0,
+     "median_abs_log2_ratio": 2.7,
+     "median_hit_pct": 38.5
+    },
+    "S2_on_day2": {
+     "n": 8,
+     "median_ratio_sim_obs": 7.39,
+     "within_factor_2_pct": 0.0,
+     "median_abs_log2_ratio": 2.82,
+     "median_hit_pct": 31.2
+    },
+    "S2_on_day3": {
+     "n": 9,
+     "median_ratio_sim_obs": 5.65,
+     "within_factor_2_pct": 11.0,
+     "median_abs_log2_ratio": 2.5,
+     "median_hit_pct": 43.8
+    }
+   },
+   "fires": [
+    {
+     "day0": "2023-05-26",
+     "lat": 53.3552,
+     "lon": -115.8409,
+     "n_ign_det_day0": 9,
+     "weather_errors": [],
+     "terrain_flat": false,
+     "protocols": {
+      "S0": {
+       "start_utc": "2023-05-26T22:00:00Z",
+       "n_ign_points": 9,
+       "fuel": "forest",
+       "cell_m": 250.0,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 4.5,
+         "sim_new_km2": 1.31,
+         "ratio_sim_obs": 0.292,
+         "hit_pct": 28.1
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 10.12,
+         "sim_new_km2": 3.88,
+         "ratio_sim_obs": 0.383,
+         "hit_pct": 23.6
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 11.95,
+         "sim_new_km2": 5.88,
+         "ratio_sim_obs": 0.492,
+         "hit_pct": 25.9
+        }
+       ],
+       "runtime_s": 0.08
+      },
+      "S1": {
+       "start_utc": "2023-05-27T22:00:00Z",
+       "n_ign_points": 69,
+       "fuel": "forest",
+       "cell_m": 250.0,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 5.62,
+         "sim_new_km2": 2.75,
+         "ratio_sim_obs": 0.489,
+         "hit_pct": 25.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 7.45,
+         "sim_new_km2": 4.75,
+         "ratio_sim_obs": 0.637,
+         "hit_pct": 47.2
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 7.88,
+         "sim_new_km2": 7.44,
+         "ratio_sim_obs": 0.944,
+         "hit_pct": 55.4
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 1.4613,
+        "m_fit": 1.8041,
+        "weight": 0.643,
+        "observed_km2": 3.797,
+        "simulated_km2": 1.312,
+        "days_used": 1,
+        "confidence": "medium",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 5.62,
+         "sim_new_km2": 4.44,
+         "ratio_sim_obs": 0.789,
+         "hit_pct": 47.5
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 7.45,
+         "sim_new_km2": 7.56,
+         "ratio_sim_obs": 1.015,
+         "hit_pct": 56.6
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 7.88,
+         "sim_new_km2": 11.25,
+         "ratio_sim_obs": 1.429,
+         "hit_pct": 66.1
+        }
+       ],
+       "runtime_s": 0.26
+      },
+      "S2": {
+       "start_utc": "2023-05-28T22:00:00Z",
+       "n_ign_points": 177,
+       "fuel": "forest",
+       "cell_m": 250.0,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 1.83,
+         "sim_new_km2": 0.0,
+         "ratio_sim_obs": 0.0,
+         "hit_pct": 15.4
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 2.25,
+         "sim_new_km2": 5.56,
+         "ratio_sim_obs": 2.472,
+         "hit_pct": 31.2
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 2.25,
+         "sim_new_km2": 7.62,
+         "ratio_sim_obs": 3.389,
+         "hit_pct": 31.2
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 1.4912,
+        "m_fit": 1.6507,
+        "weight": 0.797,
+        "observed_km2": 8.297,
+        "simulated_km2": 3.875,
+        "days_used": 2,
+        "confidence": "medium",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 1.83,
+         "sim_new_km2": 4.56,
+         "ratio_sim_obs": 2.496,
+         "hit_pct": 38.5
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 2.25,
+         "sim_new_km2": 7.94,
+         "ratio_sim_obs": 3.528,
+         "hit_pct": 31.2
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 2.25,
+         "sim_new_km2": 11.94,
+         "ratio_sim_obs": 5.305,
+         "hit_pct": 43.8
+        }
+       ],
+       "runtime_s": 0.26
+      }
+     },
+     "country": "Canada",
+     "year": 2023
+    },
+    {
+     "day0": "2023-06-03",
+     "lat": 49.3284,
+     "lon": -71.4933,
+     "n_ign_det_day0": 21,
+     "weather_errors": [],
+     "terrain_flat": false,
+     "protocols": {
+      "S0": {
+       "start_utc": "2023-06-03T19:00:00Z",
+       "n_ign_points": 21,
+       "fuel": "forest",
+       "cell_m": 250.0,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 33.19,
+         "sim_new_km2": 2.94,
+         "ratio_sim_obs": 0.089,
+         "hit_pct": 3.8
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 40.92,
+         "sim_new_km2": 5.75,
+         "ratio_sim_obs": 0.141,
+         "hit_pct": 4.5
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 44.16,
+         "sim_new_km2": 9.19,
+         "ratio_sim_obs": 0.208,
+         "hit_pct": 5.1
+        }
+       ],
+       "runtime_s": 0.09
+      },
+      "S1": {
+       "start_utc": "2023-06-04T19:00:00Z",
+       "n_ign_points": 177,
+       "fuel": "forest",
+       "cell_m": 250.0,
+       "n_fires": 2,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 7.73,
+         "sim_new_km2": 16.19,
+         "ratio_sim_obs": 2.093,
+         "hit_pct": 20.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 10.97,
+         "sim_new_km2": 33.88,
+         "ratio_sim_obs": 3.088,
+         "hit_pct": 39.7
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 10.97,
+         "sim_new_km2": 37.69,
+         "ratio_sim_obs": 3.436,
+         "hit_pct": 41.0
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 2.3766,
+        "m_fit": 2.7791,
+        "weight": 0.847,
+        "observed_km2": 11.672,
+        "simulated_km2": 3.313,
+        "days_used": 1,
+        "confidence": "medium",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 7.73,
+         "sim_new_km2": 36.44,
+         "ratio_sim_obs": 4.711,
+         "hit_pct": 52.7
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 10.97,
+         "sim_new_km2": 75.69,
+         "ratio_sim_obs": 6.9,
+         "hit_pct": 52.6
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 10.97,
+         "sim_new_km2": 85.06,
+         "ratio_sim_obs": 7.755,
+         "hit_pct": 55.1
+        }
+       ],
+       "runtime_s": 0.75
+      },
+      "S2": {
+       "start_utc": "2023-06-05T19:00:00Z",
+       "n_ign_points": 235,
+       "fuel": "forest",
+       "cell_m": 250.0,
+       "n_fires": 2,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 3.23,
+         "sim_new_km2": 21.94,
+         "ratio_sim_obs": 6.783,
+         "hit_pct": 13.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 3.23,
+         "sim_new_km2": 29.44,
+         "ratio_sim_obs": 9.102,
+         "hit_pct": 13.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 3.23,
+         "sim_new_km2": 34.5,
+         "ratio_sim_obs": 10.667,
+         "hit_pct": 21.7
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 1.7417,
+        "m_fit": 1.8596,
+        "weight": 0.894,
+        "observed_km2": 17.859,
+        "simulated_km2": 7.0,
+        "days_used": 2,
+        "confidence": "high",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 3.23,
+         "sim_new_km2": 40.56,
+         "ratio_sim_obs": 12.541,
+         "hit_pct": 21.7
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 3.23,
+         "sim_new_km2": 46.31,
+         "ratio_sim_obs": 14.319,
+         "hit_pct": 26.1
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 3.23,
+         "sim_new_km2": 55.62,
+         "ratio_sim_obs": 17.198,
+         "hit_pct": 39.1
+        }
+       ],
+       "runtime_s": 0.68
+      }
+     },
+     "country": "Canada",
+     "year": 2023
+    },
+    {
+     "day0": "2023-08-15",
+     "lat": -18.8491,
+     "lon": 130.2767,
+     "n_ign_det_day0": 11,
+     "weather_errors": [],
+     "terrain_flat": true,
+     "protocols": {
+      "S0": {
+       "start_utc": "2023-08-15T18:00:00Z",
+       "n_ign_points": 11,
+       "fuel": "savanna",
+       "cell_m": 515.0,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 7.17,
+         "sim_new_km2": 24.14,
+         "ratio_sim_obs": 3.366,
+         "hit_pct": 60.8
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 39.09,
+         "sim_new_km2": 83.55,
+         "ratio_sim_obs": 2.137,
+         "hit_pct": 48.2
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 66.52,
+         "sim_new_km2": 369.48,
+         "ratio_sim_obs": 5.555,
+         "hit_pct": 83.1
+        }
+       ],
+       "runtime_s": 0.51
+      },
+      "S1": {
+       "start_utc": "2023-08-16T18:00:00Z",
+       "n_ign_points": 69,
+       "fuel": "savanna",
+       "cell_m": 718.7,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 31.92,
+         "sim_new_km2": 74.91,
+         "ratio_sim_obs": 2.347,
+         "hit_pct": 41.4
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 59.34,
+         "sim_new_km2": 387.96,
+         "ratio_sim_obs": 6.537,
+         "hit_pct": 82.7
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 82.12,
+         "sim_new_km2": 773.33,
+         "ratio_sim_obs": 9.417,
+         "hit_pct": 81.7
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 0.4527,
+        "m_fit": 0.4248,
+        "weight": 0.926,
+        "observed_km2": 6.609,
+        "simulated_km2": 26.313,
+        "days_used": 1,
+        "confidence": "medium",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 31.92,
+         "sim_new_km2": 38.62,
+         "ratio_sim_obs": 1.21,
+         "hit_pct": 10.6
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 59.34,
+         "sim_new_km2": 145.78,
+         "ratio_sim_obs": 2.457,
+         "hit_pct": 45.5
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 82.12,
+         "sim_new_km2": 254.53,
+         "ratio_sim_obs": 3.099,
+         "hit_pct": 54.5
+        }
+       ],
+       "runtime_s": 1.24
+      },
+      "S2": {
+       "start_utc": "2023-08-17T18:00:00Z",
+       "n_ign_points": 396,
+       "fuel": "savanna",
+       "cell_m": 807.3,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 27.42,
+         "sim_new_km2": 415.8,
+         "ratio_sim_obs": 15.163,
+         "hit_pct": 99.5
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 50.2,
+         "sim_new_km2": 851.15,
+         "ratio_sim_obs": 16.954,
+         "hit_pct": 94.7
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 65.25,
+         "sim_new_km2": 1214.81,
+         "ratio_sim_obs": 18.618,
+         "hit_pct": 90.3
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 0.632,
+        "m_fit": 0.6252,
+        "weight": 0.977,
+        "observed_km2": 38.109,
+        "simulated_km2": 89.063,
+        "days_used": 2,
+        "confidence": "high",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 27.42,
+         "sim_new_km2": 289.12,
+         "ratio_sim_obs": 10.543,
+         "hit_pct": 84.6
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 50.2,
+         "sim_new_km2": 519.79,
+         "ratio_sim_obs": 10.354,
+         "hit_pct": 77.3
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 65.25,
+         "sim_new_km2": 706.56,
+         "ratio_sim_obs": 10.828,
+         "hit_pct": 77.6
+        }
+       ],
+       "runtime_s": 1.75
+      }
+     },
+     "country": "Australia",
+     "year": 2023
+    },
+    {
+     "day0": "2023-08-26",
+     "lat": -19.6448,
+     "lon": 127.6471,
+     "n_ign_det_day0": 28,
+     "weather_errors": [],
+     "terrain_flat": true,
+     "protocols": {
+      "S0": {
+       "start_utc": "2023-08-26T17:00:00Z",
+       "n_ign_points": 28,
+       "fuel": "savanna",
+       "cell_m": 574.5,
+       "n_fires": 2,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 13.78,
+         "sim_new_km2": 133.33,
+         "ratio_sim_obs": 9.675,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 17.16,
+         "sim_new_km2": 330.02,
+         "ratio_sim_obs": 19.236,
+         "hit_pct": 53.3
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 17.86,
+         "sim_new_km2": 598.66,
+         "ratio_sim_obs": 33.521,
+         "hit_pct": 82.7
+        }
+       ],
+       "runtime_s": 0.55
+      },
+      "S1": {
+       "start_utc": "2023-08-27T17:00:00Z",
+       "n_ign_points": 139,
+       "fuel": "savanna",
+       "cell_m": 601.7,
+       "n_fires": 8,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 3.38,
+         "sim_new_km2": 362.74,
+         "ratio_sim_obs": 107.479,
+         "hit_pct": 100.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 4.08,
+         "sim_new_km2": 749.38,
+         "ratio_sim_obs": 183.756,
+         "hit_pct": 100.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 8.72,
+         "sim_new_km2": 1140.72,
+         "ratio_sim_obs": 130.835,
+         "hit_pct": 69.4
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 0.1958,
+        "m_fit": 0.1908,
+        "weight": 0.984,
+        "observed_km2": 12.797,
+        "simulated_km2": 133.407,
+        "days_used": 1,
+        "confidence": "medium",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 3.38,
+         "sim_new_km2": 53.8,
+         "ratio_sim_obs": 15.941,
+         "hit_pct": 50.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 4.08,
+         "sim_new_km2": 112.57,
+         "ratio_sim_obs": 27.603,
+         "hit_pct": 75.9
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 8.72,
+         "sim_new_km2": 173.02,
+         "ratio_sim_obs": 19.844,
+         "hit_pct": 45.2
+        }
+       ],
+       "runtime_s": 1.68
+      },
+      "S2": {
+       "start_utc": "2023-08-28T17:00:00Z",
+       "n_ign_points": 173,
+       "fuel": "savanna",
+       "cell_m": 667.3,
+       "n_fires": 5,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 0.7,
+         "sim_new_km2": 345.12,
+         "ratio_sim_obs": 490.843,
+         "hit_pct": 100.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 5.34,
+         "sim_new_km2": 711.62,
+         "ratio_sim_obs": 133.169,
+         "hit_pct": 23.7
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 13.08,
+         "sim_new_km2": 1335.07,
+         "ratio_sim_obs": 102.084,
+         "hit_pct": 26.9
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 0.1324,
+        "m_fit": 0.1308,
+        "weight": 0.994,
+        "observed_km2": 16.031,
+        "simulated_km2": 340.473,
+        "days_used": 2,
+        "confidence": "high",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 0.7,
+         "sim_new_km2": 33.88,
+         "ratio_sim_obs": 48.179,
+         "hit_pct": 40.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 5.34,
+         "sim_new_km2": 76.69,
+         "ratio_sim_obs": 14.351,
+         "hit_pct": 10.5
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 13.08,
+         "sim_new_km2": 144.19,
+         "ratio_sim_obs": 11.025,
+         "hit_pct": 14.0
+        }
+       ],
+       "runtime_s": 1.79
+      }
+     },
+     "country": "Australia",
+     "year": 2023
+    },
+    {
+     "day0": "2024-07-16",
+     "lat": 46.0427,
+     "lon": -117.3266,
+     "n_ign_det_day0": 43,
+     "weather_errors": [],
+     "terrain_flat": true,
+     "protocols": {
+      "S0": {
+       "start_utc": "2024-07-16T22:00:00Z",
+       "n_ign_points": 43,
+       "fuel": "forest",
+       "cell_m": 250.0,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 8.44,
+         "sim_new_km2": 4.25,
+         "ratio_sim_obs": 0.504,
+         "hit_pct": 5.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 11.95,
+         "sim_new_km2": 8.0,
+         "ratio_sim_obs": 0.669,
+         "hit_pct": 5.9
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 14.62,
+         "sim_new_km2": 13.5,
+         "ratio_sim_obs": 0.923,
+         "hit_pct": 17.3
+        }
+       ],
+       "runtime_s": 0.1
+      },
+      "S1": {
+       "start_utc": "2024-07-17T22:00:00Z",
+       "n_ign_points": 179,
+       "fuel": "forest",
+       "cell_m": 250.0,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 3.52,
+         "sim_new_km2": 9.06,
+         "ratio_sim_obs": 2.578,
+         "hit_pct": 28.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 6.19,
+         "sim_new_km2": 16.94,
+         "ratio_sim_obs": 2.737,
+         "hit_pct": 36.4
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 8.86,
+         "sim_new_km2": 24.31,
+         "ratio_sim_obs": 2.744,
+         "hit_pct": 38.1
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 1.6033,
+        "m_fit": 1.8041,
+        "weight": 0.8,
+        "observed_km2": 8.438,
+        "simulated_km2": 4.25,
+        "days_used": 1,
+        "confidence": "medium",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 3.52,
+         "sim_new_km2": 14.19,
+         "ratio_sim_obs": 4.036,
+         "hit_pct": 40.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 6.19,
+         "sim_new_km2": 25.31,
+         "ratio_sim_obs": 4.091,
+         "hit_pct": 54.5
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 8.86,
+         "sim_new_km2": 38.5,
+         "ratio_sim_obs": 4.346,
+         "hit_pct": 68.3
+        }
+       ],
+       "runtime_s": 0.42
+      },
+      "S2": {
+       "start_utc": "2024-07-18T22:00:00Z",
+       "n_ign_points": 228,
+       "fuel": "forest",
+       "cell_m": 250.0,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 2.67,
+         "sim_new_km2": 12.81,
+         "ratio_sim_obs": 4.796,
+         "hit_pct": 63.2
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 5.34,
+         "sim_new_km2": 22.88,
+         "ratio_sim_obs": 4.281,
+         "hit_pct": 71.1
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 15.47,
+         "sim_new_km2": 31.56,
+         "ratio_sim_obs": 2.04,
+         "hit_pct": 53.6
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 1.2973,
+        "m_fit": 1.3548,
+        "weight": 0.857,
+        "observed_km2": 12.656,
+        "simulated_km2": 8.0,
+        "days_used": 2,
+        "confidence": "high",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 2.67,
+         "sim_new_km2": 16.19,
+         "ratio_sim_obs": 6.059,
+         "hit_pct": 78.9
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 5.34,
+         "sim_new_km2": 28.19,
+         "ratio_sim_obs": 5.275,
+         "hit_pct": 84.2
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 15.47,
+         "sim_new_km2": 39.75,
+         "ratio_sim_obs": 2.57,
+         "hit_pct": 66.4
+        }
+       ],
+       "runtime_s": 0.46
+      }
+     },
+     "country": "United_States",
+     "year": 2024
+    },
+    {
+     "day0": "2024-09-12",
+     "lat": -17.6827,
+     "lon": -65.4412,
+     "n_ign_det_day0": 26,
+     "weather_errors": [],
+     "terrain_flat": true,
+     "protocols": {
+      "S0": {
+       "start_utc": "2024-09-12T18:00:00Z",
+       "n_ign_points": 26,
+       "fuel": "savanna",
+       "cell_m": 250.0,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 2.53,
+         "sim_new_km2": 44.56,
+         "ratio_sim_obs": 17.605,
+         "hit_pct": 44.4
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 2.53,
+         "sim_new_km2": 50.38,
+         "ratio_sim_obs": 19.902,
+         "hit_pct": 44.4
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 2.53,
+         "sim_new_km2": 50.38,
+         "ratio_sim_obs": 19.902,
+         "hit_pct": 44.4
+        }
+       ],
+       "runtime_s": 0.16
+      },
+      "S1": {
+       "start_utc": "2024-09-13T18:00:00Z",
+       "n_ign_points": 53,
+       "fuel": "savanna",
+       "cell_m": 250.0,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 0.0,
+         "sim_new_km2": 3.12,
+         "ratio_sim_obs": null,
+         "hit_pct": null
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 0.0,
+         "sim_new_km2": 3.12,
+         "ratio_sim_obs": null,
+         "hit_pct": null
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 0.0,
+         "sim_new_km2": 3.12,
+         "ratio_sim_obs": null,
+         "hit_pct": null
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 0.1426,
+        "m_fit": 0.13,
+        "weight": 0.955,
+        "observed_km2": 2.672,
+        "simulated_km2": 44.563,
+        "days_used": 1,
+        "confidence": "medium",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 0.0,
+         "sim_new_km2": 0.0,
+         "ratio_sim_obs": null,
+         "hit_pct": null
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 0.0,
+         "sim_new_km2": 0.0,
+         "ratio_sim_obs": null,
+         "hit_pct": null
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 0.0,
+         "sim_new_km2": 0.0,
+         "ratio_sim_obs": null,
+         "hit_pct": null
+        }
+       ],
+       "runtime_s": 0.23
+      },
+      "S2": {
+       "start_utc": "2024-09-14T18:00:00Z",
+       "n_ign_points": 53,
+       "fuel": "savanna",
+       "cell_m": 250.0,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 0.0,
+         "sim_new_km2": 0.0,
+         "ratio_sim_obs": null,
+         "hit_pct": null
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 0.0,
+         "sim_new_km2": 0.0,
+         "ratio_sim_obs": null,
+         "hit_pct": null
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 0.0,
+         "sim_new_km2": 5.81,
+         "ratio_sim_obs": null,
+         "hit_pct": null
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 0.1306,
+        "m_fit": 0.1199,
+        "weight": 0.96,
+        "observed_km2": 2.672,
+        "simulated_km2": 50.376,
+        "days_used": 2,
+        "confidence": "high",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 0.0,
+         "sim_new_km2": 0.0,
+         "ratio_sim_obs": null,
+         "hit_pct": null
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 0.0,
+         "sim_new_km2": 0.0,
+         "ratio_sim_obs": null,
+         "hit_pct": null
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 0.0,
+         "sim_new_km2": 0.0,
+         "ratio_sim_obs": null,
+         "hit_pct": null
+        }
+       ],
+       "runtime_s": 0.28
+      }
+     },
+     "country": "Bolivia",
+     "year": 2024
+    },
+    {
+     "day0": "2023-08-20",
+     "lat": 41.0899,
+     "lon": 25.118,
+     "n_ign_det_day0": 5,
+     "weather_errors": [],
+     "terrain_flat": false,
+     "protocols": {
+      "S0": {
+       "start_utc": "2023-08-21T00:00:00Z",
+       "n_ign_points": 5,
+       "fuel": "shrub",
+       "cell_m": 422.1,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 6.47,
+         "sim_new_km2": 48.11,
+         "ratio_sim_obs": 7.438,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 12.94,
+         "sim_new_km2": 158.6,
+         "ratio_sim_obs": 12.259,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 15.33,
+         "sim_new_km2": 266.59,
+         "ratio_sim_obs": 17.392,
+         "hit_pct": 0.0
+        }
+       ],
+       "runtime_s": 0.69
+      },
+      "S1": {
+       "start_utc": "2023-08-22T00:00:00Z",
+       "n_ign_points": 40,
+       "fuel": "shrub",
+       "cell_m": 404.1,
+       "n_fires": 2,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 6.47,
+         "sim_new_km2": 143.2,
+         "ratio_sim_obs": 22.137,
+         "hit_pct": 84.8
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 8.86,
+         "sim_new_km2": 292.61,
+         "ratio_sim_obs": 33.028,
+         "hit_pct": 81.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 9.7,
+         "sim_new_km2": 414.91,
+         "ratio_sim_obs": 42.76,
+         "hit_pct": 94.2
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 0.24,
+        "m_fit": 0.2258,
+        "weight": 0.959,
+        "observed_km2": 4.359,
+        "simulated_km2": 49.5,
+        "days_used": 1,
+        "confidence": "medium",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 6.47,
+         "sim_new_km2": 26.5,
+         "ratio_sim_obs": 4.097,
+         "hit_pct": 76.1
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 8.86,
+         "sim_new_km2": 44.5,
+         "ratio_sim_obs": 5.023,
+         "hit_pct": 60.3
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 9.7,
+         "sim_new_km2": 59.75,
+         "ratio_sim_obs": 6.158,
+         "hit_pct": 58.0
+        }
+       ],
+       "runtime_s": 1.35
+      },
+      "S2": {
+       "start_utc": "2023-08-23T00:00:00Z",
+       "n_ign_points": 126,
+       "fuel": "shrub",
+       "cell_m": 301.8,
+       "n_fires": 2,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 2.39,
+         "sim_new_km2": 86.88,
+         "ratio_sim_obs": 36.344,
+         "hit_pct": 76.5
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 3.23,
+         "sim_new_km2": 179.87,
+         "ratio_sim_obs": 55.612,
+         "hit_pct": 100.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 3.38,
+         "sim_new_km2": 279.59,
+         "ratio_sim_obs": 82.843,
+         "hit_pct": 100.0
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 0.214,
+        "m_fit": 0.2097,
+        "weight": 0.987,
+        "observed_km2": 10.547,
+        "simulated_km2": 162.802,
+        "days_used": 2,
+        "confidence": "high",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 2.39,
+         "sim_new_km2": 16.75,
+         "ratio_sim_obs": 7.007,
+         "hit_pct": 23.5
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 3.23,
+         "sim_new_km2": 30.75,
+         "ratio_sim_obs": 9.507,
+         "hit_pct": 39.1
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 3.38,
+         "sim_new_km2": 41.12,
+         "ratio_sim_obs": 12.185,
+         "hit_pct": 58.3
+        }
+       ],
+       "runtime_s": 1.63
+      }
+     },
+     "country": "Greece",
+     "year": 2023
+    },
+    {
+     "day0": "2024-09-15",
+     "lat": 40.6925,
+     "lon": -8.3939,
+     "n_ign_det_day0": 9,
+     "weather_errors": [],
+     "terrain_flat": false,
+     "protocols": {
+      "S0": {
+       "start_utc": "2024-09-15T14:00:00Z",
+       "n_ign_points": 9,
+       "fuel": "shrub",
+       "cell_m": 1000.0,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 58.5,
+         "sim_new_km2": 42.0,
+         "ratio_sim_obs": 0.718,
+         "hit_pct": 19.2
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 248.62,
+         "sim_new_km2": 161.0,
+         "ratio_sim_obs": 0.648,
+         "hit_pct": 26.8
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 464.77,
+         "sim_new_km2": 342.0,
+         "ratio_sim_obs": 0.736,
+         "hit_pct": 19.4
+        }
+       ],
+       "runtime_s": 0.65
+      },
+      "S1": {
+       "start_utc": "2024-09-16T14:00:00Z",
+       "n_ign_points": 609,
+       "fuel": "shrub",
+       "cell_m": 878.8,
+       "n_fires": 5,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 190.12,
+         "sim_new_km2": 478.07,
+         "ratio_sim_obs": 2.514,
+         "hit_pct": 48.1
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 406.27,
+         "sim_new_km2": 970.03,
+         "ratio_sim_obs": 2.388,
+         "hit_pct": 26.7
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 424.69,
+         "sim_new_km2": 1172.38,
+         "ratio_sim_obs": 2.761,
+         "hit_pct": 29.3
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 0.573,
+        "m_fit": 0.5685,
+        "weight": 0.986,
+        "observed_km2": 52.734,
+        "simulated_km2": 146.77,
+        "days_used": 1,
+        "confidence": "medium",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 190.12,
+         "sim_new_km2": 265.84,
+         "ratio_sim_obs": 1.398,
+         "hit_pct": 37.6
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 406.27,
+         "sim_new_km2": 551.52,
+         "ratio_sim_obs": 1.358,
+         "hit_pct": 22.4
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 424.69,
+         "sim_new_km2": 670.58,
+         "ratio_sim_obs": 1.579,
+         "hit_pct": 25.3
+        }
+       ],
+       "runtime_s": 2.29
+      },
+      "S2": {
+       "start_utc": "2024-09-17T14:00:00Z",
+       "n_ign_points": 2961,
+       "fuel": "shrub",
+       "cell_m": 555.7,
+       "n_fires": 7,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 216.14,
+         "sim_new_km2": 563.51,
+         "ratio_sim_obs": 2.607,
+         "hit_pct": 13.3
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 234.56,
+         "sim_new_km2": 833.06,
+         "ratio_sim_obs": 3.552,
+         "hit_pct": 13.2
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 235.83,
+         "sim_new_km2": 984.67,
+         "ratio_sim_obs": 4.175,
+         "hit_pct": 13.1
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 0.6142,
+        "m_fit": 0.6129,
+        "weight": 0.996,
+        "observed_km2": 197.297,
+        "simulated_km2": 490.516,
+        "days_used": 2,
+        "confidence": "high",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 216.14,
+         "sim_new_km2": 338.0,
+         "ratio_sim_obs": 1.564,
+         "hit_pct": 12.3
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 234.56,
+         "sim_new_km2": 474.03,
+         "ratio_sim_obs": 2.021,
+         "hit_pct": 13.1
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 235.83,
+         "sim_new_km2": 568.72,
+         "ratio_sim_obs": 2.412,
+         "hit_pct": 13.1
+        }
+       ],
+       "runtime_s": 3.11
+      }
+     },
+     "country": "Portugal",
+     "year": 2024
+    },
+    {
+     "day0": "2024-08-07",
+     "lat": 61.6536,
+     "lon": -109.9358,
+     "n_ign_det_day0": 8,
+     "weather_errors": [],
+     "terrain_flat": true,
+     "protocols": {
+      "S0": {
+       "start_utc": "2024-08-07T22:00:00Z",
+       "n_ign_points": 8,
+       "fuel": "forest",
+       "cell_m": 250.0,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 2.25,
+         "sim_new_km2": 0.75,
+         "ratio_sim_obs": 0.333,
+         "hit_pct": 37.5
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 8.58,
+         "sim_new_km2": 2.31,
+         "ratio_sim_obs": 0.27,
+         "hit_pct": 24.6
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 12.66,
+         "sim_new_km2": 5.12,
+         "ratio_sim_obs": 0.405,
+         "hit_pct": 27.8
+        }
+       ],
+       "runtime_s": 0.07
+      },
+      "S1": {
+       "start_utc": "2024-08-08T22:00:00Z",
+       "n_ign_points": 64,
+       "fuel": "forest",
+       "cell_m": 250.0,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 6.33,
+         "sim_new_km2": 2.62,
+         "ratio_sim_obs": 0.415,
+         "hit_pct": 35.6
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 10.41,
+         "sim_new_km2": 7.12,
+         "ratio_sim_obs": 0.685,
+         "hit_pct": 44.6
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 12.94,
+         "sim_new_km2": 12.69,
+         "ratio_sim_obs": 0.981,
+         "hit_pct": 58.7
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 1.4756,
+        "m_fit": 2.0801,
+        "weight": 0.531,
+        "observed_km2": 2.391,
+        "simulated_km2": 0.75,
+        "days_used": 1,
+        "confidence": "low",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 6.33,
+         "sim_new_km2": 4.31,
+         "ratio_sim_obs": 0.681,
+         "hit_pct": 42.2
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 10.41,
+         "sim_new_km2": 11.19,
+         "ratio_sim_obs": 1.075,
+         "hit_pct": 67.6
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 12.94,
+         "sim_new_km2": 21.12,
+         "ratio_sim_obs": 1.633,
+         "hit_pct": 71.7
+        }
+       ],
+       "runtime_s": 0.26
+      },
+      "S2": {
+       "start_utc": "2024-08-09T22:00:00Z",
+       "n_ign_points": 262,
+       "fuel": "forest",
+       "cell_m": 250.0,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 4.08,
+         "sim_new_km2": 7.56,
+         "ratio_sim_obs": 1.854,
+         "hit_pct": 89.7
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 6.61,
+         "sim_new_km2": 15.31,
+         "ratio_sim_obs": 2.317,
+         "hit_pct": 61.7
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 9.56,
+         "sim_new_km2": 25.06,
+         "ratio_sim_obs": 2.621,
+         "hit_pct": 45.6
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 1.8481,
+        "m_fit": 2.1494,
+        "weight": 0.803,
+        "observed_km2": 8.578,
+        "simulated_km2": 2.313,
+        "days_used": 2,
+        "confidence": "high",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 4.08,
+         "sim_new_km2": 13.94,
+         "ratio_sim_obs": 3.418,
+         "hit_pct": 96.6
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 6.61,
+         "sim_new_km2": 30.81,
+         "ratio_sim_obs": 4.662,
+         "hit_pct": 63.8
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 9.56,
+         "sim_new_km2": 54.0,
+         "ratio_sim_obs": 5.647,
+         "hit_pct": 45.6
+        }
+       ],
+       "runtime_s": 0.52
+      }
+     },
+     "country": "Canada",
+     "year": 2024
+    },
+    {
+     "day0": "2023-06-01",
+     "lat": 35.4104,
+     "lon": -111.9451,
+     "n_ign_det_day0": 40,
+     "weather_errors": [],
+     "terrain_flat": true,
+     "protocols": {
+      "S0": {
+       "start_utc": "2023-06-01T21:00:00Z",
+       "n_ign_points": 40,
+       "fuel": "shrub",
+       "cell_m": 250.0,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 1.97,
+         "sim_new_km2": 30.88,
+         "ratio_sim_obs": 15.683,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 2.81,
+         "sim_new_km2": 66.19,
+         "ratio_sim_obs": 23.534,
+         "hit_pct": 15.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 3.09,
+         "sim_new_km2": 103.31,
+         "ratio_sim_obs": 33.394,
+         "hit_pct": 13.6
+        }
+       ],
+       "runtime_s": 0.37
+      },
+      "S1": {
+       "start_utc": "2023-06-02T21:00:00Z",
+       "n_ign_points": 41,
+       "fuel": "shrub",
+       "cell_m": 250.0,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 0.84,
+         "sim_new_km2": 19.94,
+         "ratio_sim_obs": 23.63,
+         "hit_pct": 50.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 1.12,
+         "sim_new_km2": 43.06,
+         "ratio_sim_obs": 38.277,
+         "hit_pct": 37.5
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 4.08,
+         "sim_new_km2": 100.88,
+         "ratio_sim_obs": 24.736,
+         "hit_pct": 10.3
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 0.0606,
+        "m_fit": 0.05,
+        "weight": 0.936,
+        "observed_km2": 0.0,
+        "simulated_km2": 30.875,
+        "days_used": 1,
+        "confidence": "medium",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 0.84,
+         "sim_new_km2": 0.0,
+         "ratio_sim_obs": 0.0,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 1.12,
+         "sim_new_km2": 0.0,
+         "ratio_sim_obs": 0.0,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 4.08,
+         "sim_new_km2": 1.94,
+         "ratio_sim_obs": 0.475,
+         "hit_pct": 3.4
+        }
+       ],
+       "runtime_s": 0.46
+      },
+      "S2": {
+       "start_utc": "2023-06-03T21:00:00Z",
+       "n_ign_points": 45,
+       "fuel": "shrub",
+       "cell_m": 366.9,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 0.28,
+         "sim_new_km2": 13.46,
+         "ratio_sim_obs": 47.858,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 3.23,
+         "sim_new_km2": 55.18,
+         "ratio_sim_obs": 17.062,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 5.34,
+         "sim_new_km2": 239.58,
+         "ratio_sim_obs": 44.833,
+         "hit_pct": 7.9
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 0.0548,
+        "m_fit": 0.05,
+        "weight": 0.969,
+        "observed_km2": 0.562,
+        "simulated_km2": 66.188,
+        "days_used": 2,
+        "confidence": "high",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 0.28,
+         "sim_new_km2": 0.0,
+         "ratio_sim_obs": 0.0,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 3.23,
+         "sim_new_km2": 0.0,
+         "ratio_sim_obs": 0.0,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 5.34,
+         "sim_new_km2": 4.81,
+         "ratio_sim_obs": 0.9,
+         "hit_pct": 0.0
+        }
+       ],
+       "runtime_s": 0.75
+      }
+     },
+     "country": "United_States",
+     "year": 2023
+    }
+   ]
+  },
+  "new_10": {
+   "seed": 7,
+   "n_fires": 10,
+   "summary": {
+    "S0_off_day1": {
+     "n": 9,
+     "median_ratio_sim_obs": 2.83,
+     "within_factor_2_pct": 22.0,
+     "median_abs_log2_ratio": 2.31,
+     "median_hit_pct": 9.4
+    },
+    "S0_off_day2": {
+     "n": 10,
+     "median_ratio_sim_obs": 4.91,
+     "within_factor_2_pct": 10.0,
+     "median_abs_log2_ratio": 2.27,
+     "median_hit_pct": 9.8
+    },
+    "S0_off_day3": {
+     "n": 10,
+     "median_ratio_sim_obs": 7.19,
+     "within_factor_2_pct": 20.0,
+     "median_abs_log2_ratio": 2.77,
+     "median_hit_pct": 16.6
+    },
+    "S1_off_day1": {
+     "n": 9,
+     "median_ratio_sim_obs": 5.81,
+     "within_factor_2_pct": 11.0,
+     "median_abs_log2_ratio": 2.54,
+     "median_hit_pct": 22.2
+    },
+    "S1_off_day2": {
+     "n": 9,
+     "median_ratio_sim_obs": 18.78,
+     "within_factor_2_pct": 11.0,
+     "median_abs_log2_ratio": 4.23,
+     "median_hit_pct": 45.1
+    },
+    "S1_off_day3": {
+     "n": 10,
+     "median_ratio_sim_obs": 17.67,
+     "within_factor_2_pct": 0.0,
+     "median_abs_log2_ratio": 4.06,
+     "median_hit_pct": 56.8
+    },
+    "S1_on_day1": {
+     "n": 7,
+     "median_ratio_sim_obs": 4.39,
+     "within_factor_2_pct": 0.0,
+     "median_abs_log2_ratio": 2.83,
+     "median_hit_pct": 8.9
+    },
+    "S1_on_day2": {
+     "n": 9,
+     "median_ratio_sim_obs": 6.33,
+     "within_factor_2_pct": 11.0,
+     "median_abs_log2_ratio": 2.97,
+     "median_hit_pct": 45.1
+    },
+    "S1_on_day3": {
+     "n": 10,
+     "median_ratio_sim_obs": 4.63,
+     "within_factor_2_pct": 10.0,
+     "median_abs_log2_ratio": 2.88,
+     "median_hit_pct": 39.9
+    },
+    "S2_off_day1": {
+     "n": 7,
+     "median_ratio_sim_obs": 19.26,
+     "within_factor_2_pct": 14.0,
+     "median_abs_log2_ratio": 4.27,
+     "median_hit_pct": 14.8
+    },
+    "S2_off_day2": {
+     "n": 8,
+     "median_ratio_sim_obs": 17.47,
+     "within_factor_2_pct": 0.0,
+     "median_abs_log2_ratio": 4.13,
+     "median_hit_pct": 34.5
+    },
+    "S2_off_day3": {
+     "n": 9,
+     "median_ratio_sim_obs": 9.47,
+     "within_factor_2_pct": 0.0,
+     "median_abs_log2_ratio": 3.24,
+     "median_hit_pct": 42.3
+    },
+    "S2_on_day1": {
+     "n": 5,
+     "median_ratio_sim_obs": 5.94,
+     "within_factor_2_pct": 0.0,
+     "median_abs_log2_ratio": 2.57,
+     "median_hit_pct": 0.0
+    },
+    "S2_on_day2": {
+     "n": 7,
+     "median_ratio_sim_obs": 4.0,
+     "within_factor_2_pct": 14.0,
+     "median_abs_log2_ratio": 2.13,
+     "median_hit_pct": 17.1
+    },
+    "S2_on_day3": {
+     "n": 9,
+     "median_ratio_sim_obs": 4.9,
+     "within_factor_2_pct": 22.0,
+     "median_abs_log2_ratio": 2.57,
+     "median_hit_pct": 29.8
+    }
+   },
+   "fires": [
+    {
+     "day0": "2023-06-21",
+     "lat": 52.2636,
+     "lon": -86.3064,
+     "n_ign_det_day0": 5,
+     "weather_errors": [],
+     "terrain_flat": true,
+     "protocols": {
+      "S0": {
+       "start_utc": "2023-06-21T20:00:00Z",
+       "n_ign_points": 5,
+       "fuel": "forest",
+       "cell_m": 250.0,
+       "n_fires": 2,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 7.45,
+         "sim_new_km2": 1.5,
+         "ratio_sim_obs": 0.201,
+         "hit_pct": 9.4
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 7.45,
+         "sim_new_km2": 3.19,
+         "ratio_sim_obs": 0.428,
+         "hit_pct": 15.1
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 7.45,
+         "sim_new_km2": 7.13,
+         "ratio_sim_obs": 0.956,
+         "hit_pct": 24.5
+        }
+       ],
+       "runtime_s": 0.08
+      },
+      "S1": {
+       "start_utc": "2023-06-22T20:00:00Z",
+       "n_ign_points": 102,
+       "fuel": "forest",
+       "cell_m": 250.0,
+       "n_fires": 2,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 0.0,
+         "sim_new_km2": 2.81,
+         "ratio_sim_obs": null,
+         "hit_pct": null
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 0.0,
+         "sim_new_km2": 11.81,
+         "ratio_sim_obs": null,
+         "hit_pct": null
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 0.84,
+         "sim_new_km2": 21.0,
+         "ratio_sim_obs": 24.889,
+         "hit_pct": 100.0
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 2.022,
+        "m_fit": 2.4774,
+        "weight": 0.776,
+        "observed_km2": 7.312,
+        "simulated_km2": 1.5,
+        "days_used": 1,
+        "confidence": "medium",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 0.0,
+         "sim_new_km2": 9.56,
+         "ratio_sim_obs": null,
+         "hit_pct": null
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 0.0,
+         "sim_new_km2": 26.81,
+         "ratio_sim_obs": null,
+         "hit_pct": null
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 0.84,
+         "sim_new_km2": 48.37,
+         "ratio_sim_obs": 57.332,
+         "hit_pct": 100.0
+        }
+       ],
+       "runtime_s": 0.4
+      },
+      "S2": {
+       "start_utc": "2023-06-23T20:00:00Z",
+       "n_ign_points": 102,
+       "fuel": "forest",
+       "cell_m": 250.0,
+       "n_fires": 2,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 0.0,
+         "sim_new_km2": 5.62,
+         "ratio_sim_obs": null,
+         "hit_pct": null
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 0.84,
+         "sim_new_km2": 15.12,
+         "ratio_sim_obs": 17.925,
+         "hit_pct": 83.3
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 1.27,
+         "sim_new_km2": 23.19,
+         "ratio_sim_obs": 18.321,
+         "hit_pct": 100.0
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 1.4088,
+        "m_fit": 1.5552,
+        "weight": 0.776,
+        "observed_km2": 7.312,
+        "simulated_km2": 3.188,
+        "days_used": 2,
+        "confidence": "medium",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 0.0,
+         "sim_new_km2": 10.87,
+         "ratio_sim_obs": null,
+         "hit_pct": null
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 0.84,
+         "sim_new_km2": 23.25,
+         "ratio_sim_obs": 27.556,
+         "hit_pct": 100.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 1.27,
+         "sim_new_km2": 35.5,
+         "ratio_sim_obs": 28.049,
+         "hit_pct": 100.0
+        }
+       ],
+       "runtime_s": 0.46
+      }
+     },
+     "country": "Canada",
+     "year": 2023
+    },
+    {
+     "day0": "2023-06-07",
+     "lat": 55.9354,
+     "lon": -111.1395,
+     "n_ign_det_day0": 5,
+     "weather_errors": [],
+     "terrain_flat": true,
+     "protocols": {
+      "S0": {
+       "start_utc": "2023-06-07T22:00:00Z",
+       "n_ign_points": 5,
+       "fuel": "forest",
+       "cell_m": 250.0,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 8.58,
+         "sim_new_km2": 0.63,
+         "ratio_sim_obs": 0.073,
+         "hit_pct": 1.6
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 11.25,
+         "sim_new_km2": 2.88,
+         "ratio_sim_obs": 0.256,
+         "hit_pct": 3.8
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 14.62,
+         "sim_new_km2": 5.56,
+         "ratio_sim_obs": 0.38,
+         "hit_pct": 4.8
+        }
+       ],
+       "runtime_s": 0.07
+      },
+      "S1": {
+       "start_utc": "2023-06-08T22:00:00Z",
+       "n_ign_points": 114,
+       "fuel": "forest",
+       "cell_m": 250.0,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 2.67,
+         "sim_new_km2": 7.5,
+         "ratio_sim_obs": 2.807,
+         "hit_pct": 52.6
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 6.05,
+         "sim_new_km2": 16.44,
+         "ratio_sim_obs": 2.718,
+         "hit_pct": 83.7
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 12.66,
+         "sim_new_km2": 25.62,
+         "ratio_sim_obs": 2.025,
+         "hit_pct": 78.9
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 2.6705,
+        "m_fit": 3.4139,
+        "weight": 0.8,
+        "observed_km2": 8.438,
+        "simulated_km2": 0.626,
+        "days_used": 1,
+        "confidence": "medium",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 2.67,
+         "sim_new_km2": 20.94,
+         "ratio_sim_obs": 7.836,
+         "hit_pct": 94.7
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 6.05,
+         "sim_new_km2": 47.62,
+         "ratio_sim_obs": 7.876,
+         "hit_pct": 100.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 12.66,
+         "sim_new_km2": 81.19,
+         "ratio_sim_obs": 6.415,
+         "hit_pct": 100.0
+        }
+       ],
+       "runtime_s": 0.47
+      },
+      "S2": {
+       "start_utc": "2023-06-09T22:00:00Z",
+       "n_ign_points": 149,
+       "fuel": "forest",
+       "cell_m": 250.0,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 3.38,
+         "sim_new_km2": 10.88,
+         "ratio_sim_obs": 3.222,
+         "hit_pct": 95.8
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 9.98,
+         "sim_new_km2": 20.56,
+         "ratio_sim_obs": 2.059,
+         "hit_pct": 74.6
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 12.23,
+         "sim_new_km2": 29.19,
+         "ratio_sim_obs": 2.386,
+         "hit_pct": 78.2
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 1.9735,
+        "m_fit": 2.2455,
+        "weight": 0.84,
+        "observed_km2": 11.109,
+        "simulated_km2": 2.876,
+        "days_used": 2,
+        "confidence": "high",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 3.38,
+         "sim_new_km2": 20.06,
+         "ratio_sim_obs": 5.944,
+         "hit_pct": 100.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 9.98,
+         "sim_new_km2": 39.94,
+         "ratio_sim_obs": 4.0,
+         "hit_pct": 100.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 12.23,
+         "sim_new_km2": 60.0,
+         "ratio_sim_obs": 4.904,
+         "hit_pct": 98.9
+        }
+       ],
+       "runtime_s": 0.49
+      }
+     },
+     "country": "Canada",
+     "year": 2023
+    },
+    {
+     "day0": "2023-09-19",
+     "lat": -13.945,
+     "lon": 134.8404,
+     "n_ign_det_day0": 7,
+     "weather_errors": [],
+     "terrain_flat": true,
+     "protocols": {
+      "S0": {
+       "start_utc": "2023-09-19T17:00:00Z",
+       "n_ign_points": 7,
+       "fuel": "savanna",
+       "cell_m": 296.5,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 3.38,
+         "sim_new_km2": 18.55,
+         "ratio_sim_obs": 5.495,
+         "hit_pct": 83.3
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 9.7,
+         "sim_new_km2": 57.92,
+         "ratio_sim_obs": 5.97,
+         "hit_pct": 47.8
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 13.5,
+         "sim_new_km2": 128.15,
+         "ratio_sim_obs": 9.493,
+         "hit_pct": 50.0
+        }
+       ],
+       "runtime_s": 0.42
+      },
+      "S1": {
+       "start_utc": "2023-09-20T17:00:00Z",
+       "n_ign_points": 38,
+       "fuel": "savanna",
+       "cell_m": 317.8,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 6.33,
+         "sim_new_km2": 34.13,
+         "ratio_sim_obs": 5.393,
+         "hit_pct": 22.2
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 10.12,
+         "sim_new_km2": 93.6,
+         "ratio_sim_obs": 9.244,
+         "hit_pct": 36.1
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 15.61,
+         "sim_new_km2": 185.98,
+         "ratio_sim_obs": 11.915,
+         "hit_pct": 36.9
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 0.378,
+        "m_fit": 0.339,
+        "weight": 0.899,
+        "observed_km2": 3.656,
+        "simulated_km2": 18.812,
+        "days_used": 1,
+        "confidence": "medium",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 6.33,
+         "sim_new_km2": 13.38,
+         "ratio_sim_obs": 2.114,
+         "hit_pct": 8.9
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 10.12,
+         "sim_new_km2": 26.56,
+         "ratio_sim_obs": 2.623,
+         "hit_pct": 12.5
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 15.61,
+         "sim_new_km2": 44.56,
+         "ratio_sim_obs": 2.855,
+         "hit_pct": 14.4
+        }
+       ],
+       "runtime_s": 0.73
+      },
+      "S2": {
+       "start_utc": "2023-09-21T17:00:00Z",
+       "n_ign_points": 78,
+       "fuel": "savanna",
+       "cell_m": 311.3,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 3.8,
+         "sim_new_km2": 66.38,
+         "ratio_sim_obs": 17.482,
+         "hit_pct": 14.8
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 9.28,
+         "sim_new_km2": 157.85,
+         "ratio_sim_obs": 17.007,
+         "hit_pct": 27.3
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 10.97,
+         "sim_new_km2": 234.59,
+         "ratio_sim_obs": 21.387,
+         "hit_pct": 42.3
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 0.2953,
+        "m_fit": 0.2827,
+        "weight": 0.966,
+        "observed_km2": 7.594,
+        "simulated_km2": 59.25,
+        "days_used": 2,
+        "confidence": "high",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 3.8,
+         "sim_new_km2": 19.88,
+         "ratio_sim_obs": 5.235,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 9.28,
+         "sim_new_km2": 40.69,
+         "ratio_sim_obs": 4.384,
+         "hit_pct": 12.1
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 10.97,
+         "sim_new_km2": 54.63,
+         "ratio_sim_obs": 4.98,
+         "hit_pct": 11.5
+        }
+       ],
+       "runtime_s": 1.01
+      }
+     },
+     "country": "Australia",
+     "year": 2023
+    },
+    {
+     "day0": "2023-12-18",
+     "lat": -21.09,
+     "lon": 135.4234,
+     "n_ign_det_day0": 26,
+     "weather_errors": [],
+     "terrain_flat": false,
+     "protocols": {
+      "S0": {
+       "start_utc": "2023-12-18T06:00:00Z",
+       "n_ign_points": 26,
+       "fuel": "savanna",
+       "cell_m": 560.5,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 0.0,
+         "sim_new_km2": 37.08,
+         "ratio_sim_obs": null,
+         "hit_pct": null
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 8.44,
+         "sim_new_km2": 133.22,
+         "ratio_sim_obs": 15.79,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 13.92,
+         "sim_new_km2": 433.93,
+         "ratio_sim_obs": 31.169,
+         "hit_pct": 0.0
+        }
+       ],
+       "runtime_s": 0.55
+      },
+      "S1": {
+       "start_utc": "2023-12-19T06:00:00Z",
+       "n_ign_points": 26,
+       "fuel": "savanna",
+       "cell_m": 693.3,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 8.44,
+         "sim_new_km2": 49.02,
+         "ratio_sim_obs": 5.81,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 13.92,
+         "sim_new_km2": 261.45,
+         "ratio_sim_obs": 18.78,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 27.42,
+         "sim_new_km2": 642.57,
+         "ratio_sim_obs": 23.433,
+         "hit_pct": 0.0
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 0.0576,
+        "m_fit": 0.05,
+        "weight": 0.953,
+        "observed_km2": 0.0,
+        "simulated_km2": 42.626,
+        "days_used": 1,
+        "confidence": "medium",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 8.44,
+         "sim_new_km2": 1.19,
+         "ratio_sim_obs": 0.141,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 13.92,
+         "sim_new_km2": 5.44,
+         "ratio_sim_obs": 0.391,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 27.42,
+         "sim_new_km2": 8.13,
+         "ratio_sim_obs": 0.296,
+         "hit_pct": 0.0
+        }
+       ],
+       "runtime_s": 0.78
+      },
+      "S2": {
+       "start_utc": "2023-12-20T06:00:00Z",
+       "n_ign_points": 26,
+       "fuel": "savanna",
+       "cell_m": 715.0,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 5.48,
+         "sim_new_km2": 117.07,
+         "ratio_sim_obs": 21.347,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 18.98,
+         "sim_new_km2": 402.86,
+         "ratio_sim_obs": 21.22,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 77.77,
+         "sim_new_km2": 726.47,
+         "ratio_sim_obs": 9.342,
+         "hit_pct": 0.0
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 0.0522,
+        "m_fit": 0.05,
+        "weight": 0.986,
+        "observed_km2": 0.0,
+        "simulated_km2": 146.625,
+        "days_used": 2,
+        "confidence": "high",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 5.48,
+         "sim_new_km2": 2.69,
+         "ratio_sim_obs": 0.49,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 18.98,
+         "sim_new_km2": 5.94,
+         "ratio_sim_obs": 0.313,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 77.77,
+         "sim_new_km2": 7.63,
+         "ratio_sim_obs": 0.098,
+         "hit_pct": 0.0
+        }
+       ],
+       "runtime_s": 1.15
+      }
+     },
+     "country": "Australia",
+     "year": 2023
+    },
+    {
+     "day0": "2024-06-25",
+     "lat": 43.6515,
+     "lon": -121.4737,
+     "n_ign_det_day0": 31,
+     "weather_errors": [],
+     "terrain_flat": false,
+     "protocols": {
+      "S0": {
+       "start_utc": "2024-06-25T22:00:00Z",
+       "n_ign_points": 31,
+       "fuel": "shrub",
+       "cell_m": 312.7,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 9.56,
+         "sim_new_km2": 31.49,
+         "ratio_sim_obs": 3.293,
+         "hit_pct": 100.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 15.19,
+         "sim_new_km2": 103.76,
+         "ratio_sim_obs": 6.832,
+         "hit_pct": 100.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 15.19,
+         "sim_new_km2": 179.36,
+         "ratio_sim_obs": 11.81,
+         "hit_pct": 100.0
+        }
+       ],
+       "runtime_s": 0.77
+      },
+      "S1": {
+       "start_utc": "2024-06-26T22:00:00Z",
+       "n_ign_points": 183,
+       "fuel": "shrub",
+       "cell_m": 317.1,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 5.62,
+         "sim_new_km2": 55.5,
+         "ratio_sim_obs": 9.867,
+         "hit_pct": 100.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 5.62,
+         "sim_new_km2": 118.44,
+         "ratio_sim_obs": 21.057,
+         "hit_pct": 100.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 5.62,
+         "sim_new_km2": 235.68,
+         "ratio_sim_obs": 41.899,
+         "hit_pct": 100.0
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 0.4631,
+        "m_fit": 0.4416,
+        "weight": 0.942,
+        "observed_km2": 9.984,
+        "simulated_km2": 34.187,
+        "days_used": 1,
+        "confidence": "medium",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 5.62,
+         "sim_new_km2": 24.69,
+         "ratio_sim_obs": 4.389,
+         "hit_pct": 87.5
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 5.62,
+         "sim_new_km2": 44.13,
+         "ratio_sim_obs": 7.845,
+         "hit_pct": 100.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 5.62,
+         "sim_new_km2": 76.75,
+         "ratio_sim_obs": 13.644,
+         "hit_pct": 100.0
+        }
+       ],
+       "runtime_s": 1.39
+      },
+      "S2": {
+       "start_utc": "2024-06-27T22:00:00Z",
+       "n_ign_points": 299,
+       "fuel": "shrub",
+       "cell_m": 303.6,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 0.0,
+         "sim_new_km2": 46.56,
+         "ratio_sim_obs": null,
+         "hit_pct": null
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 0.0,
+         "sim_new_km2": 138.95,
+         "ratio_sim_obs": null,
+         "hit_pct": null
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 0.0,
+         "sim_new_km2": 232.9,
+         "ratio_sim_obs": null,
+         "hit_pct": null
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 0.3082,
+        "m_fit": 0.3011,
+        "weight": 0.981,
+        "observed_km2": 15.328,
+        "simulated_km2": 107.875,
+        "days_used": 2,
+        "confidence": "high",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 0.0,
+         "sim_new_km2": 14.5,
+         "ratio_sim_obs": null,
+         "hit_pct": null
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 0.0,
+         "sim_new_km2": 34.5,
+         "ratio_sim_obs": null,
+         "hit_pct": null
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 0.0,
+         "sim_new_km2": 50.69,
+         "ratio_sim_obs": null,
+         "hit_pct": null
+        }
+       ],
+       "runtime_s": 2.16
+      }
+     },
+     "country": "United_States",
+     "year": 2024
+    },
+    {
+     "day0": "2024-09-04",
+     "lat": -16.8351,
+     "lon": -62.1395,
+     "n_ign_det_day0": 9,
+     "weather_errors": [],
+     "terrain_flat": true,
+     "protocols": {
+      "S0": {
+       "start_utc": "2024-09-04T19:00:00Z",
+       "n_ign_points": 9,
+       "fuel": "savanna",
+       "cell_m": 391.8,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 10.12,
+         "sim_new_km2": 50.21,
+         "ratio_sim_obs": 4.959,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 28.97,
+         "sim_new_km2": 111.78,
+         "ratio_sim_obs": 3.859,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 48.94,
+         "sim_new_km2": 239.22,
+         "ratio_sim_obs": 4.888,
+         "hit_pct": 0.0
+        }
+       ],
+       "runtime_s": 0.71
+      },
+      "S1": {
+       "start_utc": "2024-09-05T19:00:00Z",
+       "n_ign_points": 13,
+       "fuel": "savanna",
+       "cell_m": 323.8,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 18.84,
+         "sim_new_km2": 14.79,
+         "ratio_sim_obs": 0.785,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 38.81,
+         "sim_new_km2": 76.65,
+         "ratio_sim_obs": 1.975,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 69.05,
+         "sim_new_km2": 196.82,
+         "ratio_sim_obs": 2.85,
+         "hit_pct": 0.2
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 0.0561,
+        "m_fit": 0.05,
+        "weight": 0.961,
+        "observed_km2": 0.0,
+        "simulated_km2": 52.562,
+        "days_used": 1,
+        "confidence": "medium",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 18.84,
+         "sim_new_km2": 0.0,
+         "ratio_sim_obs": 0.0,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 38.81,
+         "sim_new_km2": 0.25,
+         "ratio_sim_obs": 0.006,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 69.05,
+         "sim_new_km2": 0.88,
+         "ratio_sim_obs": 0.013,
+         "hit_pct": 0.0
+        }
+       ],
+       "runtime_s": 1.25
+      },
+      "S2": {
+       "start_utc": "2024-09-06T19:00:00Z",
+       "n_ign_points": 13,
+       "fuel": "savanna",
+       "cell_m": 340.1,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 19.97,
+         "sim_new_km2": 29.26,
+         "ratio_sim_obs": 1.465,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 50.2,
+         "sim_new_km2": 114.51,
+         "ratio_sim_obs": 2.281,
+         "hit_pct": 0.3
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 78.61,
+         "sim_new_km2": 216.53,
+         "ratio_sim_obs": 2.754,
+         "hit_pct": 1.6
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 0.0527,
+        "m_fit": 0.05,
+        "weight": 0.982,
+        "observed_km2": 0.0,
+        "simulated_km2": 115.96,
+        "days_used": 2,
+        "confidence": "high",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 19.97,
+         "sim_new_km2": 0.0,
+         "ratio_sim_obs": 0.0,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 50.2,
+         "sim_new_km2": 0.75,
+         "ratio_sim_obs": 0.015,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 78.61,
+         "sim_new_km2": 1.31,
+         "ratio_sim_obs": 0.017,
+         "hit_pct": 0.0
+        }
+       ],
+       "runtime_s": 1.47
+      }
+     },
+     "country": "Bolivia",
+     "year": 2024
+    },
+    {
+     "day0": "2023-07-18",
+     "lat": 36.2328,
+     "lon": 27.9368,
+     "n_ign_det_day0": 8,
+     "weather_errors": [],
+     "terrain_flat": true,
+     "protocols": {
+      "S0": {
+       "start_utc": "2023-07-19T00:00:00Z",
+       "n_ign_points": 8,
+       "fuel": "shrub",
+       "cell_m": 337.9,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 11.53,
+         "sim_new_km2": 32.65,
+         "ratio_sim_obs": 2.831,
+         "hit_pct": 59.8
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 12.94,
+         "sim_new_km2": 96.11,
+         "ratio_sim_obs": 7.429,
+         "hit_pct": 82.6
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 15.33,
+         "sim_new_km2": 245.88,
+         "ratio_sim_obs": 16.041,
+         "hit_pct": 97.2
+        }
+       ],
+       "runtime_s": 0.68
+      },
+      "S1": {
+       "start_utc": "2023-07-20T00:00:00Z",
+       "n_ign_points": 100,
+       "fuel": "shrub",
+       "cell_m": 434.4,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 1.41,
+         "sim_new_km2": 58.31,
+         "ratio_sim_obs": 41.463,
+         "hit_pct": 100.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 3.8,
+         "sim_new_km2": 191.91,
+         "ratio_sim_obs": 50.543,
+         "hit_pct": 100.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 55.41,
+         "sim_new_km2": 411.74,
+         "ratio_sim_obs": 7.431,
+         "hit_pct": 69.3
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 0.5008,
+        "m_fit": 0.4797,
+        "weight": 0.942,
+        "observed_km2": 11.25,
+        "simulated_km2": 34.0,
+        "days_used": 1,
+        "confidence": "medium",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 1.41,
+         "sim_new_km2": 33.19,
+         "ratio_sim_obs": 23.6,
+         "hit_pct": 100.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 3.8,
+         "sim_new_km2": 81.31,
+         "ratio_sim_obs": 21.416,
+         "hit_pct": 100.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 55.41,
+         "sim_new_km2": 150.0,
+         "ratio_sim_obs": 2.707,
+         "hit_pct": 35.5
+        }
+       ],
+       "runtime_s": 1.73
+      },
+      "S2": {
+       "start_utc": "2023-07-21T00:00:00Z",
+       "n_ign_points": 124,
+       "fuel": "shrub",
+       "cell_m": 503.9,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 2.39,
+         "sim_new_km2": 89.65,
+         "ratio_sim_obs": 37.499,
+         "hit_pct": 100.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 54.0,
+         "sim_new_km2": 258.02,
+         "ratio_sim_obs": 4.778,
+         "hit_pct": 48.7
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 80.72,
+         "sim_new_km2": 485.56,
+         "ratio_sim_obs": 6.016,
+         "hit_pct": 69.5
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 0.3064,
+        "m_fit": 0.2988,
+        "weight": 0.979,
+        "observed_km2": 12.938,
+        "simulated_km2": 98.938,
+        "days_used": 2,
+        "confidence": "high",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 2.39,
+         "sim_new_km2": 31.0,
+         "ratio_sim_obs": 12.967,
+         "hit_pct": 100.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 54.0,
+         "sim_new_km2": 59.25,
+         "ratio_sim_obs": 1.097,
+         "hit_pct": 22.1
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 80.72,
+         "sim_new_km2": 92.5,
+         "ratio_sim_obs": 1.146,
+         "hit_pct": 29.8
+        }
+       ],
+       "runtime_s": 1.67
+      }
+     },
+     "country": "Greece",
+     "year": 2023
+    },
+    {
+     "day0": "2024-09-16",
+     "lat": 41.5394,
+     "lon": -7.5805,
+     "n_ign_det_day0": 6,
+     "weather_errors": [],
+     "terrain_flat": true,
+     "protocols": {
+      "S0": {
+       "start_utc": "2024-09-16T14:00:00Z",
+       "n_ign_points": 6,
+       "fuel": "shrub",
+       "cell_m": 368.0,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 101.11,
+         "sim_new_km2": 50.92,
+         "ratio_sim_obs": 0.504,
+         "hit_pct": 3.5
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 162.98,
+         "sim_new_km2": 139.21,
+         "ratio_sim_obs": 0.854,
+         "hit_pct": 4.6
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 173.11,
+         "sim_new_km2": 219.23,
+         "ratio_sim_obs": 1.266,
+         "hit_pct": 8.8
+        }
+       ],
+       "runtime_s": 0.73
+      },
+      "S1": {
+       "start_utc": "2024-09-17T14:00:00Z",
+       "n_ign_points": 683,
+       "fuel": "shrub",
+       "cell_m": 421.3,
+       "n_fires": 5,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 61.88,
+         "sim_new_km2": 250.42,
+         "ratio_sim_obs": 4.047,
+         "hit_pct": 46.6
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 72.0,
+         "sim_new_km2": 456.11,
+         "ratio_sim_obs": 6.335,
+         "hit_pct": 45.1
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 73.69,
+         "sim_new_km2": 623.83,
+         "ratio_sim_obs": 8.466,
+         "hit_pct": 44.3
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 1.0,
+        "m_fit": 1.0,
+        "weight": 0.962,
+        "observed_km2": 48.797,
+        "simulated_km2": 53.0,
+        "days_used": 1,
+        "confidence": "medium",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 61.88,
+         "sim_new_km2": 250.42,
+         "ratio_sim_obs": 4.047,
+         "hit_pct": 46.6
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 72.0,
+         "sim_new_km2": 456.11,
+         "ratio_sim_obs": 6.335,
+         "hit_pct": 45.1
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 73.69,
+         "sim_new_km2": 623.83,
+         "ratio_sim_obs": 8.466,
+         "hit_pct": 44.3
+        }
+       ],
+       "runtime_s": 1.0
+      },
+      "S2": {
+       "start_utc": "2024-09-18T14:00:00Z",
+       "n_ign_points": 1183,
+       "fuel": "shrub",
+       "cell_m": 361.0,
+       "n_fires": 5,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 10.12,
+         "sim_new_km2": 194.97,
+         "ratio_sim_obs": 19.256,
+         "hit_pct": 45.8
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 11.81,
+         "sim_new_km2": 382.9,
+         "ratio_sim_obs": 32.415,
+         "hit_pct": 41.7
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 11.81,
+         "sim_new_km2": 434.38,
+         "ratio_sim_obs": 36.773,
+         "hit_pct": 41.7
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 0.7363,
+        "m_fit": 0.7329,
+        "weight": 0.985,
+        "observed_km2": 81.141,
+        "simulated_km2": 140.85,
+        "days_used": 2,
+        "confidence": "high",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 10.12,
+         "sim_new_km2": 153.87,
+         "ratio_sim_obs": 15.197,
+         "hit_pct": 44.4
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 11.81,
+         "sim_new_km2": 269.58,
+         "ratio_sim_obs": 22.822,
+         "hit_pct": 41.7
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 11.81,
+         "sim_new_km2": 307.09,
+         "ratio_sim_obs": 25.997,
+         "hit_pct": 41.7
+        }
+       ],
+       "runtime_s": 2.63
+      }
+     },
+     "country": "Portugal",
+     "year": 2024
+    },
+    {
+     "day0": "2024-08-14",
+     "lat": 53.2304,
+     "lon": -89.2227,
+     "n_ign_det_day0": 40,
+     "weather_errors": [],
+     "terrain_flat": true,
+     "protocols": {
+      "S0": {
+       "start_utc": "2024-08-14T21:00:00Z",
+       "n_ign_points": 40,
+       "fuel": "forest",
+       "cell_m": 250.0,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 3.09,
+         "sim_new_km2": 4.0,
+         "ratio_sim_obs": 1.293,
+         "hit_pct": 68.2
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 3.52,
+         "sim_new_km2": 7.63,
+         "ratio_sim_obs": 2.169,
+         "hit_pct": 76.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 3.52,
+         "sim_new_km2": 11.88,
+         "ratio_sim_obs": 3.378,
+         "hit_pct": 92.0
+        }
+       ],
+       "runtime_s": 0.09
+      },
+      "S1": {
+       "start_utc": "2024-08-15T21:00:00Z",
+       "n_ign_points": 90,
+       "fuel": "forest",
+       "cell_m": 250.0,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 0.42,
+         "sim_new_km2": 3.81,
+         "ratio_sim_obs": 9.036,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 0.42,
+         "sim_new_km2": 8.19,
+         "ratio_sim_obs": 19.406,
+         "hit_pct": 100.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 0.42,
+         "sim_new_km2": 11.94,
+         "ratio_sim_obs": 28.295,
+         "hit_pct": 100.0
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 0.923,
+        "m_fit": 0.8848,
+        "weight": 0.655,
+        "observed_km2": 3.094,
+        "simulated_km2": 4.0,
+        "days_used": 1,
+        "confidence": "medium",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 0.42,
+         "sim_new_km2": 3.19,
+         "ratio_sim_obs": 7.554,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 0.42,
+         "sim_new_km2": 7.0,
+         "ratio_sim_obs": 16.593,
+         "hit_pct": 100.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 0.42,
+         "sim_new_km2": 11.37,
+         "ratio_sim_obs": 26.961,
+         "hit_pct": 100.0
+        }
+       ],
+       "runtime_s": 0.31
+      },
+      "S2": {
+       "start_utc": "2024-08-16T21:00:00Z",
+       "n_ign_points": 100,
+       "fuel": "forest",
+       "cell_m": 250.0,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 0.0,
+         "sim_new_km2": 4.62,
+         "ratio_sim_obs": null,
+         "hit_pct": null
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 0.0,
+         "sim_new_km2": 8.88,
+         "ratio_sim_obs": null,
+         "hit_pct": null
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 1.41,
+         "sim_new_km2": 13.31,
+         "ratio_sim_obs": 9.466,
+         "hit_pct": 60.0
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 0.6515,
+        "m_fit": 0.5787,
+        "weight": 0.783,
+        "observed_km2": 3.938,
+        "simulated_km2": 7.626,
+        "days_used": 2,
+        "confidence": "medium",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 0.0,
+         "sim_new_km2": 1.81,
+         "ratio_sim_obs": null,
+         "hit_pct": null
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 0.0,
+         "sim_new_km2": 5.88,
+         "ratio_sim_obs": null,
+         "hit_pct": null
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 1.41,
+         "sim_new_km2": 8.38,
+         "ratio_sim_obs": 5.956,
+         "hit_pct": 50.0
+        }
+       ],
+       "runtime_s": 0.37
+      }
+     },
+     "country": "Canada",
+     "year": 2024
+    },
+    {
+     "day0": "2023-09-19",
+     "lat": 32.7784,
+     "lon": -85.3518,
+     "n_ign_det_day0": 10,
+     "weather_errors": [],
+     "terrain_flat": false,
+     "protocols": {
+      "S0": {
+       "start_utc": "2023-09-19T20:00:00Z",
+       "n_ign_points": 10,
+       "fuel": "shrub",
+       "cell_m": 255.6,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 1.12,
+         "sim_new_km2": 17.64,
+         "ratio_sim_obs": 15.684,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 1.69,
+         "sim_new_km2": 58.88,
+         "ratio_sim_obs": 34.891,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 2.67,
+         "sim_new_km2": 132.4,
+         "ratio_sim_obs": 49.552,
+         "hit_pct": 0.0
+        }
+       ],
+       "runtime_s": 0.58
+      },
+      "S1": {
+       "start_utc": "2023-09-20T20:00:00Z",
+       "n_ign_points": 10,
+       "fuel": "shrub",
+       "cell_m": 250.0,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 0.56,
+         "sim_new_km2": 18.88,
+         "ratio_sim_obs": 33.556,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 1.55,
+         "sim_new_km2": 65.81,
+         "ratio_sim_obs": 42.545,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 2.67,
+         "sim_new_km2": 127.56,
+         "ratio_sim_obs": 47.743,
+         "hit_pct": 0.0
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 0.0679,
+        "m_fit": 0.05,
+        "weight": 0.898,
+        "observed_km2": 0.0,
+        "simulated_km2": 18.5,
+        "days_used": 1,
+        "confidence": "medium",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 0.56,
+         "sim_new_km2": 0.0,
+         "ratio_sim_obs": 0.0,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 1.55,
+         "sim_new_km2": 0.81,
+         "ratio_sim_obs": 0.525,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 2.67,
+         "sim_new_km2": 1.62,
+         "ratio_sim_obs": 0.608,
+         "hit_pct": 0.0
+        }
+       ],
+       "runtime_s": 0.67
+      },
+      "S2": {
+       "start_utc": "2023-09-21T20:00:00Z",
+       "n_ign_points": 10,
+       "fuel": "shrub",
+       "cell_m": 250.0,
+       "n_fires": 1,
+       "off": [
+        {
+         "day": 1,
+         "obs_new_km2": 0.98,
+         "sim_new_km2": 22.06,
+         "ratio_sim_obs": 22.412,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 2.11,
+         "sim_new_km2": 61.56,
+         "ratio_sim_obs": 29.185,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 2.25,
+         "sim_new_km2": 122.62,
+         "ratio_sim_obs": 54.5,
+         "hit_pct": 6.2
+        }
+       ],
+       "calibration": {
+        "applied": true,
+        "m": 0.0553,
+        "m_fit": 0.05,
+        "weight": 0.966,
+        "observed_km2": 0.0,
+        "simulated_km2": 60.375,
+        "days_used": 2,
+        "confidence": "high",
+        "reason": null
+       },
+       "on": [
+        {
+         "day": 1,
+         "obs_new_km2": 0.98,
+         "sim_new_km2": 0.0,
+         "ratio_sim_obs": 0.0,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 2,
+         "obs_new_km2": 2.11,
+         "sim_new_km2": 0.0,
+         "ratio_sim_obs": 0.0,
+         "hit_pct": 0.0
+        },
+        {
+         "day": 3,
+         "obs_new_km2": 2.25,
+         "sim_new_km2": 1.12,
+         "ratio_sim_obs": 0.5,
+         "hit_pct": 6.2
+        }
+       ],
+       "runtime_s": 0.77
+      }
+     },
+     "country": "United_States",
+     "year": 2023
+    }
+   ]
+  }
+ },
+ "runtime_s": 203.0
+}

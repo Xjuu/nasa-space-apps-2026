@@ -1,0 +1,20 @@
+# secrets
+.env
+# environments and tooling
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+node_modules/
+# downloaded data and regenerable caches (use download_data.py)
+data_country/
+data/*
+!data/incidents.json
+cache/*
+!cache/replay/
+!cache/demo/
+backend/.cache/
+logs/
+*.part
+nohup.out
+*.zip

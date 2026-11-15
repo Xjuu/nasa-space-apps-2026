@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
+  <style>path{fill:#000}@media(prefers-color-scheme:dark){path{fill:#fff}}</style>
+  <path transform="translate(9.2 3) scale(.12)" d="M116 0v54h27v26h-27v81l63-71v147l-44 45v-95l-90 50v45L0 237v-96l36-51v32Z"/>
+</svg>

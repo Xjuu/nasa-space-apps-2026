@@ -1,0 +1,80 @@
+{
+ "event": {
+  "name": "Flin Flon / Manitoba wildfires, Canada",
+  "lat": 54.975,
+  "lon": -101.725,
+  "date": "2025-05-28",
+  "bbox": "-102.5,54.3,-101.0,55.5",
+  "size_deg": 1.5,
+  "stats_year": 2025,
+  "combined": true
+ },
+ "run_at": "2026-11-15T00:40:42.440086+00:00",
+ "steps": {
+  "health": {
+   "http": 200,
+   "seconds": 0.04,
+   "saved": "cache/demo/flin_flon/health.json"
+  },
+  "classify": {
+   "http": 200,
+   "seconds": 2.09,
+   "saved": "cache/demo/flin_flon/classify.json"
+  },
+  "stats": {
+   "http": 200,
+   "seconds": 1.3,
+   "saved": "cache/demo/flin_flon/stats.json"
+  },
+  "fires (event day)": {
+   "http": 200,
+   "seconds": 0.02,
+   "saved": "cache/demo/flin_flon/fires.json"
+  },
+  "clusters (bow-tie)": {
+   "http": 200,
+   "seconds": 0.88,
+   "saved": "cache/demo/flin_flon/clusters.json"
+  },
+  "forecast (ML, 3 d)": {
+   "http": 200,
+   "seconds": 0.03,
+   "saved": "cache/demo/flin_flon/forecast.json"
+  },
+  "simulate/weather": {
+   "http": 200,
+   "seconds": 0.05,
+   "saved": "cache/demo/flin_flon/simulate_weather.json"
+  },
+  "simulate (physics, archive)": {
+   "http": 200,
+   "seconds": 0.01,
+   "saved": "cache/demo/flin_flon/simulate.json"
+  },
+  "predict (ML+physics, 3 d)": {
+   "http": 200,
+   "seconds": 0.79,
+   "saved": "cache/demo/flin_flon/predict.json"
+  },
+  "predict/simulate (combined)": {
+   "http": 200,
+   "seconds": 0.02,
+   "saved": "cache/demo/flin_flon/predict_simulate.json"
+  },
+  "live/summary": {
+   "http": 200,
+   "seconds": 0.03,
+   "saved": "cache/demo/flin_flon/live_summary.json"
+  },
+  "live/alerts": {
+   "http": 200,
+   "seconds": 0.01,
+   "saved": "cache/demo/flin_flon/live_alerts.json"
+  },
+  "overpass": {
+   "http": 200,
+   "seconds": 0.04,
+   "saved": "cache/demo/flin_flon/overpass.json"
+  }
+ }
+}

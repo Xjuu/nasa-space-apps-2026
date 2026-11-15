@@ -1,0 +1,74 @@
+/* Replay workspace (add-on). Flat Operate style: white surfaces, slate text, teal actions. */
+.rp-defs{position:absolute;width:0;height:0;overflow:hidden}
+body.mode-replay #viewport-container #map-quickbar{display:none}
+.mode-tab.active#tab-replay{color:var(--primary);border-bottom-color:var(--primary)}
+
+.section-replay .rp-controls{display:flex;flex-direction:column;gap:10px;margin:12px 0 4px}
+.rp-custom{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-items:end}
+.rp-custom .rp-custom-note,.rp-custom .tool-btn{grid-column:1/-1}
+.rp-incident-info p{margin:6px 0}
+.rp-cutoff{display:flex;gap:10px;align-items:flex-start;margin:14px 0 4px;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius-md);background:var(--surface-3);font-size:13px;line-height:1.5}
+.rp-cutoff svg{flex:none;margin-top:2px;color:var(--primary)}
+.rp-row{display:flex;flex-wrap:wrap;gap:14px 20px;margin:14px 0 4px;align-items:flex-end}
+.rp-row-tight{margin-top:12px}
+.rp-field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.rp-field-day{flex:1 1 220px}
+.rp-label{font-size:13px;font-weight:500;color:var(--ink-2)}
+.rp-label output{font-weight:700;color:var(--ink);margin-left:4px;font-variant-numeric:tabular-nums}
+#rp-day{width:100%;min-height:28px;accent-color:var(--primary);margin:0}
+#rp-day:focus-visible,.rp-reveal-row button:focus-visible,.section-replay .seg-btn:focus-visible,.section-replay .tool-btn:focus-visible,.section-replay summary:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.rp-ticks{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted)}
+.rp-reveal-row{margin-top:16px}
+.rp-note{line-height:1.55;margin:8px 0}
+.section-replay .seg-btn:disabled{opacity:.45;cursor:not-allowed}
+.section-replay .seg-btn{white-space:nowrap}
+.rp-summary .kpi-grid{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:12px}
+.section-replay h3{margin-top:18px}
+.rp-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.rp-table{width:100%;border-collapse:collapse;font-size:13.5px;font-variant-numeric:tabular-nums}
+.rp-table th,.rp-table td{padding:7px 6px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap}
+.rp-table thead th{font-size:12.5px;font-weight:600;color:var(--ink-2);background:none;border-radius:0;white-space:normal;vertical-align:bottom}
+.rp-table th.num,.rp-table td.num{text-align:right}
+.rp-table tbody th{font-weight:600}
+.rp-date{font-weight:400;color:var(--muted);margin-left:4px;font-size:12.5px}
+.rp-table tr.rp-cur{background:var(--primary-soft)}
+.rp-cloud{margin-top:6px}
+.rp-cloud h3{margin-bottom:4px}
+.rp-details{margin-top:12px}
+.rp-list{margin:6px 0 0;padding-left:18px;line-height:1.55}
+.rp-list li{margin:4px 0}
+.rp-legend{bottom:20px;max-width:calc(100% - 100px)}
+.rp-legend .rp-sw{flex:none;display:inline-block}
+.rp-ramp{display:inline-block;width:46px;height:10px;border:1px solid var(--border-strong);border-radius:2px}
+@media(max-width:800px){
+  #workspace-header .workspace-brand{flex:1 1 100%}
+  .rp-legend{left:10px;bottom:10px;max-width:calc(100% - 70px)}
+  .rp-custom{grid-template-columns:1fr 1fr}
+  .rp-custom .input-field:last-of-type{grid-column:1/-1}
+  .rp-reveal-row .btn-primary{min-height:48px}
+  #rp-day{min-height:44px}
+  .section-replay .seg{display:flex}
+  .section-replay .seg .seg-btn{flex:1;justify-content:center;padding:0 8px}
+  .rp-field{flex:1 1 100%}
+}
+.rp-why summary{cursor:pointer;color:var(--ink-2);font-weight:500;min-height:36px;display:flex;align-items:center}
+.rp-why summary:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+@media(max-width:800px){.rp-why summary,.section-replay .methodology summary{min-height:44px}}
+
+@media(max-width:800px){
+  /* Keep the complete legend in the scrollable panel, clear of the phone map. */
+  #replay #rp-legend{position:static;max-width:100%;margin-top:16px;box-shadow:none}
+}
+
+/* ---- readability pass ---- */
+.section-replay .small,.section-replay .rp-note,.section-replay .rp-list,.rp-cutoff,.rp-legend{font-size:14px}
+.rp-cutoff .small{font-size:13.5px}
+.section-replay .seg-btn,.section-replay .tool-btn,.section-replay select,.section-replay input[type=number],.section-replay input[type=date],.rp-reveal-row .btn-primary{min-height:40px;font-size:14px}
+.rp-legend{line-height:1.5}
+.rp-legend span{display:inline-flex;align-items:center;gap:6px}
+.section-replay .muted{color:var(--ink-2)}
+.rp-label{font-size:14px}
+.rp-ticks{font-size:13px}
+.rp-table thead th,.rp-date{font-size:13px}
+.section-replay .methodology summary,.rp-why summary{font-size:14px}
+.rp-kpis .kpi-lbl{font-size:13.5px}

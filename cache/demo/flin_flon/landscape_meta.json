@@ -1,0 +1,299 @@
+{
+ "grid": {
+  "n": 201,
+  "cell_m": 250.0,
+  "centre_lat": 54.975,
+  "centre_lon": -101.725,
+  "x0_m": -25000.0,
+  "kx_deg_per_m": 1.5651825495311474e-05,
+  "ky_deg_per_m": 8.98311174991017e-06,
+  "bbox_wsen": [
+   -102.11825211556969,
+   54.74929931728351,
+   -101.3317478844303,
+   55.200700682716494
+  ],
+  "crs": "local equirectangular about centre (= physics_spread.Grid)",
+  "cell_centre": "lon = centre_lon + (x0_m + j*cell_m)*kx; lat = centre_lat + (x0_m + i*cell_m)*ky",
+  "row_order": "south_up",
+  "rows": "row 0 = SOUTH, increasing north (physics_spread order)",
+  "cols": "col 0 = WEST, increasing east"
+ },
+ "layers": {
+  "landcover": {
+   "source": "ESA WorldCover 2021 v200 10 m (AWS open data, keyless)",
+   "date": "2021",
+   "url_pattern": "https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_{tile}_Map.tif",
+   "tiles_used": [
+    "https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N54W102_Map.tif",
+    "https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N54W105_Map.tif"
+   ],
+   "tiles_missing": [],
+   "errors": [],
+   "subsamples_per_cell": 100,
+   "aggregation": "class fractions on s x s nearest samples",
+   "coverage_pct": 100.0,
+   "rules": [
+    "nonburnable: weighted burnable fraction < 0.5 -> dominant nonburnable class (91/92/98/99)",
+    "tree >= 0.6 of burnable: |lat| >= 45 -> FM10 (boreal/temperate conifer, crown-fire capable); 23.5 <= |lat| < 45 -> FM9 (temperate broadleaf / long-needle pine litter); |lat| < 23.5 -> FM8 (closed tropical forest, compact litter, slow)",
+    "open tree (< 0.6) with grass+shrub+crop+wetland >= 0.2 -> FM2 (timber with grass understory / savanna woodland; WorldCover 'tree' starts at 10 % canopy)",
+    "shrub dominant -> FM6 (dormant brush)",
+    "grass / wetland / moss dominant -> FM2 if tree >= 0.1 else FM1 (short grass)",
+    "crop dominant -> FM1 + cropland flag (stubble; often managed, irrigated or harvested)",
+    "tropics only, after Sentinel-2: FM8 cells with dryness >= 0.6 -> FM2 (dry eucalypt/miombo woodland)"
+   ],
+   "seconds": 3.7,
+   "cached": true
+  },
+  "terrain": {
+   "source": "Copernicus DEM GLO-30 (AWS open data, keyless)",
+   "url_pattern": "https://copernicus-dem-30m.s3.amazonaws.com/{n}/{n}.tif",
+   "tiles_used": [
+    "https://copernicus-dem-30m.s3.amazonaws.com/Copernicus_DSM_COG_10_N54_00_W102_00_DEM/Copernicus_DSM_COG_10_N54_00_W102_00_DEM.tif",
+    "https://copernicus-dem-30m.s3.amazonaws.com/Copernicus_DSM_COG_10_N54_00_W103_00_DEM/Copernicus_DSM_COG_10_N54_00_W103_00_DEM.tif",
+    "https://copernicus-dem-30m.s3.amazonaws.com/Copernicus_DSM_COG_10_N55_00_W102_00_DEM/Copernicus_DSM_COG_10_N55_00_W102_00_DEM.tif",
+    "https://copernicus-dem-30m.s3.amazonaws.com/Copernicus_DSM_COG_10_N55_00_W103_00_DEM/Copernicus_DSM_COG_10_N55_00_W103_00_DEM.tif"
+   ],
+   "tiles_missing_ocean": [],
+   "errors": [],
+   "aggregation": "cell mean of 3x3 bilinear samples; slope/aspect from np.gradient of cell means",
+   "aspect_convention": "aspect_deg = compass bearing the slope faces (downslope), 0=N 90=E; upslope_deg = aspect+180 (physics_spread convention); NaN aspect if slope<0.5 deg",
+   "coverage_pct": 100.0,
+   "elev_min_m": 290,
+   "elev_max_m": 384,
+   "slope_max_deg": 6.3,
+   "seconds": 5.54,
+   "cached": true
+  },
+  "osm": {
+   "source": "OpenStreetMap via Overpass API (keyless, ODbL)",
+   "urls": [
+    "https://overpass-api.de/api/interpreter",
+    "https://maps.mail.ru/osm/tools/overpass/api/interpreter",
+    "https://overpass.kumi.systems/api/interpreter"
+   ],
+   "detail": "roads incl. tracks/service, rail, rivers, streams, canals, drains",
+   "sub_boxes": 1,
+   "rules": {
+    "highway=motorway": {
+     "default_width_m": 30,
+     "p_stop": 0.85
+    },
+    "highway=trunk": {
+     "default_width_m": 25,
+     "p_stop": 0.75
+    },
+    "highway=primary": {
+     "default_width_m": 15,
+     "p_stop": 0.6
+    },
+    "highway=secondary": {
+     "default_width_m": 12,
+     "p_stop": 0.5
+    },
+    "highway=tertiary": {
+     "default_width_m": 8,
+     "p_stop": 0.4
+    },
+    "highway=motorway_link": {
+     "default_width_m": 10,
+     "p_stop": 0.45
+    },
+    "highway=trunk_link": {
+     "default_width_m": 10,
+     "p_stop": 0.45
+    },
+    "highway=primary_link": {
+     "default_width_m": 8,
+     "p_stop": 0.4
+    },
+    "highway=secondary_link": {
+     "default_width_m": 8,
+     "p_stop": 0.35
+    },
+    "highway=tertiary_link": {
+     "default_width_m": 6,
+     "p_stop": 0.3
+    },
+    "highway=unclassified": {
+     "default_width_m": 6,
+     "p_stop": 0.3
+    },
+    "highway=residential": {
+     "default_width_m": 6,
+     "p_stop": 0.3
+    },
+    "highway=service": {
+     "default_width_m": 4,
+     "p_stop": 0.15
+    },
+    "highway=track": {
+     "default_width_m": 4,
+     "p_stop": 0.15
+    },
+    "railway=rail": {
+     "default_width_m": 10,
+     "p_stop": 0.35
+    },
+    "railway=light_rail": {
+     "default_width_m": 8,
+     "p_stop": 0.3
+    },
+    "railway=narrow_gauge": {
+     "default_width_m": 6,
+     "p_stop": 0.25
+    },
+    "waterway=river": {
+     "default_width_m": 30,
+     "p_stop": 0.85
+    },
+    "waterway=canal": {
+     "default_width_m": 15,
+     "p_stop": 0.6
+    },
+    "waterway=stream": {
+     "default_width_m": 3,
+     "p_stop": 0.15
+    },
+    "waterway=drain": {
+     "default_width_m": 2,
+     "p_stop": 0.05
+    },
+    "waterway=ditch": {
+     "default_width_m": 2,
+     "p_stop": 0.05
+    },
+    "man_made=firebreak": {
+     "default_width_m": 10,
+     "p_stop": 0.5
+    },
+    "landuse=firebreak": {
+     "default_width_m": 10,
+     "p_stop": 0.5
+    },
+    "firebreak=*": {
+     "default_width_m": 10,
+     "p_stop": 0.5
+    }
+   },
+   "area_rules": {
+    "natural=water": 1.0,
+    "waterway=riverbank": 1.0,
+    "landuse=reservoir": 1.0,
+    "landuse=residential": 0.7,
+    "landuse=industrial": 0.9,
+    "landuse=commercial": 0.9,
+    "landuse=retail": 0.9
+   },
+   "note": "barrier_lines = 1 - prod(1 - p_k) over line classes present in the cell; p from BARRIER_RULES (or from a numeric width tag: p = clip(width/(width+6 m), 0.05, 0.9) for rivers/roads). Rationale: a surface fire with flame length L usually crosses a fuel-free strip narrower than ~L; a 30 m motorway or river stops most surface heads (p 0.85), a 4 m track rarely (p 0.15); crown fires and spotting cross any of them. barrier_area = OSM water/urban polygon fraction (closed ways only; urban weighted 0.7-0.9 as gardens can burn).",
+   "limitations": "multipolygon relations (large lakes, some riverbanks) are not assembled; WorldCover water/built-up covers those areas",
+   "errors": [
+    {
+     "url": "https://overpass-api.de/api/interpreter",
+     "error": "HTTP 502"
+    },
+    {
+     "url": "https://maps.mail.ru/osm/tools/overpass/api/interpreter",
+     "error": "HTTP 504"
+    },
+    {
+     "url": "https://overpass.kumi.systems/api/interpreter",
+     "error": "ReadTimeout(ReadTimeoutError(\"HTTPSConnectionPool(host='overpass.kumi.systems', port=443): Read timed out. (read timeout=50)\"))"
+    }
+   ],
+   "failed_boxes": [
+    [
+     -102.1183,
+     54.7493,
+     -101.3317,
+     55.2007
+    ]
+   ],
+   "coverage_pct": 0.0,
+   "seconds": 52.41,
+   "failed_at": 1794702895.8541198,
+   "retry_after_s": 900,
+   "cached": true
+  },
+  "sentinel2": {
+   "source": "Sentinel-2 L2A, Earth Search STAC (keyless)",
+   "url": "https://earth-search.aws.element84.com/v1/search",
+   "collection": "sentinel-2-l2a",
+   "window_days": 30,
+   "end_date": "2025-05-28",
+   "clear_scl": [
+    4,
+    5,
+    7
+   ],
+   "mapping": "NDVI=(B08-B04)/(B08+B04); NDMI=(B08-B11)/(B08+B11); dryness=clip((0.40-NDMI)/0.60,0,1); green = NDVI>=0.50 & NDMI>=0.20",
+   "errors": [],
+   "scenes": [
+    {
+     "id": "S2B_13UFA_20250525_0_L2A",
+     "datetime": "2025-05-25T17:58:57.386000Z",
+     "cloud_cover": 9.594903,
+     "sun_elevation_deg": 55.3259104267146,
+     "filled_samples_pct": 14.8
+    },
+    {
+     "id": "S2B_14ULF_20250525_0_L2A",
+     "datetime": "2025-05-25T17:58:54.137000Z",
+     "cloud_cover": 4.587108,
+     "sun_elevation_deg": 55.5788426037583,
+     "filled_samples_pct": 30.0
+    },
+    {
+     "id": "S2B_13UFB_20250525_0_L2A",
+     "datetime": "2025-05-25T17:58:43.976000Z",
+     "cloud_cover": 0.590421,
+     "sun_elevation_deg": 54.4801344584779,
+     "filled_samples_pct": 18.7
+    },
+    {
+     "id": "S2B_14ULG_20250525_0_L2A",
+     "datetime": "2025-05-25T17:58:40.078000Z",
+     "cloud_cover": 9.872648,
+     "sun_elevation_deg": 54.7044179973646,
+     "filled_samples_pct": 13.7
+    },
+    {
+     "id": "S2C_13UFA_20250523_0_L2A",
+     "datetime": "2025-05-23T18:09:13.042000Z",
+     "cloud_cover": 48.329708,
+     "sun_elevation_deg": 55.4408298012267,
+     "filled_samples_pct": 0.4
+    },
+    {
+     "id": "S2C_14ULF_20250523_0_L2A",
+     "datetime": "2025-05-23T18:09:08.815000Z",
+     "cloud_cover": 1.598823,
+     "sun_elevation_deg": 55.6363551077525,
+     "filled_samples_pct": 0.8
+    },
+    {
+     "id": "S2C_13UFB_20250523_0_L2A",
+     "datetime": "2025-05-23T18:08:58.642000Z",
+     "cloud_cover": 30.728006,
+     "sun_elevation_deg": 54.5748864807234,
+     "filled_samples_pct": 0.2
+    },
+    {
+     "id": "S2C_14ULG_20250523_0_L2A",
+     "datetime": "2025-05-23T18:08:54.950000Z",
+     "cloud_cover": 3.576441,
+     "sun_elevation_deg": 54.7483384789038,
+     "filled_samples_pct": 0.4
+    }
+   ],
+   "n_items_found": 24,
+   "items_read": 8,
+   "coverage_pct": 86.5,
+   "read_res_m": 62.5,
+   "seconds": 63.39,
+   "cached": true
+  }
+ },
+ "date": "2025-05-28T12:00Z",
+ "seconds": 0.06
+}

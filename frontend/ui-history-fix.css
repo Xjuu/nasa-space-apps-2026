@@ -1,0 +1,31 @@
+/* History sensor honesty: explanatory note, mixed-sensor badge, era legend. Flat Operate style, colour paired with text/icon. */
+.hf-note{margin:10px 0 12px;padding:10px 12px;border:1px solid var(--border);border-left:3px solid var(--primary);border-radius:var(--radius-md);background:var(--surface-3);font-size:14px;line-height:1.5;color:var(--ink-2)}
+.hf-note.hf-warn{border-left-color:#b86e00;background:var(--warn-bg)}
+.hf-note .hf-head{margin:0 0 6px;color:var(--ink)}
+.hf-facts{margin:0 0 8px;padding-left:18px;color:var(--ink-2);font-size:14px}
+.hf-facts li{margin:3px 0}
+.hf-facts b{color:var(--ink);font-variant-numeric:tabular-nums}
+.hf-actions{display:flex;flex-wrap:wrap;gap:8px}
+.hf-actions .tool-btn{flex:0 1 auto}
+.hf-actions .hf-primary{background:var(--primary);border-color:var(--primary);color:#fff}
+.hf-actions .hf-primary:hover:not(:disabled){background:var(--primary-hover);border-color:var(--primary-hover)}
+.hf-badge{display:flex;align-items:flex-start;gap:6px;margin:0 0 8px;padding:6px 10px;border:1px solid #d9b26a;border-radius:var(--radius-sm);background:var(--warn-bg);color:var(--warn-text);font-size:13px;font-weight:600;line-height:1.4}
+.hf-badge[hidden]{display:none}
+.hf-badge svg,.hf-badge .icon{flex:none;width:15px;height:15px;margin-top:1px}
+.hf-badge-inline{margin-bottom:8px}
+.hf-era-legend{margin:6px 0 0;line-height:1.7}
+.hf-era-legend span{display:inline-flex;align-items:center;gap:5px;margin-right:10px;white-space:nowrap}
+.hf-sw{display:inline-block;width:12px;height:8px;border-radius:2px;border:1px solid #6a7a83}
+.chart svg .hf-era{font-size:6.5px;fill:var(--ink-2)}
+.chart svg .hf-era-top{font-size:7.5px;fill:var(--ink-2)}
+#hf-yr-toggle[hidden]{display:none}
+@media (max-width:640px){.hf-actions .tool-btn{flex:1 1 100%}}
+
+/* Keep full chart and era labels visible in narrow panels. */
+#history .chart svg{min-width:0}
+
+/* ---- readability pass ---- */
+.hf-actions .tool-btn,.hf-actions .small-btn{min-height:40px;font-size:14px}
+.hf-era-legend{font-size:13px;color:var(--ink-2)}
+.hf-note .hf-head{font-size:14px}
+.hf-actions .hf-primary{font-weight:600}

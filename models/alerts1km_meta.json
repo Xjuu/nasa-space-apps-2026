@@ -1,0 +1,893 @@
+{
+ "definitions": "High-confidence 1 km fire-spread alerts from raw VIIRS 375 m detections.\n\nGrid: 0.01 deg (~1.1 km) cells, per UTC day, union of S-NPP and NOAA-20 (type == 0).\n\nDefinitions (used everywhere in this module):\n  * burning(t, c): at least one detection in cell c on day t.\n  * fire case / \"fire-day\": (day t0, 0.5-deg tile) with >= 5 burning cells in the tile.\n  * candidate: core-tile cell NOT burning on t0 with Chebyshev distance <= 3 cells to a\n    cell burning on t0.\n  * new fire (horizon h): cell burning on some day in t0+1..t0+h and NOT burning on t0.\n  * label / alert hit: the candidate or any of its 8 neighbours has new fire (h days).\n  * precision = alerts that are hits / alerts.\n  * recall = new-fire cells in the core tile lying within +-1 cell of some alert\n    / all new-fire cells in the core tile (including those far from today's fire,\n    which no candidate can reach -> honest upper bound < 100%).\nFeatures use days <= t0 only.\n",
+ "features": [
+  "dist",
+  "dual_sat",
+  "lat",
+  "doy_sin",
+  "doy_cos",
+  "cnt_r1",
+  "cnt_r2",
+  "cnt_r3",
+  "cnt_r5",
+  "cnt_r10",
+  "frp_r1",
+  "frp_r2",
+  "frp_r3",
+  "frp_r5",
+  "frp_r10",
+  "cnt1_r1",
+  "cnt1_r3",
+  "cnt2_r3",
+  "new0_r3",
+  "new0_r5",
+  "burn7",
+  "burn7_days",
+  "burn7_r1",
+  "burn30",
+  "burn30_r1",
+  "since_last365",
+  "align_glob",
+  "growth_glob",
+  "align_loc",
+  "growth_loc",
+  "size0",
+  "size1",
+  "size2",
+  "size_ratio",
+  "frp0",
+  "frp1",
+  "frp_ratio",
+  "hi_frac_r3",
+  "lo_frac_r3",
+  "night_frac_r3",
+  "win_night",
+  "persist7",
+  "frp_max_r1"
+ ],
+ "grid_deg": 0.01,
+ "countries": [
+  "Brazil",
+  "Australia",
+  "India",
+  "United_States",
+  "Canada"
+ ],
+ "train_years": [
+  2012,
+  2013,
+  2014,
+  2015,
+  2016,
+  2017,
+  2018,
+  2019,
+  2020
+ ],
+ "val_years": [
+  2021,
+  2022
+ ],
+ "test_years": [
+  2023,
+  2024,
+  2025
+ ],
+ "target_precision": 0.7,
+ "models": {
+  "1": {
+   "file": "alerts1km.json",
+   "threshold": 0.56,
+   "best_iteration": null,
+   "val": {
+    "alerts": 7396,
+    "hits": 5253,
+    "precision": 0.710248783126014,
+    "new_cells": 29592,
+    "covered": 3278,
+    "recall": 0.11077318194106515,
+    "fire_days": 3000,
+    "alerts_per_fire_day": 2.465333333333333
+   },
+   "test": {
+    "alerts": 8211,
+    "hits": 5187,
+    "precision": 0.6317135549872123,
+    "new_cells": 54194,
+    "covered": 5001,
+    "recall": 0.09227958814628925,
+    "fire_days": 4500,
+    "alerts_per_fire_day": 1.8246666666666667
+   },
+   "test_auc": 0.7842762315942031,
+   "test_ap": 0.34046216463835116,
+   "test_curve": {
+    "0.50": {
+     "alerts": 16965,
+     "hits": 9800,
+     "precision": 0.5776598880047156,
+     "new_cells": 54194,
+     "covered": 8070,
+     "recall": 0.14890947337343619,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 3.77
+    },
+    "0.55": {
+     "alerts": 9362,
+     "hits": 5820,
+     "precision": 0.6216620380260628,
+     "new_cells": 54194,
+     "covered": 5426,
+     "recall": 0.10012178469941321,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 2.0804444444444443
+    },
+    "0.60": {
+     "alerts": 4480,
+     "hits": 2922,
+     "precision": 0.6522321428571428,
+     "new_cells": 54194,
+     "covered": 3191,
+     "recall": 0.05888105694357309,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 0.9955555555555555
+    },
+    "0.65": {
+     "alerts": 1740,
+     "hits": 1200,
+     "precision": 0.6896551724137931,
+     "new_cells": 54194,
+     "covered": 1461,
+     "recall": 0.02695870391556261,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 0.38666666666666666
+    },
+    "0.70": {
+     "alerts": 481,
+     "hits": 368,
+     "precision": 0.7650727650727651,
+     "new_cells": 54194,
+     "covered": 531,
+     "recall": 0.009798132634608997,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 0.1068888888888889
+    },
+    "0.75": {
+     "alerts": 38,
+     "hits": 30,
+     "precision": 0.7894736842105263,
+     "new_cells": 54194,
+     "covered": 68,
+     "recall": 0.001254751448499834,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 0.008444444444444444
+    },
+    "0.80": {
+     "alerts": 0,
+     "hits": 0,
+     "precision": NaN,
+     "new_cells": 54194,
+     "covered": 0,
+     "recall": 0.0,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 0.0
+    },
+    "0.85": {
+     "alerts": 0,
+     "hits": 0,
+     "precision": NaN,
+     "new_cells": 54194,
+     "covered": 0,
+     "recall": 0.0,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 0.0
+    },
+    "0.90": {
+     "alerts": 0,
+     "hits": 0,
+     "precision": NaN,
+     "new_cells": 54194,
+     "covered": 0,
+     "recall": 0.0,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 0.0
+    },
+    "0.95": {
+     "alerts": 0,
+     "hits": 0,
+     "precision": NaN,
+     "new_cells": 54194,
+     "covered": 0,
+     "recall": 0.0,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 0.0
+    }
+   },
+   "baseline_ring_all_test": {
+    "alerts": 296901,
+    "hits": 59163,
+    "precision": 0.199268443016359,
+    "new_cells": 54194,
+    "covered": 29218,
+    "recall": 0.5391371738568845,
+    "fire_days": 4500,
+    "alerts_per_fire_day": 65.978
+   },
+   "baseline_ring_k": 4,
+   "baseline_ring_k_test": {
+    "alerts": 12932,
+    "hits": 4365,
+    "precision": 0.337534797401794,
+    "new_cells": 54194,
+    "covered": 6657,
+    "recall": 0.12283647636269698,
+    "fire_days": 4500,
+    "alerts_per_fire_day": 2.8737777777777778
+   },
+   "baseline_curve_test": {
+    "1": {
+     "alerts": 296901,
+     "hits": 59163,
+     "precision": 0.199268443016359,
+     "new_cells": 54194,
+     "covered": 29218,
+     "recall": 0.5391371738568845,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 65.978
+    },
+    "2": {
+     "alerts": 103528,
+     "hits": 27604,
+     "precision": 0.266633181361564,
+     "new_cells": 54194,
+     "covered": 22290,
+     "recall": 0.411300143927372,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 23.006222222222224
+    },
+    "3": {
+     "alerts": 37666,
+     "hits": 11927,
+     "precision": 0.31665162215260445,
+     "new_cells": 54194,
+     "covered": 14914,
+     "recall": 0.2751965162195077,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 8.370222222222223
+    },
+    "4": {
+     "alerts": 12932,
+     "hits": 4365,
+     "precision": 0.337534797401794,
+     "new_cells": 54194,
+     "covered": 6657,
+     "recall": 0.12283647636269698,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 2.8737777777777778
+    },
+    "5": {
+     "alerts": 4367,
+     "hits": 1416,
+     "precision": 0.32425005724753836,
+     "new_cells": 54194,
+     "covered": 2057,
+     "recall": 0.037956231317119976,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 0.9704444444444444
+    },
+    "6": {
+     "alerts": 1486,
+     "hits": 442,
+     "precision": 0.297442799461642,
+     "new_cells": 54194,
+     "covered": 628,
+     "recall": 0.011587998671439642,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 0.3302222222222222
+    },
+    "7": {
+     "alerts": 508,
+     "hits": 146,
+     "precision": 0.2874015748031496,
+     "new_cells": 54194,
+     "covered": 177,
+     "recall": 0.0032660442115363324,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 0.11288888888888889
+    },
+    "8": {
+     "alerts": 112,
+     "hits": 27,
+     "precision": 0.24107142857142858,
+     "new_cells": 54194,
+     "covered": 27,
+     "recall": 0.0004982101339631693,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 0.024888888888888887
+    }
+   },
+   "test_per_country": {
+    "Brazil": {
+     "model": {
+      "alerts": 681,
+      "hits": 415,
+      "precision": 0.6093979441997063,
+      "new_cells": 7197,
+      "covered": 264,
+      "recall": 0.03668195081283868,
+      "fire_days": 900,
+      "alerts_per_fire_day": 0.7566666666666667
+     },
+     "ring": {
+      "alerts": 54617,
+      "hits": 7790,
+      "precision": 0.14262958419539704,
+      "new_cells": 7197,
+      "covered": 3056,
+      "recall": 0.42462137001528416,
+      "fire_days": 900,
+      "alerts_per_fire_day": 60.68555555555555
+     }
+    },
+    "Australia": {
+     "model": {
+      "alerts": 2999,
+      "hits": 2088,
+      "precision": 0.6962320773591197,
+      "new_cells": 12359,
+      "covered": 1841,
+      "recall": 0.1489602718666559,
+      "fire_days": 900,
+      "alerts_per_fire_day": 3.332222222222222
+     },
+     "ring": {
+      "alerts": 51469,
+      "hits": 12666,
+      "precision": 0.24608987934484836,
+      "new_cells": 12359,
+      "covered": 7030,
+      "recall": 0.5688162472691966,
+      "fire_days": 900,
+      "alerts_per_fire_day": 57.187777777777775
+     }
+    },
+    "India": {
+     "model": {
+      "alerts": 161,
+      "hits": 110,
+      "precision": 0.6832298136645962,
+      "new_cells": 11477,
+      "covered": 93,
+      "recall": 0.008103162847433999,
+      "fire_days": 900,
+      "alerts_per_fire_day": 0.17888888888888888
+     },
+     "ring": {
+      "alerts": 87529,
+      "hits": 12984,
+      "precision": 0.1483394075106536,
+      "new_cells": 11477,
+      "covered": 4730,
+      "recall": 0.4121286050361593,
+      "fire_days": 900,
+      "alerts_per_fire_day": 97.25444444444445
+     }
+    },
+    "United_States": {
+     "model": {
+      "alerts": 334,
+      "hits": 221,
+      "precision": 0.6616766467065869,
+      "new_cells": 4030,
+      "covered": 253,
+      "recall": 0.06277915632754343,
+      "fire_days": 900,
+      "alerts_per_fire_day": 0.3711111111111111
+     },
+     "ring": {
+      "alerts": 35348,
+      "hits": 3928,
+      "precision": 0.1111236845083173,
+      "new_cells": 4030,
+      "covered": 1929,
+      "recall": 0.4786600496277916,
+      "fire_days": 900,
+      "alerts_per_fire_day": 39.275555555555556
+     }
+    },
+    "Canada": {
+     "model": {
+      "alerts": 4036,
+      "hits": 2353,
+      "precision": 0.5830029732408325,
+      "new_cells": 19131,
+      "covered": 2550,
+      "recall": 0.13329151638701583,
+      "fire_days": 900,
+      "alerts_per_fire_day": 4.484444444444445
+     },
+     "ring": {
+      "alerts": 67938,
+      "hits": 21795,
+      "precision": 0.32080720657069683,
+      "new_cells": 19131,
+      "covered": 12473,
+      "recall": 0.6519784642726465,
+      "fire_days": 900,
+      "alerts_per_fire_day": 75.48666666666666
+     }
+    }
+   },
+   "baseline_val_precision_by_k": {
+    "1": 0.19438666715566336,
+    "2": 0.25854452452917925,
+    "3": 0.30878848973607037,
+    "4": 0.32296404988994865,
+    "5": 0.29003724394785846,
+    "6": 0.24281609195402298,
+    "7": 0.2112676056338028,
+    "8": 0.20408163265306123
+   },
+   "n_train_rows": 1801236,
+   "n_val_cases": 3000,
+   "n_test_cases": 4500,
+   "top_features_gain": {
+    "cnt_r3": 2055.697021484375,
+    "cnt_r2": 1942.7996826171875,
+    "dist": 341.2916259765625,
+    "burn7_r1": 250.8175811767578,
+    "cnt_r10": 210.44740295410156,
+    "frp_r2": 112.24003601074219,
+    "night_frac_r3": 95.41349029541016,
+    "burn30_r1": 84.09420776367188,
+    "win_night": 66.91545104980469,
+    "lat": 65.8181381225586,
+    "align_loc": 63.43246078491211,
+    "new0_r5": 61.23960876464844,
+    "cnt_r5": 58.28460693359375,
+    "cnt2_r3": 55.248741149902344,
+    "size0": 50.91136169433594
+   }
+  },
+  "3": {
+   "file": "alerts1km_h3.json",
+   "threshold": 0.58,
+   "best_iteration": null,
+   "val": {
+    "alerts": 24794,
+    "hits": 17426,
+    "precision": 0.7028313301605227,
+    "new_cells": 77569,
+    "covered": 12789,
+    "recall": 0.164872565071098,
+    "fire_days": 3000,
+    "alerts_per_fire_day": 8.264666666666667
+   },
+   "test": {
+    "alerts": 32066,
+    "hits": 21083,
+    "precision": 0.6574876816565833,
+    "new_cells": 130240,
+    "covered": 19610,
+    "recall": 0.15056818181818182,
+    "fire_days": 4500,
+    "alerts_per_fire_day": 7.1257777777777775
+   },
+   "test_auc": 0.7628096210782844,
+   "test_ap": 0.45115027079410486,
+   "test_curve": {
+    "0.50": {
+     "alerts": 66041,
+     "hits": 39609,
+     "precision": 0.5997637831044351,
+     "new_cells": 130240,
+     "covered": 29913,
+     "recall": 0.2296759828009828,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 14.675777777777778
+    },
+    "0.55": {
+     "alerts": 43064,
+     "hits": 27331,
+     "precision": 0.6346600408694036,
+     "new_cells": 130240,
+     "covered": 23316,
+     "recall": 0.1790233415233415,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 9.569777777777778
+    },
+    "0.60": {
+     "alerts": 25528,
+     "hits": 17183,
+     "precision": 0.6731040426198683,
+     "new_cells": 130240,
+     "covered": 17098,
+     "recall": 0.13128071253071252,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 5.672888888888889
+    },
+    "0.65": {
+     "alerts": 12496,
+     "hits": 9035,
+     "precision": 0.7230313700384123,
+     "new_cells": 130240,
+     "covered": 10883,
+     "recall": 0.08356111793611794,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 2.7768888888888887
+    },
+    "0.70": {
+     "alerts": 4797,
+     "hits": 3652,
+     "precision": 0.761309151553054,
+     "new_cells": 130240,
+     "covered": 5350,
+     "recall": 0.041078009828009826,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 1.066
+    },
+    "0.75": {
+     "alerts": 1020,
+     "hits": 873,
+     "precision": 0.8558823529411764,
+     "new_cells": 130240,
+     "covered": 1566,
+     "recall": 0.012023955773955774,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 0.22666666666666666
+    },
+    "0.80": {
+     "alerts": 72,
+     "hits": 67,
+     "precision": 0.9305555555555556,
+     "new_cells": 130240,
+     "covered": 147,
+     "recall": 0.0011286855036855036,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 0.016
+    },
+    "0.85": {
+     "alerts": 0,
+     "hits": 0,
+     "precision": NaN,
+     "new_cells": 130240,
+     "covered": 0,
+     "recall": 0.0,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 0.0
+    },
+    "0.90": {
+     "alerts": 0,
+     "hits": 0,
+     "precision": NaN,
+     "new_cells": 130240,
+     "covered": 0,
+     "recall": 0.0,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 0.0
+    },
+    "0.95": {
+     "alerts": 0,
+     "hits": 0,
+     "precision": NaN,
+     "new_cells": 130240,
+     "covered": 0,
+     "recall": 0.0,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 0.0
+    }
+   },
+   "baseline_ring_all_test": {
+    "alerts": 296901,
+    "hits": 90107,
+    "precision": 0.3034917363026733,
+    "new_cells": 130240,
+    "covered": 55504,
+    "recall": 0.42616707616707616,
+    "fire_days": 4500,
+    "alerts_per_fire_day": 65.978
+   },
+   "baseline_ring_k": 4,
+   "baseline_ring_k_test": {
+    "alerts": 12932,
+    "hits": 5526,
+    "precision": 0.4273120940303124,
+    "new_cells": 130240,
+    "covered": 9839,
+    "recall": 0.07554514742014742,
+    "fire_days": 4500,
+    "alerts_per_fire_day": 2.8737777777777778
+   },
+   "baseline_curve_test": {
+    "1": {
+     "alerts": 296901,
+     "hits": 90107,
+     "precision": 0.3034917363026733,
+     "new_cells": 130240,
+     "covered": 55504,
+     "recall": 0.42616707616707616,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 65.978
+    },
+    "2": {
+     "alerts": 103528,
+     "hits": 38459,
+     "precision": 0.3714840429642222,
+     "new_cells": 130240,
+     "covered": 39234,
+     "recall": 0.3012438574938575,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 23.006222222222224
+    },
+    "3": {
+     "alerts": 37666,
+     "hits": 15649,
+     "precision": 0.4154675303987681,
+     "new_cells": 130240,
+     "covered": 24206,
+     "recall": 0.1858568796068796,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 8.370222222222223
+    },
+    "4": {
+     "alerts": 12932,
+     "hits": 5526,
+     "precision": 0.4273120940303124,
+     "new_cells": 130240,
+     "covered": 9839,
+     "recall": 0.07554514742014742,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 2.8737777777777778
+    },
+    "5": {
+     "alerts": 4367,
+     "hits": 1774,
+     "precision": 0.40622853217311655,
+     "new_cells": 130240,
+     "covered": 2838,
+     "recall": 0.02179054054054054,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 0.9704444444444444
+    },
+    "6": {
+     "alerts": 1486,
+     "hits": 550,
+     "precision": 0.37012113055181695,
+     "new_cells": 130240,
+     "covered": 804,
+     "recall": 0.006173218673218673,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 0.3302222222222222
+    },
+    "7": {
+     "alerts": 508,
+     "hits": 171,
+     "precision": 0.33661417322834647,
+     "new_cells": 130240,
+     "covered": 217,
+     "recall": 0.0016661547911547912,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 0.11288888888888889
+    },
+    "8": {
+     "alerts": 112,
+     "hits": 28,
+     "precision": 0.25,
+     "new_cells": 130240,
+     "covered": 28,
+     "recall": 0.00021498771498771498,
+     "fire_days": 4500,
+     "alerts_per_fire_day": 0.024888888888888887
+    }
+   },
+   "test_per_country": {
+    "Brazil": {
+     "model": {
+      "alerts": 2423,
+      "hits": 1544,
+      "precision": 0.6372265786215435,
+      "new_cells": 18365,
+      "covered": 1325,
+      "recall": 0.0721481078137762,
+      "fire_days": 900,
+      "alerts_per_fire_day": 2.692222222222222
+     },
+     "ring": {
+      "alerts": 54617,
+      "hits": 13111,
+      "precision": 0.24005346320742627,
+      "new_cells": 18365,
+      "covered": 6491,
+      "recall": 0.353444051184318,
+      "fire_days": 900,
+      "alerts_per_fire_day": 60.68555555555555
+     }
+    },
+    "Australia": {
+     "model": {
+      "alerts": 6115,
+      "hits": 4380,
+      "precision": 0.7162714636140638,
+      "new_cells": 30308,
+      "covered": 4694,
+      "recall": 0.15487660023756103,
+      "fire_days": 900,
+      "alerts_per_fire_day": 6.794444444444444
+     },
+     "ring": {
+      "alerts": 51469,
+      "hits": 16542,
+      "precision": 0.3213973459752472,
+      "new_cells": 30308,
+      "covered": 12112,
+      "recall": 0.3996304606044609,
+      "fire_days": 900,
+      "alerts_per_fire_day": 57.187777777777775
+     }
+    },
+    "India": {
+     "model": {
+      "alerts": 5449,
+      "hits": 3484,
+      "precision": 0.6393833730959809,
+      "new_cells": 31193,
+      "covered": 1777,
+      "recall": 0.05696790946686757,
+      "fire_days": 900,
+      "alerts_per_fire_day": 6.054444444444444
+     },
+     "ring": {
+      "alerts": 87529,
+      "hits": 25005,
+      "precision": 0.28567674713523517,
+      "new_cells": 31193,
+      "covered": 11339,
+      "recall": 0.3635110441445196,
+      "fire_days": 900,
+      "alerts_per_fire_day": 97.25444444444445
+     }
+    },
+    "United_States": {
+     "model": {
+      "alerts": 1820,
+      "hits": 1179,
+      "precision": 0.6478021978021978,
+      "new_cells": 9332,
+      "covered": 1197,
+      "recall": 0.12826832404629232,
+      "fire_days": 900,
+      "alerts_per_fire_day": 2.022222222222222
+     },
+     "ring": {
+      "alerts": 35348,
+      "hits": 5820,
+      "precision": 0.164648636415073,
+      "new_cells": 9332,
+      "covered": 3464,
+      "recall": 0.37119588512644663,
+      "fire_days": 900,
+      "alerts_per_fire_day": 39.275555555555556
+     }
+    },
+    "Canada": {
+     "model": {
+      "alerts": 16259,
+      "hits": 10496,
+      "precision": 0.6455501568362138,
+      "new_cells": 41042,
+      "covered": 10617,
+      "recall": 0.25868622386823253,
+      "fire_days": 900,
+      "alerts_per_fire_day": 18.065555555555555
+     },
+     "ring": {
+      "alerts": 67938,
+      "hits": 29629,
+      "precision": 0.4361182254408431,
+      "new_cells": 41042,
+      "covered": 22098,
+      "recall": 0.5384240534087033,
+      "fire_days": 900,
+      "alerts_per_fire_day": 75.48666666666666
+     }
+    }
+   },
+   "baseline_val_precision_by_k": {
+    "1": 0.3104832160614459,
+    "2": 0.3778656126482213,
+    "3": 0.42893145161290325,
+    "4": 0.4322817314746882,
+    "5": 0.38268156424581007,
+    "6": 0.3290229885057471,
+    "7": 0.2676056338028169,
+    "8": 0.20408163265306123
+   },
+   "n_train_rows": 1801236,
+   "n_val_cases": 3000,
+   "n_test_cases": 4500,
+   "top_features_gain": {
+    "cnt_r3": 1355.7706298828125,
+    "cnt_r2": 1088.536865234375,
+    "cnt_r10": 872.1276245117188,
+    "dist": 652.9458618164062,
+    "burn7_r1": 484.19140625,
+    "burn30_r1": 168.3831787109375,
+    "frp_r2": 159.4921875,
+    "night_frac_r3": 122.48238372802734,
+    "cnt2_r3": 113.51189422607422,
+    "align_loc": 113.14192962646484,
+    "lat": 97.07782745361328,
+    "size0": 94.43244171142578,
+    "since_last365": 92.82715606689453,
+    "win_night": 90.06980895996094,
+    "cnt_r5": 78.50018310546875
+   }
+  }
+ },
+ "report": [
+  "--- horizon h=1 day(s) ---",
+  "val-chosen threshold = 0.56",
+  "VAL  model : P=0.710 R=0.111 alerts/fire-day=2.47 (alerts=7396, new cells=29592)",
+  "TEST model : P=0.632 R=0.092 alerts/fire-day=1.82 (alerts=8211, new cells=54194)   [cand AUC=0.784, AP=0.340, base rate=0.113]",
+  "TEST baseline ring (all cells adjacent to today's fire, k>=1): P=0.199 R=0.539 alerts/fire-day=65.98 (alerts=296901, new cells=54194)",
+  "TEST baseline ring k>=4 burning neighbours (target not reachable on val; max-precision k): P=0.338 R=0.123 alerts/fire-day=2.87 (alerts=12932, new cells=54194)",
+  "TEST model curve (thr: P / R / alerts per fire-day):",
+  "   0.50: 0.578 / 0.149 / 3.77",
+  "   0.55: 0.622 / 0.100 / 2.08",
+  "   0.60: 0.652 / 0.059 / 1.00",
+  "   0.65: 0.690 / 0.027 / 0.39",
+  "   0.70: 0.765 / 0.010 / 0.11",
+  "   0.75: 0.789 / 0.001 / 0.01",
+  "   0.80: nan / 0.000 / 0.00",
+  "   0.85: nan / 0.000 / 0.00",
+  "   0.90: nan / 0.000 / 0.00",
+  "   0.95: nan / 0.000 / 0.00",
+  "TEST baseline curve (k burning neighbours: P / R / alerts per fire-day):",
+  "   k>=1: 0.199 / 0.539 / 65.98",
+  "   k>=2: 0.267 / 0.411 / 23.01",
+  "   k>=3: 0.317 / 0.275 / 8.37",
+  "   k>=4: 0.338 / 0.123 / 2.87",
+  "   k>=5: 0.324 / 0.038 / 0.97",
+  "   k>=6: 0.297 / 0.012 / 0.33",
+  "   k>=7: 0.287 / 0.003 / 0.11",
+  "   k>=8: 0.241 / 0.000 / 0.02",
+  "TEST per country at val-chosen threshold (model | ring k>=1):",
+  "   Brazil         P=0.609 R=0.037 alerts/fire-day=0.76 (alerts=681, new cells=7197) | ring P=0.143 R=0.425",
+  "   Australia      P=0.696 R=0.149 alerts/fire-day=3.33 (alerts=2999, new cells=12359) | ring P=0.246 R=0.569",
+  "   India          P=0.683 R=0.008 alerts/fire-day=0.18 (alerts=161, new cells=11477) | ring P=0.148 R=0.412",
+  "   United_States  P=0.662 R=0.063 alerts/fire-day=0.37 (alerts=334, new cells=4030) | ring P=0.111 R=0.479",
+  "   Canada         P=0.583 R=0.133 alerts/fire-day=4.48 (alerts=4036, new cells=19131) | ring P=0.321 R=0.652",
+  "--- horizon h=3 day(s) ---",
+  "val-chosen threshold = 0.58",
+  "VAL  model : P=0.703 R=0.165 alerts/fire-day=8.26 (alerts=24794, new cells=77569)",
+  "TEST model : P=0.657 R=0.151 alerts/fire-day=7.13 (alerts=32066, new cells=130240)   [cand AUC=0.763, AP=0.451, base rate=0.198]",
+  "TEST baseline ring (all cells adjacent to today's fire, k>=1): P=0.303 R=0.426 alerts/fire-day=65.98 (alerts=296901, new cells=130240)",
+  "TEST baseline ring k>=4 burning neighbours (target not reachable on val; max-precision k): P=0.427 R=0.076 alerts/fire-day=2.87 (alerts=12932, new cells=130240)",
+  "TEST model curve (thr: P / R / alerts per fire-day):",
+  "   0.50: 0.600 / 0.230 / 14.68",
+  "   0.55: 0.635 / 0.179 / 9.57",
+  "   0.60: 0.673 / 0.131 / 5.67",
+  "   0.65: 0.723 / 0.084 / 2.78",
+  "   0.70: 0.761 / 0.041 / 1.07",
+  "   0.75: 0.856 / 0.012 / 0.23",
+  "   0.80: 0.931 / 0.001 / 0.02",
+  "   0.85: nan / 0.000 / 0.00",
+  "   0.90: nan / 0.000 / 0.00",
+  "   0.95: nan / 0.000 / 0.00",
+  "TEST baseline curve (k burning neighbours: P / R / alerts per fire-day):",
+  "   k>=1: 0.303 / 0.426 / 65.98",
+  "   k>=2: 0.371 / 0.301 / 23.01",
+  "   k>=3: 0.415 / 0.186 / 8.37",
+  "   k>=4: 0.427 / 0.076 / 2.87",
+  "   k>=5: 0.406 / 0.022 / 0.97",
+  "   k>=6: 0.370 / 0.006 / 0.33",
+  "   k>=7: 0.337 / 0.002 / 0.11",
+  "   k>=8: 0.250 / 0.000 / 0.02",
+  "TEST per country at val-chosen threshold (model | ring k>=1):",
+  "   Brazil         P=0.637 R=0.072 alerts/fire-day=2.69 (alerts=2423, new cells=18365) | ring P=0.240 R=0.353",
+  "   Australia      P=0.716 R=0.155 alerts/fire-day=6.79 (alerts=6115, new cells=30308) | ring P=0.321 R=0.400",
+  "   India          P=0.639 R=0.057 alerts/fire-day=6.05 (alerts=5449, new cells=31193) | ring P=0.286 R=0.364",
+  "   United_States  P=0.648 R=0.128 alerts/fire-day=2.02 (alerts=1820, new cells=9332) | ring P=0.165 R=0.371",
+  "   Canada         P=0.646 R=0.259 alerts/fire-day=18.07 (alerts=16259, new cells=41042) | ring P=0.436 R=0.538"
+ ]
+}

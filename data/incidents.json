@@ -1,0 +1,212 @@
+{
+  "schema": "equifire.incidents/1",
+  "note": "Curated demonstration incidents. Chosen for contrast (biome, spread regime, observation quality), not for good scores. Coordinates are a burning VIIRS cell on the init day; init = end of that UTC day. ML+physics replays need year >= 2024 (backend/ensemble.py refuses earlier years: no compatible blender fitted); earlier years are ML-only.",
+  "incidents": [
+    {
+      "id": "flin_flon_2025",
+      "name": "Flin Flon, Manitoba, Canada (boreal forest)",
+      "lat": 54.77,
+      "lon": -101.87,
+      "date": "2025-05-28",
+      "init_time_utc": "2025-05-28T23:59:59Z",
+      "days": 3,
+      "biome": "boreal forest",
+      "description": "Late-May 2025 boreal wildfire complex on the Manitoba/Saskatchewan border that forced evacuations around Flin Flon. This is also the app's default demo event.",
+      "why_chosen": "Boreal crown-fire regime with persistent smoke and variable cloud; the project's primary demo, so judges can compare the replay with the live forecast view.",
+      "expected_replay_mode": "ml_physics",
+      "availability": {
+        "ok": true,
+        "init_day_burning_cells": 135,
+        "viirs_cells_active_days_after": [
+          125,
+          136,
+          157
+        ],
+        "observed_new_cells_cumulative": [
+          13,
+          33,
+          74
+        ],
+        "archive_last_day_utc": "2025-12-31",
+        "centre": {
+          "lat": 54.775,
+          "lon": -101.875
+        },
+        "replay_mode_available": "ml_physics",
+        "note": "init day present, >= 3 following days with VIIRS cell-days in the window, observed new cells > 0"
+      }
+    },
+    {
+      "id": "kalimantan_2023",
+      "name": "South Kalimantan, Indonesia (peatland, haze, ML-only)",
+      "lat": -2.975,
+      "lon": 114.725,
+      "date": "2023-10-10",
+      "init_time_utc": "2023-10-10T23:59:59Z",
+      "days": 3,
+      "biome": "peatland / tropical, smoke haze",
+      "description": "October 2023 El Nino-driven peat and scrub fires in Kalimantan under thick haze.",
+      "why_chosen": "Pre-2024, so no ML+physics blender exists: demonstrates the ML-only replay path. Also the most cloud-obscured case (proxy marks about 57-79% of the area as having no clear overpass on days 1-2), so false alarms on those days are largely unverifiable.",
+      "expected_replay_mode": "ml",
+      "cloud_obscured_case": true,
+      "availability": {
+        "ok": true,
+        "init_day_burning_cells": 103,
+        "viirs_cells_active_days_after": [
+          136,
+          118,
+          210
+        ],
+        "observed_new_cells_cumulative": [
+          42,
+          79,
+          170
+        ],
+        "archive_last_day_utc": "2025-12-31",
+        "centre": {
+          "lat": -2.975,
+          "lon": 114.725
+        },
+        "replay_mode_available": "ml",
+        "note": "init day present, >= 3 following days with VIIRS cell-days in the window, observed new cells > 0"
+      }
+    },
+    {
+      "id": "pantanal_2024",
+      "name": "Pantanal wetland-savanna, Mato Grosso do Sul, Brazil/Bolivia border",
+      "lat": -17.37,
+      "lon": -57.42,
+      "date": "2024-08-20",
+      "init_time_utc": "2024-08-20T23:59:59Z",
+      "days": 3,
+      "biome": "savanna / seasonally flooded grassland",
+      "description": "August 2024 dry-season fire activity in the Pantanal, part of the record 2024 South American fire season.",
+      "why_chosen": "Savanna/grassland dry-season spread with a long-lived multi-day fire front, in a different hemisphere and fuel type from the Canadian cases.",
+      "expected_replay_mode": "ml_physics",
+      "availability": {
+        "ok": true,
+        "init_day_burning_cells": 64,
+        "viirs_cells_active_days_after": [
+          88,
+          99,
+          80
+        ],
+        "observed_new_cells_cumulative": [
+          24,
+          45,
+          49
+        ],
+        "archive_last_day_utc": "2025-12-31",
+        "centre": {
+          "lat": -17.375,
+          "lon": -57.425
+        },
+        "replay_mode_available": "ml_physics",
+        "note": "init day present, >= 3 following days with VIIRS cell-days in the window, observed new cells > 0"
+      }
+    },
+    {
+      "id": "punjab_stubble_2024",
+      "name": "Punjab, India (agricultural stubble burning)",
+      "lat": 30.93,
+      "lon": 75.18,
+      "date": "2024-11-01",
+      "init_time_utc": "2024-11-01T23:59:59Z",
+      "days": 3,
+      "biome": "agricultural / mixed",
+      "description": "Post-harvest paddy-stubble burning season around the Punjab plains: hundreds of small, scattered, short-lived fires rather than one expanding front.",
+      "why_chosen": "Mixed/agricultural case where 'spread' is mostly new independent ignitions, a stress test for a spread model; heavy smoke and haze season.",
+      "expected_replay_mode": "ml_physics",
+      "availability": {
+        "ok": true,
+        "init_day_burning_cells": 533,
+        "viirs_cells_active_days_after": [
+          437,
+          281,
+          254
+        ],
+        "observed_new_cells_cumulative": [
+          189,
+          268,
+          335
+        ],
+        "archive_last_day_utc": "2025-12-31",
+        "centre": {
+          "lat": 30.925,
+          "lon": 75.175
+        },
+        "replay_mode_available": "ml_physics",
+        "note": "init day present, >= 3 following days with VIIRS cell-days in the window, observed new cells > 0"
+      }
+    },
+    {
+      "id": "roraima_2024",
+      "name": "Roraima, northern Brazil (savanna / forest edge, cloudy)",
+      "lat": 2.175,
+      "lon": -60.825,
+      "date": "2024-03-10",
+      "init_time_utc": "2024-03-10T23:59:59Z",
+      "days": 3,
+      "biome": "savanna and forest edge, tropical cloud",
+      "description": "March 2024 fire season in Roraima during the El Nino drought, when fires burned around Boa Vista and along the savanna/forest border.",
+      "why_chosen": "Observation-limited case: the ERA5 cloud proxy marks a quarter to two-fifths of the area as having no clear overpass on days 1-2, so some 'false alarms' may simply be fire we could not see. The replay reports those separately as unverifiable.",
+      "expected_replay_mode": "ml_physics",
+      "cloud_obscured_case": true,
+      "availability": {
+        "ok": true,
+        "init_day_burning_cells": 169,
+        "viirs_cells_active_days_after": [
+          175,
+          123,
+          129
+        ],
+        "observed_new_cells_cumulative": [
+          55,
+          92,
+          124
+        ],
+        "archive_last_day_utc": "2025-12-31",
+        "centre": {
+          "lat": 2.175,
+          "lon": -60.825
+        },
+        "replay_mode_available": "ml_physics",
+        "note": "init day present, >= 3 following days with VIIRS cell-days in the window, observed new cells > 0"
+      }
+    },
+    {
+      "id": "smokehouse_creek_2024",
+      "name": "Smokehouse Creek area, Texas Panhandle, USA (prairie grass)",
+      "lat": 35.88,
+      "lon": -101.22,
+      "date": "2024-02-26",
+      "init_time_utc": "2024-02-26T23:59:59Z",
+      "days": 3,
+      "biome": "grassland / prairie",
+      "description": "Wind-driven grass fires that started on 26 Feb 2024 and spread very fast the next day under dry, windy conditions.",
+      "why_chosen": "Grass fire with an explosive second day: tests whether the system anticipates fast, wind-driven growth when the init-day footprint is small (19 burning cells at init).",
+      "expected_replay_mode": "ml_physics",
+      "availability": {
+        "ok": true,
+        "init_day_burning_cells": 19,
+        "viirs_cells_active_days_after": [
+          104,
+          114,
+          4
+        ],
+        "observed_new_cells_cumulative": [
+          13,
+          17,
+          17
+        ],
+        "archive_last_day_utc": "2025-12-31",
+        "centre": {
+          "lat": 35.875,
+          "lon": -101.225
+        },
+        "replay_mode_available": "ml_physics",
+        "note": "init day present, >= 3 following days with VIIRS cell-days in the window, observed new cells > 0"
+      }
+    }
+  ]
+}

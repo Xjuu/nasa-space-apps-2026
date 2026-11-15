@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#181818">
+  <script>(function(){var t="dark";try{var v=localStorage.getItem("equifire:theme");if(v==="light"||v==="dark")t=v}catch(e){}document.documentElement.setAttribute("data-theme",t);var m=document.querySelector('meta[name="theme-color"]');if(m)m.content=t==="dark"?"#181818":"#ffffff"})();</script>
+  <script src="i18n-pl.js"></script>
+  <script src="i18n.js"></script>
+  <meta name="description" content="Monitor MODIS and VIIRS fire detections, predict fire spread and compare historical activity.">
+  <title>FireSpot — Wildfire monitoring</title>
+  <link rel="icon" href="assets/favicon.svg?v=logo-2" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="vendor/leaflet.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="ui-replay.css">
+  <link rel="stylesheet" href="ui-harmonize.css">
+  <link rel="stylesheet" href="ui-history-fix.css">
+  <link rel="stylesheet" href="ui-forecast-extras.css">
+  <link rel="stylesheet" href="theme-vscode.css">
+  <link rel="stylesheet" href="i18n.css">
+  <link rel="stylesheet" href="mobile.css">
+  <link rel="stylesheet" href="ui-tour.css">
+  <script src="mobile.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#panel">Skip to analysis</a>
+  <div id="app">
+    <header id="workspace-header">
+      <a class="workspace-brand" href="./" aria-label="FireSpot monitoring home">
+        <span class="brand-mark" aria-hidden="true"><img class="brand-logo" src="assets/logo.svg" width="24" height="36" alt=""></span>
+        <span class="brand-text"><span class="brand-name">FireSpot</span><span class="workspace-purpose">Wildfire monitoring</span></span>
+      </a>
+      <nav class="mode-tabs" aria-label="Workspace">
+        <button id="tab-live" class="mode-tab active" type="button" aria-current="page"><i data-icon="activity"></i><span>Monitor</span></button>
+        <button id="tab-date" class="mode-tab" type="button"><i data-icon="trending-up"></i><span>Forecast</span></button>
+        <button id="tab-history" class="mode-tab" type="button"><i data-icon="history"></i><span>History</span></button>
+        <button id="tab-alerts" class="mode-tab" type="button"><i data-icon="bell"></i><span>Alerts</span></button>
+        <button id="tab-replay" class="mode-tab" type="button"><i data-icon="rewind"></i><span>Replay</span></button>
+      </nav>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to light theme" title="Switch theme"><i data-icon="sun" class="ti-sun"></i><i data-icon="moon" class="ti-moon"></i></button>
+    </header>
+
+    <main id="viewport-container">
+      <div id="floating-bar">
+        <div class="float-group">
+          <div class="view-toggle" role="group" aria-label="Map view">
+            <button id="btn-view-map" aria-label="Map view" class="toggle-btn active" type="button" aria-pressed="true"><i data-icon="map"></i><span>Map</span></button>
+            <button id="btn-view-globe" aria-label="Globe view" class="toggle-btn" type="button" aria-pressed="false"><i data-icon="globe"></i><span>Globe</span></button>
+          </div>
+          <div class="layers-wrap">
+            <button id="layers-btn" aria-label="Map layers" class="float-btn" type="button" aria-expanded="false" aria-controls="layers-menu"><i data-icon="layers"></i><span>Layers</span></button>
+            <div id="layers-menu" class="layers-menu" hidden>
+              <fieldset>
+                <legend>Basemap</legend>
+                <label class="radio"><input type="radio" name="basemap" value="osm" checked> Streets (OpenStreetMap)</label>
+                <label class="radio"><input type="radio" name="basemap" value="sat"> Satellite imagery (Esri)</label>
+                <label class="radio"><input type="radio" name="basemap" value="topo"> Topographic (Esri)</label>
+              </fieldset>
+              <fieldset>
+                <legend>Overlays</legend>
+                <label class="check"><input id="lyr-fires" type="checkbox" checked> <i data-icon="flame"></i> Fire detections</label>
+                <label class="check"><input id="lyr-radar" type="checkbox"> <i data-icon="cloud-rain"></i> Precipitation radar</label>
+                <p id="radar-status" class="menu-note" hidden></p>
+                <label class="check"><input id="lyr-wind" type="checkbox"> <i data-icon="wind"></i> Wind (10 m, now)</label>
+                <p id="wind-status" class="menu-note" hidden></p>
+                <label class="check"><input id="lyr-sats" type="checkbox" checked> <i data-icon="satellite"></i> Fire satellites (MODIS / VIIRS)</label>
+                <label class="check"><input id="lyr-tracks" type="checkbox" checked> <i data-icon="route"></i> Orbit tracks</label>
+              </fieldset>
+              <p class="menu-note">Radar: RainViewer. Wind: Open-Meteo. Map view only.</p>
+            </div>
+          </div>
+          <button id="map-draw-area" class="float-btn" type="button" aria-label="Draw area" aria-pressed="false"><i data-icon="box-select"></i><span>Draw area</span></button>
+        </div>
+        <div id="area-badge" class="area-pill valid" title="Maximum inspection area: 25,000 km²"><i data-icon="box-select"></i><span id="area-text">Area: — / 25,000 km²</span></div>
+      </div>
+
+      <p id="map-draw-hint" class="map-draw-hint" role="status" hidden></p>
+      <div id="map-context"><span class="context-label">Observation map</span><p id="map-context-description">Last 24 hours · MODIS &amp; VIIRS</p></div>
+
+      <div id="globe-container" aria-label="3D globe with fire detections and satellite positions"></div>
+      <div id="map" aria-label="Fire observation map"></div>
+
+
+      <details id="fleet-panel" class="fleet-panel">
+        <summary><i data-icon="satellite"></i><span>Fire satellites</span><span id="fleet-time" class="fleet-time">—</span></summary>
+        <ul id="fleet-list" class="fleet-list"><li class="muted small">Loading positions…</li></ul>
+        <p class="menu-note">Live positions. Lines: past 50 min, next 70 min.</p>
+      </details>
+
+      <div class="map-legend" aria-label="Map legend">
+        <span class="lg-monitor"><i class="dot detection-red"></i>Satellite fire detections</span>
+        <span class="lg-fires"><i class="dot age-fresh"></i>≤ 3 h</span>
+        <span class="lg-fires"><i class="dot age-mid"></i>3–12 h</span>
+        <span class="lg-fires"><i class="dot age-old"></i>&gt; 12 h</span>
+        <span class="forecast-legend" hidden><i class="sq legend-start"></i>Burning at start</span>
+        <span class="forecast-legend" hidden><i class="sq legend-forecast"></i>Spread timing · early → late</span>
+        <span id="legend-guidance" hidden><i class="sq legend-guidance"></i>Daily ML + physics risk</span>
+        <span class="forecast-legend" hidden><i class="sq legend-extent"></i>Observed later</span>
+        <span class="lg-area"><i class="sq legend-area"></i>Area</span>
+        <span id="legend-wind" hidden><i data-icon="navigation"></i>Wind (blows toward)</span>
+        <span id="legend-radar" hidden><i class="sq legend-radar"></i>Radar</span>
+      </div>
+
+      <div id="map-quickbar">
+        <span class="quickbar-label">Quick locations</span>
+        <button class="preset-chip" type="button" data-lat="-6.57" data-lon="-51.10" data-label="Amazon">Amazon</button>
+        <button class="preset-chip" type="button" data-lat="-17.50" data-lon="-56.50" data-label="Pantanal">Pantanal</button>
+        <button class="preset-chip" type="button" data-lat="38.22" data-lon="-120.25" data-label="California">California</button>
+        <button class="preset-chip" type="button" data-lat="-14.50" data-lon="132.50" data-label="Australia">Australia</button>
+      </div>
+
+      <!-- Spread prediction playback -->
+      <div id="playback" class="playback" role="region" aria-label="Spread prediction playback" hidden>
+        <div class="pb-head">
+          <span id="pb-method" class="method-tag">ML + physics</span>
+          <span id="pb-time" class="pb-time">—</span>
+          <span id="pb-area" class="pb-area">—</span>
+          <span id="pb-conf" class="conf-badge" tabindex="0" hidden></span>
+          
+        </div>
+        <div class="pb-controls">
+          <button id="pb-start" class="icon-btn" type="button" aria-label="Skip to start" title="Skip to start"><i data-icon="skip-back"></i></button>
+          <button id="pb-back" class="icon-btn" type="button" aria-label="Step back" title="Step back"><i data-icon="step-back"></i></button>
+          <button id="pb-play" class="pb-play" type="button" aria-label="Play"><i data-icon="play"></i><span>Play</span></button>
+          <button id="pb-fwd" class="icon-btn" type="button" aria-label="Step forward" title="Step forward"><i data-icon="step-forward"></i></button>
+          <button id="pb-end" class="icon-btn" type="button" aria-label="Skip to end" title="Skip to end"><i data-icon="skip-forward"></i></button>
+          <input id="pb-slider" class="pb-slider" type="range" min="0" max="0" value="0" step="1" disabled aria-label="Prediction time" name="pb-slider" autocomplete="off">
+          <label class="pb-speed"><span class="sr-only">Playback speed</span>
+            <select id="pb-speed" aria-label="Playback speed" name="pb-speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select>
+          </label>
+        </div>
+        <div class="pb-weather" aria-live="off">
+          <span class="wx"><svg id="pb-wind-arrow" class="wind-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l5 9h-3.5v11h-3V11H7z"/></svg><span id="pb-wind">—</span></span>
+          <span class="wx"><i data-icon="thermometer"></i><span id="pb-temp">—</span></span>
+          <span class="wx"><i data-icon="droplets"></i><span id="pb-rh">—</span></span>
+          <span class="wx"><i data-icon="cloud-rain"></i><span id="pb-rain">—</span></span>
+          <span class="wx"><i data-icon="gauge"></i><span id="pb-ros">—</span></span>
+        </div>
+        <div id="pb-ramp" class="pb-ramp" aria-hidden="true"></div>
+        <p id="pb-status" class="pb-caveat" role="status">Run a prediction to use the timeline.</p>
+        <p class="pb-caveat">Colours show timing, not confidence. <span id="pb-guidance"></span></p>
+      </div>
+    </main>
+
+    <aside id="panel" tabindex="-1" aria-label="Area analysis">
+      <header class="panel-header">
+        <div class="panel-title-row">
+          <div>
+            <span id="workspace-eyebrow" class="eyebrow" hidden>Monitor</span>
+            <h1 id="workspace-title">Area overview</h1>
+          </div>
+          <span id="status-pill" class="status-badge connecting" role="status">Connecting…</span>
+        </div>
+        <p class="panel-subtitle"><span id="workspace-description">Latest satellite observations</span></p>
+      </header>
+
+      <!-- Spread prediction settings (Forecast tab) -->
+      <section id="date-controls" class="card section-date" hidden>
+        <span id="method-badge" hidden>ML + physics</span>
+
+        <div id="sim-opts">
+        <div id="sel-point" class="sel-point" hidden>
+          <span class="sel-label"><i data-icon="crosshair"></i>Selected</span>
+          <span id="sel-point-text" class="mono"></span>
+          <span id="sel-point-est"></span>
+        </div>
+
+          <p class="muted small">Pick a fire on the map, set the horizon, then run.</p>
+          <div class="form-grid">
+            <label class="input-field"><span>Ignition</span>
+              <select id="sim-ignition" name="sim-ignition">
+                <option value="live" selected>Nearest live fire</option>
+                <option value="archive">Archive fire on date</option>
+              </select></label>
+            <label class="input-field"><span>Horizon</span>
+              <select id="sim-hours" name="sim-hours">
+                <option value="3">3 hours</option><option value="6">6 hours</option><option value="12">12 hours</option><option value="24" selected>24 hours</option>
+                <option value="48">48 hours</option><option value="72">72 hours</option>
+              </select></label>
+            <label class="input-field"><span>Time step</span>
+              <select id="sim-step" name="sim-step">
+                <option value="auto" selected>Auto</option><option value="10">10 min</option><option value="15">15 min</option><option value="30">30 min</option><option value="60">60 min</option><option value="180">3 hours</option><option value="360">6 hours</option><option value="720">12 hours</option>
+              </select></label>
+            <label class="input-field" id="sim-start-field"><span>Start (UTC)</span>
+              <input id="sim-start" type="datetime-local" step="3600" name="sim-start" autocomplete="off"></label>
+            <label class="input-field"><span>Fuel</span>
+              <select id="sim-fuel" name="sim-fuel">
+                <option value="auto" selected>Auto (fuel map, fallback if unavailable)</option><option value="grass">Grass</option><option value="savanna">Savanna</option>
+                <option value="shrub">Shrub</option><option value="forest">Forest</option>
+              </select></label>
+          </div>
+          <p class="notice-exp" role="note"><b>Experimental, not calibrated.</b> Estimates, not confirmed perimeters.</p>
+          <details class="model-limits"><summary>Model limits and validation</summary>          <p class="service-note">An earlier physics version over-predicted grass, savanna and shrub fires and under-predicted forest fires in a 10-fire test. That test does not validate the new landscape model. Daily ML forecasts have roughly 70–75% day-3 overlap with one-cell tolerance, but only about 25–31% exact-cell overlap.</p></details>
+          <p id="sim-service" class="service-note" role="status"></p>
+        </div>
+
+        <div class="form-grid" id="date-row" hidden>
+          <label class="input-field" id="date-field"><span>Observation date</span><input id="date" type="date" value="2024-09-10" name="date" autocomplete="off"></label>
+        </div>
+
+        <div class="layer-toggles">
+          <label class="check"><input id="chk-fires" type="checkbox" checked> Show observed fires</label>
+          <label class="check" id="chk-actual-wrap" hidden><input id="chk-actual" type="checkbox" checked> Show observed later (historical replay)</label>
+        </div>
+
+        <div class="row button-row">
+          <button id="btn-forecast" class="btn-primary" type="button" disabled><i data-icon="play"></i><span>Run prediction</span></button>
+        </div>
+      </section>
+
+
+      <section id="area-section" class="card section-area">
+        <div class="section-title-row">
+          <h2>Area</h2>
+        </div>
+        <div class="area-actions">
+          <button id="btn-draw-box" class="tool-btn" type="button" aria-pressed="false"><i data-icon="box-select"></i><span>Draw area</span></button>
+          <button id="btn-center-box" class="tool-btn" type="button" title="Center an area on the current map view"><i data-icon="locate-fixed"></i><span>Use map centre</span></button>
+        </div>
+        <form id="location-form" class="location-form">
+          <label class="input-field"><span>Latitude</span><input id="location-lat" type="number" min="-90" max="90" step="any" inputmode="decimal" value="-6.60" required name="location-lat" autocomplete="off"></label>
+          <label class="input-field"><span>Longitude</span><input id="location-lon" type="number" min="-180" max="180" step="any" inputmode="decimal" value="-51.10" required name="location-lon" autocomplete="off"></label>
+          <button class="tool-btn location-submit" type="submit" aria-label="Set monitoring area at these coordinates"><i data-icon="map-pin"></i><span>Set area</span></button>
+        </form>
+        <details class="area-details"><summary>Area coordinates</summary>
+          <div class="bbox-display">
+            <div class="coord-box"><span class="coord-label">Bounds</span><span id="bbox-coords" class="mono small">-</span></div>
+            <div class="coord-box"><span class="coord-label">Dimensions</span><span id="bbox-dims" class="small">-</span></div>
+          </div>
+        </details>
+        <div class="row button-row">
+          <button id="btn-show-fires" class="btn-primary" type="button"><i data-icon="refresh-cw"></i><span>Load detections</span></button>
+        </div>
+        <p id="fires-info" class="status-msg" role="status" aria-live="polite"></p>
+        <div id="error" class="alert-box error" role="alert" hidden></div>
+      </section>
+
+      <section id="live-results" class="card section-live">
+        <div class="section-title-row">
+          <h2>Fire detections</h2>
+          <span id="live-count-badge" class="badge-pill" hidden>0 locations</span>
+        </div>
+        <button id="btn-global-fires" class="tool-btn" type="button" disabled><i data-icon="globe"></i>Show global detections</button>
+        <p id="monitor-feed-status" class="muted small" role="status">Loading global satellite detections…</p>
+        <h3>Selected area</h3>
+        <div class="stat-grid">
+          <div class="stat-card"><span class="stat-val" id="stat-active-spots">0</span><span class="stat-lbl">Detection locations</span></div>
+          <div class="stat-card"><span class="stat-val" id="stat-max-frp">0 MW</span><span class="stat-lbl">Peak fire power</span></div>
+          <div class="stat-card"><span class="stat-val" id="stat-last-time">-</span><span class="stat-lbl">Last observed</span></div>
+        </div>
+        <p class="est-note small"><span class="est-badge" tabindex="0" data-tip="Pixel centre: about 375 m (VIIRS) or 1 km (MODIS), larger at the swath edge. The fire can be anywhere inside."><i data-icon="crosshair"></i>Estimated location</span> Points are pixel centres.</p>
+        <div id="spots-container" class="spots-list">
+          <p class="muted small empty-notice">Select an area, then load satellite detections.</p>
+        </div>
+      </section>
+
+      <section id="results" class="card section-forecast" hidden>
+        <div class="section-title-row">
+          <h2>Selected location</h2>
+          <span id="point" class="mono small"></span>
+        </div>
+
+        <div id="sim-result" class="forecast-block" hidden>
+          <div class="block-head"><h3>ML + physics simulation</h3><span id="sim-result-tag" class="method-tag" hidden>ML + physics</span></div>
+          <p id="sim-msg" class="forecast-summary"></p>
+          <div id="sim-est" class="est-row"></div>
+          <div id="sim-kpis" class="kpi-grid kpi-3" hidden></div>
+          <div class="row downloads" id="sim-downloads" hidden>
+            <a id="sim-dl" class="btn-download" href="#" download="firespot-simulation.json"><i data-icon="download"></i>Simulation (JSON)</a>
+            <button id="sim-show" class="btn-download" type="button"><i data-icon="play"></i>Go to timeline</button>
+          </div>
+        </div>
+
+        <div id="ml-result" class="forecast-block">
+          <div class="block-head"><h3>ML spread forecast</h3></div>
+          <p id="forecast-msg" class="forecast-summary muted"></p>
+          <div id="forecast-est" class="est-row"></div>
+          <div class="table-wrap">
+            <table id="forecast-table">
+              <thead><tr><th><span class="sr-only">Colour</span></th><th>Day</th><th>Date</th><th class="num">Forecast</th><th class="num">Observed</th><th class="num" title="Overlap between forecast and observed cells">Overlap</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="row downloads">
+            <a id="dl-cap" class="btn-download" href="#" target="_blank" rel="noopener" download><i data-icon="file-warning"></i>CAP alert (XML)</a>
+            <a id="dl-geojson" class="btn-download" href="#" download="firespot-forecast.geojson"><i data-icon="download"></i>Forecast GeoJSON</a>
+          </div>
+        </div>
+
+        <div class="forecast-block">
+          <h3>Activity against historical baseline</h3>
+          <p id="anomaly" class="anomaly-text">-</p>
+        </div>
+
+        <div class="forecast-block">
+          <h3>Next satellite passes</h3>
+          <ul id="overpass" class="overpass-list"><li class="muted">-</li></ul>
+        </div>
+      </section>
+
+      <section id="history" class="card section-history" hidden>
+        <div class="section-title-row">
+          <h2>Area of interest</h2>
+          <button id="hist-wide" class="tool-btn small-btn" type="button" aria-pressed="false" title="Widen the panel for bigger charts"><i data-icon="maximize-2"></i><span>Wide</span></button>
+        </div>
+        <p class="muted small">Draw, click the map, or enter coordinates. Max 40° × 40°.</p>
+        <div class="tool-row" role="group" aria-label="Draw area of interest">
+          <button id="aoi-rect" class="tool-btn" type="button"><i data-icon="square"></i><span>Rectangle</span></button>
+          <button id="aoi-poly" class="tool-btn" type="button"><i data-icon="pentagon"></i><span>Polygon</span></button>
+          <button id="aoi-view" class="tool-btn" type="button" title="Use the visible map area"><i data-icon="scan"></i><span>Map view</span></button>
+        </div>
+        <div id="aoi-draw-hint" class="draw-hint" hidden>
+          <span id="aoi-draw-text">Click on the map to add points.</span>
+          <span class="draw-actions">
+            <button id="aoi-finish" class="tool-btn small-btn" type="button"><i data-icon="check"></i><span>Finish</span></button>
+            <button id="aoi-cancel" class="tool-btn small-btn" type="button"><i data-icon="x"></i><span>Cancel</span></button>
+          </span>
+        </div>
+        <form id="aoi-point-form" class="aoi-form" autocomplete="off">
+          <label class="input-field"><span>Latitude</span><input id="aoi-lat" type="number" step="any" min="-90" max="90" placeholder="-6.6" required name="aoi-lat" autocomplete="off"></label>
+          <label class="input-field"><span>Longitude</span><input id="aoi-lon" type="number" step="any" min="-180" max="180" placeholder="-51.1" required name="aoi-lon" autocomplete="off"></label>
+          <label class="input-field"><span>Size</span>
+            <select id="aoi-size" name="aoi-size"><option value="0.25">0.25°</option><option value="0.5">0.5°</option><option value="1" selected>1°</option><option value="2">2°</option><option value="5">5°</option><option value="10">10°</option></select></label>
+          <button class="tool-btn go-btn" type="submit">Go</button>
+        </form>
+        <form id="aoi-bbox-form" class="aoi-form bbox-form" autocomplete="off">
+          <label class="input-field"><span>Or bounding box: W, S, E, N</span><input id="aoi-bbox" type="text" inputmode="decimal" placeholder="-52,-8,-50,-6" required name="aoi-bbox" autocomplete="off"></label>
+          <button class="tool-btn go-btn" type="submit">Go</button>
+        </form>
+        <p id="aoi-summary" class="mono small aoi-summary">No area selected.</p>
+
+        <div class="row hist-controls">
+          <label class="input-field"><span>Compare year</span><select id="hist-year" name="hist-year"></select></label>
+          <label class="input-field"><span>Measure</span>
+            <select id="hist-metric" name="hist-metric">
+              <option value="viirs_cell_days" selected>VIIRS burning cells (2012+)</option>
+              <option value="modis_cell_days">MODIS burning cells (2008+)</option>
+              <option value="any_cell_days">Any sensor, burning cells</option>
+              <option value="viirs_detections">VIIRS detections</option>
+              <option value="modis_detections">MODIS detections</option>
+              <option value="frp_equiv_mw">Harmonized FRP (MW)</option>
+            </select></label>
+        </div>
+        <p id="hist-status" class="status-msg" aria-live="polite"></p>
+
+        <div id="hist-body" hidden>
+          <div class="kpi-grid" aria-live="polite">
+            <div class="kpi" id="kpi-total"><span class="kpi-val">-</span><span class="kpi-lbl">fires detected</span></div>
+            <div class="kpi" id="kpi-pct"><span class="kpi-val">-</span><span class="kpi-lbl">vs multi-year average</span></div>
+            <div class="kpi" id="kpi-z"><span class="kpi-val">-</span><span class="kpi-lbl">z-score</span></div>
+            <div class="kpi" id="kpi-label"><span class="kpi-val kpi-word">-</span><span class="kpi-lbl">status</span></div>
+          </div>
+          <div class="chart-block">
+            <div class="chart-head">
+              <h3>Burning calendar</h3>
+              <div class="seg" role="group" aria-label="Calendar colour">
+                <button id="cal-count" class="seg-btn active" type="button" aria-pressed="true">Counts</button>
+                <button id="cal-z" class="seg-btn" type="button" aria-pressed="false">Anomaly</button>
+              </div>
+            </div>
+            <div id="cal-chart" class="chart"></div>
+            <div id="cal-legend" class="legend"></div>
+            <p id="cal-info" class="chart-info" aria-live="polite">Tap a cell for details, a row to compare years.</p>
+          </div>
+          <div class="chart-block">
+            <h3 id="wk-title">This year vs average, by week</h3>
+            <div id="wk-chart" class="chart"></div>
+            <div class="legend">
+              <span><i class="sw line" style="background:#C26A00"></i>selected year</span>
+              <span><i class="sw line dash" style="border-color:#2F6DB5"></i>mean of other years</span>
+              <span><i class="sw" style="background:rgba(47,109,181,0.22)"></i>± 1 std</span>
+              <span><i class="mk-high"></i>anomaly (z ≥ 2)</span>
+              <span><i class="mk-low"></i>unusually low</span>
+            </div>
+          </div>
+          <div class="chart-block">
+            <h3 id="yr-title">Fires per year by sensor</h3>
+            <div id="yr-chart" class="chart"></div>
+            <div class="legend">
+              <span><i class="sw" style="background:#2F6DB5"></i>MODIS (Terra, Aqua)</span>
+              <span><i class="sw" style="background:#E69F00"></i>VIIRS (S-NPP, NOAA-20/21)</span>
+              <span class="muted">* partial year</span>
+            </div>
+          </div>
+          <details class="methodology"><summary>Data sources and methodology</summary><p class="small muted hist-note">Burning cells = 0.05° (~5 km) grid cells with at least one detection that day.
+            Baseline: the same ISO week in every other year with full sensor coverage; z = (x − mean) / max(std, √mean).
+            VIIRS (375 m) sees 2–3× more small fires than MODIS (1 km), so the sensors are shown separately; MODIS gives the
+            longest consistent record, and FRP is harmonized (MODIS converted to VIIRS-equivalent).</p></details>
+          <div class="row downloads">
+            <a id="hist-dl" class="btn-download" href="#" download="firespot-area-stats.json"><i data-icon="download"></i>Data (JSON)</a>
+            <a id="hist-csv" class="btn-download" href="#" download="firespot-calendar.csv"><i data-icon="download"></i>Calendar (CSV)</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="alerts" class="card section-alerts" hidden>
+        <div class="section-title-row">
+          <h2>Live alerts</h2>
+          <span id="alerts-count" class="badge-pill">-</span>
+        </div>
+        <p class="muted small">Burning 5 km cells in the last 7 days vs. the same week in 2008–2025. Only areas far above normal are listed.</p>
+        <div class="alerts-controls">
+          <label class="input-field"><span>Region</span>
+            <select id="alerts-res" name="alerts-res"><option value="1">1°</option><option value="0.25">0.25°</option></select>
+          </label>
+          <label class="input-field"><span>Show</span>
+            <select id="alerts-level" name="alerts-level">
+              <option value="watch">watch and above</option>
+              <option value="warning">warning and above</option>
+              <option value="critical">critical only</option>
+            </select>
+          </label>
+          <button id="alerts-refresh" aria-label="Refresh alerts" title="Refresh alerts" class="tool-btn icon-only" type="button"><i data-icon="refresh-cw"></i></button>
+        </div>
+        <div class="alerts-legend" aria-label="Alert levels">
+          <span><i class="lv-swatch lv-watch"></i>watch z≥2</span>
+          <span><i class="lv-swatch lv-warning"></i>warning z≥3</span>
+          <span><i class="lv-swatch lv-critical"></i>critical z≥5</span>
+          <span><i class="lv-swatch lv-none"></i>no baseline</span>
+        </div>
+        <p id="alerts-feed" class="small muted">-</p>
+        <ul id="alerts-list" class="alerts-list"><li class="muted small">Loading…</li></ul>
+        <div class="row downloads">
+          <a id="alerts-cap" class="btn-download" href="#" target="_blank" rel="noopener" download><i data-icon="file-warning"></i>CAP alerts (XML)</a>
+          <a id="alerts-geojson" class="btn-download" href="#" target="_blank" rel="noopener"><i data-icon="download"></i>GeoJSON</a>
+        </div>
+        <details class="methodology"><summary>How activity alerts are calculated</summary><p class="small muted">z = (cells − mean) / max(std, 0.3·mean, √mean+1). Baseline: 5 fully archived countries
+          (Brazil, Australia, India, USA, Canada); 2008-2011 reconstructed from MODIS. Elsewhere: no baseline.</p></details>
+      </section>
+
+      <section id="replay" class="card section-replay" hidden></section>
+
+      <footer class="panel-footer">
+        <details class="connection-details"><summary>Connection details</summary>
+          <div class="footer-row"><span>Backend API</span><span id="api" class="mono small"></span></div>
+        </details>
+        <div id="app-attribution" class="footer-credits">NASA FIRMS · MODIS &amp; VIIRS · RainViewer · <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> · OpenStreetMap contributors · Esri</div>
+      </footer>
+    </aside>
+  </div>
+
+  <script src="vendor/lucide.min.js"></script>
+  <script src="vendor/leaflet.js"></script>
+  <script src="vendor/globe.gl.min.js"></script>
+  <script src="app.js"></script>
+  <script src="ui-replay.js"></script>
+  <script src="ui-harmonize.js"></script>
+  <script src="ui-history-fix.js"></script>
+  <script src="ui-forecast-extras.js"></script>
+  <script src="ui-forecast-blindspots.js"></script>
+  <script src="ui-forecast-scenarios.js"></script>
+  <script src="ui-forecast-exposure.js"></script>
+  <script src="theme-vscode.js"></script>
+  <script src="ui-tour.js"></script>
+  <script src="ui-github.js"></script>
+</body>
+</html>

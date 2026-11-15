@@ -1,0 +1,13 @@
+event,date,expected,label,ok,z,season_freq,recurrence,cluster,persist,routine,anomaly,cells,day_ratio
+"Canada 2023, Yellowknife NWT",2023-08-13,anomaly,anomaly,True,42.7,0.08,0.0,37,9,0.013,1.0,17,34.0
+"Canada 2021, Lytton BC",2021-07-01,anomaly,routine seasonal burning,False,2.3,0.08,0.5,9,2,0.749,0.072,2,4.0
+"USA 2020, August Complex CA",2020-09-10,anomaly,anomaly,True,43.6,0.08,0.0,81,22,0.179,1.0,14,28.0
+"Australia 2019, NSW mid-north coast",2019-11-09,anomaly,anomaly,True,20.1,0.08,0.14,59,12,0.193,1.0,7,14.0
+"Canada 2024, Jasper AB",2024-07-24,anomaly,anomaly,True,9.5,0.0,0.0,21,2,0.375,1.0,7,14.0
+"USA 2017, Thomas fire CA",2017-12-10,anomaly,anomaly,True,24.8,0.0,0.0,35,6,0.181,1.0,14,28.0
+India Punjab stubble burning 2019,2019-11-05,routine,routine seasonal burning,True,0.5,1.0,1.0,206,10,0.667,0.0,25,1.6
+India Punjab stubble burning 2020,2020-11-03,routine,routine seasonal burning,True,1.8,1.0,1.0,198,18,0.623,0.0,24,1.8
+USA Florida sugarcane burning,2022-01-14,routine,routine seasonal burning,True,0.1,0.69,1.0,1,1,0.782,0.0,2,4.0
+USA Kansas Flint Hills 2019,2019-04-12,routine,routine seasonal burning,True,3.2,0.85,1.0,8,2,0.671,0.142,6,7.1
+Australia NT early-dry-season burning,2023-05-26,routine,routine seasonal burning,True,1.8,0.92,1.0,17,4,0.698,0.076,11,4.8
+India Haryana stubble burning 2021,2021-11-08,routine,elevated seasonal activity,False,7.3,1.0,1.0,53,5,0.567,0.4,12,4.9
